@@ -404,9 +404,9 @@ function showEntry(key) {
     ? '<h2>Pay a deposit</h2><p class="hint">Scan the QR code at the booth, or paste the link.</p>'
     : isStaff
       ? '<h2>Return booth</h2><p class="hint">Scan the receipt. Check the cup. Approve.</p>'
-      : '<h2>Find a receipt</h2><p class="hint">Open a saved receipt or paste its link.</p>';
-  const form = element('form');
-  const label = element('label', isEvent ? 'Event link' : 'Receipt link');
+      : '<h2>Your receipts</h2><p class="hint">Receipts you paid on this device.</p>';
+  const form = element('form', '', 'link-form');
+  const label = element('label', isEvent ? 'Or paste the link' : 'Or paste a receipt link');
   const input = element('input');
   input.type = 'url';
   input.required = true;
@@ -431,14 +431,14 @@ function showEntry(key) {
     e.preventDefault();
     open(input.value);
   });
-  if (isEvent) showSoloCard();
-  if (isStaff || isEvent) addScanner(open, isStaff ? 'Scan receipt' : 'Scan pickup code');
+  if (isStaff || isEvent) addScanner(open, isStaff ? 'Scan receipt' : 'Scan QR code');
   panel.append(form);
+  if (isEvent) showSoloCard();
   if (!isEvent && !isStaff) {
     const recent = Object.values(loadSaved()).reverse().slice(0, 10);
     if (recent.length) {
       const list = element('section', '', 'recent-receipts');
-      list.append(element('h3', 'Recent deposits'));
+      list.append(element('h3', 'Recent'));
       for (const item of recent) {
         const open = button(item.event.name + ' · ' + formatAmount(item.event.amount), () => {
           const receipt = parseReceipt(item);
@@ -592,8 +592,9 @@ async function showReceipt(receipt, submittedId) {
     controls.replaceChildren(element('p', 'Returned ' + formatAmount(receipt.event.amount) + ' to the guest wallet.', 'hint'));
     if (isStaff) controls.append(next);
   };
+  panel.append(controls);
   if (!isStaff) await share('receipt', receipt);
-  panel.append(controls, proof);
+  panel.append(proof);
   if (submittedId) {
     controls.append(element('p', 'Checking that the refund appears on the network.', 'hint'));
     if (isStaff) controls.append(next);
@@ -608,11 +609,11 @@ async function showReceipt(receipt, submittedId) {
           walletAction('Approve refund', () => sendRefund(receipt, false), controls);
         } else {
           controls.append(element('p', 'Show this and your cup at any booth.', 'hint'));
-          const staff = element('a', 'Open in return booth', 'secondary');
+          const staff = element('a', 'Open this receipt as booth staff');
           const staffUrl = new URL(makeLink('receipt', receipt));
           staffUrl.searchParams.set('tab', 'staff');
           staff.href = staffUrl;
-          controls.append(staff);
+          proof.append(staff);
           if (connected && isApprover(receipt.event, walletAddress())) {
             controls.append(element('p', 'You are the booth for this cup. Refund it here.', 'hint'));
             walletAction('Refund now', () => sendRefund(receipt, false), controls);

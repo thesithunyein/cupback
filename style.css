@@ -206,3 +206,17 @@ details[open] > summary::after{transform:translateY(.12rem) rotate(225deg)}
 
 .solo-card{border:1px solid #b9d3b8;background:linear-gradient(135deg,#eef6e7,#f8fbf5);border-radius:1rem;padding:1.1rem 1.2rem;margin:0 0 1.4rem}
 .solo-card h2{margin:.1rem 0 .35rem}.solo-card .hint{margin:.2rem 0 .5rem}.solo-card .field-help{color:var(--muted);font-size:.875rem;margin:0 0 .8rem}
+
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.app main{padding-top:1.6rem}
+.link-form{display:grid;grid-template-columns:1fr auto;gap:.5rem;align-items:end;margin:0}
+.link-form label{margin:0;font-size:.875rem;color:var(--muted);font-weight:600}
+.link-form button{background:var(--pale);color:var(--green)}
+.scanner{margin:.4rem 0 1.1rem}.scanner>button{width:100%;min-height:52px;font-size:1.05rem}
+.solo-card{margin:1.6rem 0 0;padding:1rem 1.1rem}.solo-card h2{font-size:1.2rem}
+.receipt-status{font-size:1rem;padding:.45rem .8rem}
+.receipt-status[data-result=ready]{background:#fff4d6;color:#7a5200}
+.receipt-status[data-result=paid]{background:#d6f0d6;color:#14532d}
+.receipt-status[data-result=paid]::before{content:"✓ "}
+.receipt-controls{margin:.2rem 0 .4rem}.receipt-controls .hint{margin:.2rem 0 .7rem}
+.deposit-terms a{display:block;margin:.35rem 0}
