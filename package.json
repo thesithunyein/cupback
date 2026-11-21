@@ -1,7 +1,7 @@
 {
   "name": "cupback",
   "version": "1.0.0",
-  "description": "",
+  "description": "Cup deposits on Bitcoin Cash. Pay at one booth, get refunded at any booth.",
   "main": "index.js",
   "scripts": {
     "test": "node compile.mjs && node contract.test.mjs && node amounts.test.mjs",
@@ -9,8 +9,16 @@
     "predev": "node compile.mjs",
     "build": "node compile.mjs && vite build"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "bitcoin-cash",
+    "bch",
+    "cashscript",
+    "covenant",
+    "deposit",
+    "reusable-cups",
+    "wizardconnect"
+  ],
+  "author": "Sithu Nyein",
   "license": "ISC",
   "type": "module",
   "dependencies": {
@@ -28,5 +36,10 @@
   "devDependencies": {
     "@emnapi/core": "2.0.0-beta.2",
     "@emnapi/runtime": "2.0.0-beta.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thesithunyein/cupback"
+  },
+  "homepage": "https://cupback.vercel.app"
 }
