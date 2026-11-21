@@ -52,7 +52,8 @@ function parseLink(value, key) {
   if (url.origin !== location.origin || !encoded || encoded.length > 4096) {
     throw Error('Paste the CupBack link from this site.');
   }
-  return JSON.parse(encoded);
+  try { return JSON.parse(encoded); }
+  catch { throw Error('This link is incomplete. Ask for a new copy.'); }
 }
 
 function makeLink(key, data) {
@@ -132,7 +133,7 @@ function connect(action) {
     const destination = panel.querySelector('[data-destination]');
     if (destination) destination.textContent = 'Refund wallet: ' + walletAddress();
     pairing.remove();
-    notice.textContent = 'Wallet connected. Review the details before continuing.';
+    notice.textContent = 'Wallet connected.';
     panel.querySelector('[data-connect]')?.remove();
     if (panel.querySelector('[data-wallet-action]')) panel.querySelector('[data-wallet-action]').disabled = false;
   });
@@ -145,26 +146,26 @@ function connect(action) {
   return QRCode.toDataURL(uri, {width: 340}).then(source => { code.src = source; });
 }
 
-function walletAction(text, action) {
+function walletAction(text, action, container = panel) {
   if (!connected) {
     const connectButton = button('Connect wallet', () => connect(action), 'secondary');
     connectButton.dataset.connect = '';
-    panel.append(connectButton);
+    container.append(connectButton);
   }
   const actionButton = button(text, action);
   actionButton.dataset.walletAction = '';
   actionButton.disabled = !connected;
-  panel.append(actionButton);
+  container.append(actionButton);
 }
 
 function showSetup() {
-  panel.innerHTML = '<h2>Set up your event</h2><p class="hint">Add the wallets that can approve returns.</p>' +
+  panel.innerHTML = '<h2>Set up your event</h2><p class="hint">Choose who can approve returns.</p>' +
     '<form><label>Event name<input name="name" required maxlength="60" placeholder="Saturday market"></label>' +
-    '<div class="grid"><label>Deposit in satoshis<input name="amount" required type="number" min="1000" max="999999999" step="1" placeholder="10000"></label>' +
-    '<label>Customer recovery opens<input name="recovery" type="datetime-local" required></label></div>' +
+    '<div class="grid"><label>Deposit (sats)<input name="amount" required type="number" min="1000" max="999999999" step="1" placeholder="10000"></label>' +
+    '<label>Recovery opens<input name="recovery" type="datetime-local" required></label></div>' +
     '<label>Return booth wallet address<input name="booth" required spellcheck="false"></label>' +
     '<label>Organizer wallet address<input name="organizer" required spellcheck="false"></label>' +
-    '<p class="hint">Use the first receive address for each wallet. After the recovery time, buyers can reclaim unused deposits themselves.</p>' +
+    '<p class="hint">Use each wallet’s first receive address. After this time, customers can recover unused deposits.</p>' +
     '<button>Create event link</button></form>';
   panel.querySelector('form').addEventListener('submit', e => {
     e.preventDefault();
@@ -182,8 +183,8 @@ function showSetup() {
 function showEntry(key) {
   const isEvent = key === 'event';
   panel.innerHTML = isEvent
-    ? '<h2>Pay a cup deposit</h2><p class="hint">Scan the event QR with your camera or paste the link.</p>'
-    : '<h2>Find a receipt</h2><p class="hint">Scan the receipt QR with your camera or paste the link.</p>';
+    ? '<h2>Pay a cup deposit</h2><p class="hint">Scan the pickup QR or paste the event link.</p>'
+    : '<h2>Find a receipt</h2><p class="hint">Scan your receipt QR or paste the link.</p>';
   const form = element('form');
   const label = element('label', isEvent ? 'Event link' : 'Receipt link');
   const input = element('input');
@@ -212,8 +213,8 @@ function showEntry(key) {
 
 function showEvent(event) {
   panel.replaceChildren(element('h2', event.name), element('p', formatAmount(event.amount), 'receipt-amount'),
-    element('p', 'Your deposit goes back to your wallet after an approved return.'),
-    element('p', 'Self-service recovery opens ' + new Date(event.recovery * 1000).toLocaleString()
+    element('p', 'Return the cup to get your deposit back.'),
+    element('p', 'You can recover your deposit after ' + new Date(event.recovery * 1000).toLocaleString()
       + '. Use a link supplied by event staff.', 'hint'));
   if (event.recovery * 1000 <= Date.now()) {
     panel.append(element('p', 'This event has closed.'));
@@ -238,7 +239,7 @@ async function showReceipt(receipt) {
   await share('receipt', receipt);
   panel.append(button('Refresh status', () => showReceipt(receipt), 'secondary'));
   const unspent = await lookup(receipt).catch(error => {
-    status.textContent = 'Deposit not verified yet. Refresh to check again.';
+    status.textContent = 'Deposit not verified. Try refreshing.';
     throw error;
   });
   if (!unspent) {
@@ -250,9 +251,13 @@ async function showReceipt(receipt) {
     }
     return;
   }
-  status.textContent = 'Deposit available for return.';
-  panel.append(element('p', 'Staff: check the cup before approving the return.', 'hint'));
-  walletAction('Approve refund', () => sendRefund(receipt, false));
+  status.textContent = 'Ready to return.';
+  panel.append(element('p', 'Show this receipt and your cup to staff.', 'hint'));
+  const staff = element('details', '', 'staff-tools');
+  staff.append(element('summary', 'Staff: approve a return'),
+    element('p', 'Check the cup before you approve.', 'hint'));
+  walletAction('Approve refund', () => sendRefund(receipt, false), staff);
+  panel.append(staff);
   if (Date.now() >= receipt.event.recovery * 1000) {
     panel.append(button('Recover my deposit', () => connect(() => sendRefund(receipt, true)), 'secondary'));
   }

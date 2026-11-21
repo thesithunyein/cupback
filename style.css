@@ -17,3 +17,12 @@
 @media(max-width:680px){.landing-hero{grid-template-columns:1fr;gap:1.4rem}.hero-visual{min-height:13rem}.hero-visual svg{max-height:14rem}.steps{grid-template-columns:1fr;gap:1rem}.app header .secondary{padding:.45rem .55rem;font-size:.875rem}}
 
 .landing-links{gap:clamp(.6rem,2vw,1.25rem);justify-content:flex-end}.landing-links>a:not(.button){display:inline-flex;align-items:center;min-height:44px;text-decoration:none;font-size:.9rem;font-weight:650}.landing-links>a:not(.button):hover{text-decoration:underline}.guide-section{padding:clamp(1.5rem,5vw,3.5rem) 0;scroll-margin-top:1rem}.guide-section>h2{font-size:clamp(1.75rem,4vw,2.6rem);margin-bottom:1rem}.steps h3{font-size:1.15rem;margin:0 0 .25rem;letter-spacing:-.025em}.faq{max-width:720px;margin-inline:auto}.faq>h2{text-align:center}.faq details{border-top:1px solid var(--line)}.faq details:last-child{border-bottom:1px solid var(--line)}.faq summary{cursor:pointer;font-weight:700;padding:1rem 0;line-height:1.45}.faq details p{color:var(--muted);margin:0 0 1rem;padding-left:1.05rem}.landing footer{border-top:1px solid var(--line)}@media(max-width:460px){.landing header{flex-wrap:wrap;gap:.5rem}.landing-links{width:100%;justify-content:flex-start}}
+
+.task-icon{width:1.35rem;height:1.35rem;flex:none;vertical-align:middle}
+.app nav button{display:flex;align-items:center;justify-content:center;gap:.45rem}
+.steps .task-icon{display:block;width:2.25rem;height:2.25rem;padding:.38rem;margin-bottom:.7rem;color:var(--green);background:var(--pale);border-radius:.65rem}
+.staff-tools{border-top:1px solid var(--line);margin-top:1.15rem;padding-top:.4rem}
+.staff-tools summary{cursor:pointer;font-weight:650;min-height:44px;padding:.65rem 0;color:var(--green)}
+.staff-tools button+button{margin-inline-start:.5rem}
+@media(prefers-reduced-motion:no-preference){.button,button{transition:background-color 150ms ease,box-shadow 150ms ease}.button:hover,button:hover:not(:disabled){box-shadow:inset 0 0 0 100px #27593912}}
+@media(max-width:480px){.wide-break{display:none}.app nav button{flex-direction:column;gap:.2rem;padding:.55rem .2rem}}
