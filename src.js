@@ -140,15 +140,52 @@ async function share(key, data) {
 
 function connect() {
   if (connected) return;
+  const picker = element('dialog', '', 'wallet-picker');
+  picker.setAttribute('aria-labelledby', 'wallet-picker-title');
+  const title = element('h2', 'Choose your wallet');
+  title.id = 'wallet-picker-title';
+  const cancel = element('button', 'Cancel', 'secondary');
+  cancel.type = 'button';
+  cancel.onclick = () => picker.close();
+  const option = (name, description, otherWallet) => {
+    const choice = button('', () => {
+      picker.close();
+      return pairWallet(otherWallet);
+    }, 'wallet-choice');
+    if (!otherWallet) {
+      const logo = element('img');
+      logo.src = cashonizeLogo;
+      logo.alt = '';
+      logo.width = logo.height = 32;
+      choice.append(logo);
+    }
+    const label = element('span', name);
+    label.append(element('small', description));
+    choice.append(label);
+    return choice;
+  };
+  picker.append(title,
+    option('Cashonize', 'Connect on this device or scan a code', false),
+    option('Other WizardConnect wallet', 'Scan a connection QR code', true),
+    cancel);
+  picker.addEventListener('close', () => picker.remove(), { once: true });
+  document.body.append(picker);
+  picker.showModal();
+}
+
+function pairWallet(otherWallet) {
+  if (connected) return;
   const pairing = element('section', '', 'wallet-pairing');
   const heading = element('h2', '', 'wallet-heading');
   const icon = element('img');
   icon.src = cashonizeLogo;
   icon.alt = '';
   icon.width = icon.height = 32;
-  heading.append(icon, 'Connect with Cashonize');
+  if (!otherWallet) heading.append(icon);
+  heading.append(otherWallet ? 'Connect a WizardConnect wallet' : 'Connect with Cashonize');
   pairing.append(heading,
-    element('p', 'Copy the link. In Cashonize, open Connect, paste it into Connection URI, and select Connect New dApp.', 'hint'));
+    element('p', otherWallet ? 'Scan the QR code from your wallet to connect to CupBack.'
+      : 'Copy the link. In Cashonize, open Connect, paste it into Connection URI, and select Connect New dApp.', 'hint'));
   const code = element('img', '', 'qr');
   const link = element('a', 'Open Cashonize', 'button secondary');
   link.href = 'https://cashonize.com/';
@@ -189,7 +226,8 @@ function connect() {
   const otherDevice = element('details');
   otherDevice.append(element('summary', 'Connect from another device'),
     element('p', 'Scan this code from a WizardConnect wallet.', 'hint'), code);
-  pairing.append(actions, manual, otherDevice);
+  if (otherWallet) pairing.append(code);
+  else pairing.append(actions, manual, otherDevice);
   panel.querySelector('[data-pairing]')?.remove();
   pairing.dataset.pairing = '';
   panel.append(pairing);
@@ -249,16 +287,16 @@ function showSetup() {
     '<div class="setup-fields">' +
     '<label>Deposit (BCH)<input name="amount" required inputmode="decimal" autocomplete="off" placeholder="0.001"></label>' +
     '<label>Self-refunds start<input name="recovery" type="datetime-local" required aria-describedby="refund-time-help"></label></div>' +
-    '<p class="field-help" id="refund-time-help">After this time, guests can claim deposits that are still held, even if they kept the cup.</p></fieldset>' +
-    '<fieldset><legend>Who can approve refunds?</legend>' +
-    '<p class="field-help">Use the first receive address for each wallet.</p>' +
-    '<label>Return booth wallet<input name="booth" required spellcheck="false" autocapitalize="none" autocomplete="off"></label>' +
-    '<label>Organizer wallet (optional)<input name="organizer" spellcheck="false" autocapitalize="none" autocomplete="off" aria-describedby="organizer-help"></label><p class="field-help" id="organizer-help">Leave blank if only the return booth approves refunds.</p></fieldset>' +
-    '<button>Create pickup code</button></form>';
+    '<p class="field-help" id="refund-time-help">After this time, guests can reclaim any unrefunded deposit without returning the cup.</p></fieldset>' +
+    '<fieldset><legend>Refund approval</legend>' +
+    '<label>Return booth address<input name="booth" required spellcheck="false" autocapitalize="none" autocomplete="off" aria-describedby="booth-help"></label>' +
+    '<p class="field-help" id="booth-help">Paste the first receive address from the wallet staff will use to approve refunds.</p>' +
+    '<details class="setup-optional"><summary>Add an organizer wallet (optional)</summary>' +
+    '<label>Organizer address<input name="organizer" spellcheck="false" autocapitalize="none" autocomplete="off" aria-describedby="organizer-help"></label><p class="field-help" id="organizer-help">Use its first receive address to let this wallet approve refunds too.</p></details></fieldset>' +
+    '<button class="setup-submit">Create pickup QR code</button></form>';
   const form = panel.querySelector('form');
-  const preview = element('aside', '', 'event-preview');
-  preview.setAttribute('aria-label', 'Customer pickup preview');
-  const previewTitle = element('p', 'Guest preview', 'preview-label');
+  const preview = element('details', '', 'event-preview');
+  const previewTitle = element('summary', 'Preview guest checkout');
   const previewEvent = element('h3', 'Your event');
   const previewAmount = element('p', 'Deposit amount', 'receipt-amount');
   preview.append(previewTitle, previewEvent, previewAmount,
@@ -308,7 +346,9 @@ function showSetup() {
       try {
         const event = parseEvent(saved);
         const status = event.recovery * 1000 > Date.now() ? 'Open' : 'Closed';
-        list.append(button(event.name + ' ? ' + status, () => showPickupCode(event), 'secondary'));
+        const savedEvent = button('', () => showPickupCode(event), 'secondary saved-event');
+        savedEvent.append(element('span', event.name), element('span', status, 'saved-event-status'));
+        list.append(savedEvent);
       } catch {
         // Ignore event records that cannot be opened on this network.
       }
