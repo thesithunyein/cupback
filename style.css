@@ -125,6 +125,9 @@
 .workspace nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
 .wallet-pairing{background:#f7faf5}
 .wallet-heading{display:flex;align-items:center;gap:.6rem}
+.blaze-banner{background:var(--pale);border-bottom:1px solid var(--line)}
+.blaze-banner>div{width:min(100% - 2rem,1040px);margin:auto;display:flex;align-items:center;gap:.5rem 1rem;flex-wrap:wrap;padding:.65rem 0}
+.blaze-banner label{margin:0;flex:1 1 18rem;font-size:.8rem}
 .wallet-pairing>.button{margin-bottom:.65rem}
 .wallet-identity{color:var(--green);font-size:.8rem;font-weight:650;white-space:nowrap}
 .app header>.actions{justify-content:flex-end;flex-wrap:wrap}

@@ -28,12 +28,12 @@ const deposit = depositContract(receipt);
 const principal = 10000n;
 const feeCoin = 10000n;
 
-function evaluate({ signer = booth, recipient = buyer, amount = principal, recover = false, locktime = 0 } = {}) {
+function evaluate({ signer = booth, recipient = buyer, amount = principal, recover = false, locktime = 0, receiptId = receipt.nonce } = {}) {
   const depositUtxo = { txid: '11'.repeat(32), vout: 0, satoshis: principal, lockingBytecode: deposit.lockingBytecode };
   const signerUtxo = { txid: '22'.repeat(32), vout: 0, satoshis: feeCoin, lockingBytecode: signer.lockingBytecode };
   const path = recover ? 'recover' : 'refund';
   const built = new TransactionBuilder({ provider, maximumFeeSatoshis: 2000n })
-    .addInput(depositUtxo, deposit.unlock[path](hexToBin(receipt.nonce)))
+    .addInput(depositUtxo, deposit.unlock[path](hexToBin(receiptId)))
     .addInput(signerUtxo, signer.unlock)
     .addOutput({ to: recipient.address, amount })
     .addOutput({ to: signer.address, amount: 9000n })
@@ -61,6 +61,12 @@ test('customer recovery requires the configured time and buyer authorization', (
   assert.equal(evaluate({ signer: buyer, recover: true, locktime: recovery }), true);
   assert.notEqual(evaluate({ signer: buyer, recover: true, locktime: recovery - 1 }), true);
   assert.notEqual(evaluate({ signer: stranger, recover: true, locktime: recovery }), true);
+});
+
+test('neither spending path accepts a different receipt ID', () => {
+  const receiptId = '02'.repeat(16);
+  assert.notEqual(evaluate({ receiptId }), true);
+  assert.notEqual(evaluate({ receiptId, signer: buyer, recover: true, locktime: recovery }), true);
 });
 
 

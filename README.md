@@ -14,6 +14,10 @@ Import the GitHub repo as a Vercel project. Use the repository root and Node.js 
 
 No project environment variables are required for Chipnet. Open / for the landing page and /app.html for the app. On a new domain, create pickup and receipt links from that domain. Existing links should be opened on the domain that issued them.
 
+The BLAZE presentation is served at /deck.pdf. Set `VITE_BLAZE_EMBER_ADDRESS` to the team's token-aware Bitcoin Cash mainnet receiving address to enable the submission banner. `VITE_BLAZE_PRESENTATION_URL` can override the bundled PDF with another HTTPS presentation URL.
+
+Use `VITE_BCH_NETWORK=mainnet` for a separate mainnet preview. See [release validation](VALIDATION.md) for the wallet, booth, and on-chain acceptance checks.
+
 
 ## Chipnet checkout
 
