@@ -33,7 +33,7 @@
     <path d="m170 166 140 0-9 82H179z" fill="url(#sleeve)" stroke="#305F40" stroke-width="2" stroke-linejoin="round"/>
     <path d="M173 175h134m-127 65h120" stroke="#F2FFCE" stroke-opacity=".52" stroke-width="1.4"/>
     <circle cx="240" cy="207" r="24" fill="#255039"/>
-    <path d="M230 208a10 10 0 1 1 9 9m-9-15v6h6" stroke="#E8FFB9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M229 205a11 11 0 1 1 10 13m-10-21v8h8" stroke="#E8FFB9" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="M160 101l7-12a7 7 0 0 1 6-4h134a7 7 0 0 1 6 4l7 12" fill="url(#lid)" stroke="#204733" stroke-width="2"/>
     <rect x="150" y="99" width="180" height="24" rx="7" fill="url(#lid)" stroke="#204733" stroke-width="2"/>
     <path d="M160 106h159" stroke="#8BBC98" stroke-opacity=".45" stroke-width="2" stroke-linecap="round"/>
