@@ -24,7 +24,7 @@
 
 
 <p align="center">
-  <a href="https://cupback.vercel.app"><img src="docs/cupback-home.png" alt="CupBack home page: Borrow a cup. Get your deposit back." width="900"></a>
+  <a href="https://cupback.vercel.app"><img src="docs/cupback-home.png" alt="CupBack home page with the BCH BLAZE 2026 banner: presentation, source code and EMBER2026 voting address" width="900"></a>
 </p>
 
 ---
