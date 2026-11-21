@@ -108,7 +108,11 @@ async function signAndSend(transaction, sourceOutputs, coin, index, prompt, befo
   }
   const txid = hashTransaction(signedBytes);
   beforeBroadcast(txid);
-  await provider.sendRawTransaction(response.signedTransaction);
+  try {
+    await provider.sendRawTransaction(response.signedTransaction);
+  } catch {
+    throw Error('The network did not confirm submission. Check Find receipt before trying again.');
+  }
   return txid;
 }
 

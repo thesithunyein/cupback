@@ -14,6 +14,11 @@ const explorer = network === 'mainnet'
 let connected = false;
 let busy = false;
 let tab = 'deposit';
+let receiptTimer;
+
+function stopReceiptWatch() {
+  clearInterval(receiptTimer);
+}
 
 function loadSaved() {
   try { return JSON.parse(localStorage.getItem(storageKey) || '{}'); }
@@ -167,7 +172,23 @@ function showSetup() {
     '<label>Organizer wallet address<input name="organizer" required spellcheck="false"></label>' +
     '<p class="hint">Use each wallet’s first receive address. After this time, customers can recover unused deposits.</p>' +
     '<button>Create event link</button></form>';
-  panel.querySelector('form').addEventListener('submit', e => {
+  const form = panel.querySelector('form');
+  const preview = element('aside', '', 'event-preview');
+  preview.setAttribute('aria-label', 'Customer pickup preview');
+  const previewTitle = element('p', 'Customer view', 'preview-label');
+  const previewEvent = element('h3', 'Your event');
+  const previewAmount = element('p', 'Set the deposit', 'receipt-amount');
+  preview.append(previewTitle, previewEvent, previewAmount,
+    element('p', 'Pay at pickup. Return your cup to get your deposit back.', 'hint'));
+  const layout = element('div', '', 'setup-layout');
+  form.before(layout);
+  layout.append(form, preview);
+  form.addEventListener('input', () => {
+    previewEvent.textContent = form.elements.name.value.trim() || 'Your event';
+    const amount = form.elements.amount.value;
+    previewAmount.textContent = /^[0-9]{4,9}$/.test(amount) ? formatAmount(amount) : 'Set the deposit';
+  });
+  form.addEventListener('submit', e => {
     e.preventDefault();
     const values = Object.fromEntries(new FormData(e.currentTarget));
     run(async () => {
@@ -212,7 +233,7 @@ function showEntry(key) {
 }
 
 function showEvent(event) {
-  panel.replaceChildren(element('h2', event.name), element('p', formatAmount(event.amount), 'receipt-amount'),
+  panel.replaceChildren(element('p', 'Cup deposit', 'preview-label'), element('h2', event.name), element('p', formatAmount(event.amount), 'receipt-amount'),
     element('p', 'Return the cup to get your deposit back.'),
     element('p', 'You can recover your deposit after ' + new Date(event.recovery * 1000).toLocaleString()
       + '. Use a link supplied by event staff.', 'hint'));
@@ -231,10 +252,12 @@ function showEvent(event) {
 }
 
 async function showReceipt(receipt) {
-  panel.replaceChildren(element('h2', receipt.event.name),
+  stopReceiptWatch();
+  panel.replaceChildren(element('p', 'Return receipt', 'preview-label'), element('h2', receipt.event.name),
     element('p', formatAmount(receipt.event.amount), 'receipt-amount'),
     txLink('View deposit transaction', receipt.txid));
-  const status = element('p', 'Checking the deposit...');
+  const status = element('p', 'Checking the deposit…', 'receipt-status');
+  status.setAttribute('role', 'status');
   panel.append(status);
   await share('receipt', receipt);
   panel.append(button('Refresh status', () => showReceipt(receipt), 'secondary'));
@@ -246,12 +269,14 @@ async function showReceipt(receipt) {
     status.textContent = 'Deposit already spent.';
     const refundId = await findRefund(receipt);
     if (refundId) {
-      status.textContent = 'Refunded.';
+      status.textContent = 'Refunded';
+      status.dataset.result = 'paid';
       panel.append(txLink('View refund transaction', refundId));
     }
     return;
   }
-  status.textContent = 'Ready to return.';
+  status.textContent = 'Ready to return';
+  status.dataset.result = 'ready';
   panel.append(element('p', 'Show this receipt and your cup to staff.', 'hint'));
   const staff = element('details', '', 'staff-tools');
   staff.append(element('summary', 'Staff: approve a return'),
@@ -261,6 +286,28 @@ async function showReceipt(receipt) {
   if (Date.now() >= receipt.event.recovery * 1000) {
     panel.append(button('Recover my deposit', () => connect(() => sendRefund(receipt, true)), 'secondary'));
   }
+  let checking = false;
+  receiptTimer = setInterval(async () => {
+    if (busy || checking || document.hidden || !status.isConnected) return;
+    checking = true;
+    try {
+      const refundId = await findRefund(receipt);
+      if (!refundId || busy || !status.isConnected) return;
+      stopReceiptWatch();
+      status.textContent = 'Refunded';
+      status.dataset.result = 'paid';
+      const proof = txLink('View refund transaction', refundId);
+      status.after(proof);
+      staff.remove();
+      for (const control of panel.querySelectorAll('button')) {
+        if (control.textContent === 'Recover my deposit') control.remove();
+      }
+    } catch {
+      // Keep the last verified status when the network is temporarily unavailable.
+    } finally {
+      checking = false;
+    }
+  }, 12000);
 }
 
 async function sendRefund(receipt, recover) {
@@ -270,6 +317,7 @@ async function sendRefund(receipt, recover) {
 }
 
 function setTab(next) {
+  stopReceiptWatch();
   tab = next;
   document.querySelectorAll('[data-tab]').forEach(node =>
     node.setAttribute('aria-current', String(node.dataset.tab === tab)));
@@ -287,7 +335,8 @@ function openFromLocation() {
     setTab('deposit');
     return run(() => showEvent(parseEvent(parseLink(location.href, 'event'))));
   }
-  setTab(new URLSearchParams(location.search).get('tab') === 'setup' ? 'setup' : 'deposit');
+  const requested = new URLSearchParams(location.search).get('tab');
+  setTab(requested === 'setup' || requested === 'return' ? requested : 'deposit');
 }
 
 document.querySelectorAll('[data-tab]').forEach(node => node.addEventListener('click', () => {
