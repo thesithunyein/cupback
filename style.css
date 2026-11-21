@@ -99,7 +99,7 @@
 }
 
 .app-title{font-size:clamp(1.55rem,3.4vw,2.4rem);margin:1.6rem 0 .85rem;letter-spacing:-.04em}
-.setup-layout{grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:1.5rem}
+.setup-layout{grid-template-columns:minmax(0,1fr);gap:1rem}
 .event-form fieldset{min-inline-size:0;padding:0;margin:0 0 1.15rem;border:0}
 .event-form fieldset+fieldset{padding-top:.8rem;border-top:1px solid var(--line)}
 .event-form legend{padding:0;font-weight:750;margin-bottom:.5rem}
