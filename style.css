@@ -193,3 +193,6 @@ details[open] > summary::after{transform:translateY(.12rem) rotate(225deg)}
   .workspace nav button{justify-content:flex-start;text-align:left}
   .scanner button,.receipt-controls button,.wallet-pairing .actions>*{width:100%}
 }
+
+.solo-card{border:1px solid #b9d3b8;background:linear-gradient(135deg,#eef6e7,#f8fbf5);border-radius:1rem;padding:1.1rem 1.2rem;margin:0 0 1.4rem}
+.solo-card h2{margin:.1rem 0 .35rem}.solo-card .hint{margin:.2rem 0 .5rem}.solo-card .field-help{color:var(--muted);font-size:.875rem;margin:0 0 .8rem}

@@ -2,7 +2,7 @@
 
 CupBack links a reusable-cup deposit to a BCH wallet. Any authorized return booth can approve the full refund from that original deposit. Its wallet pays the transaction fee. A refund can consume the deposit only once.
 
-[Open CupBack on Chipnet](https://cupback.vercel.app/app.html)
+[Open CupBack on Bitcoin Cash mainnet](https://cupback.vercel.app/app.html) · [Try the 1-minute solo demo](https://cupback.vercel.app/app.html#solo)
 
 ## Run locally
 
@@ -12,7 +12,7 @@ Use Node 22.12+ and run npm ci, then npm run dev. Run npm test for the local BCH
 
 Import the GitHub repo as a Vercel project. Use the repository root and Node.js 22.x or 24.x. The checked-in vercel.json sets the Vite preset, npm ci, npm run build, and the dist output folder. Keep clean URLs off so /app.html and existing link URLs resolve.
 
-No project environment variables are required for Chipnet. Open / for the landing page and /app.html for the app. On a new domain, create pickup and receipt links from that domain. Existing links should be opened on the domain that issued them.
+No project environment variables are required for Chipnet. Production sets `VITE_BCH_NETWORK=mainnet`; set `VITE_PROOF_DEPOSIT_TX` and `VITE_PROOF_REFUND_TX` to mainnet transaction IDs to show the evidence section on the landing page. Open / for the landing page and /app.html for the app. On a new domain, create pickup and receipt links from that domain. Existing links should be opened on the domain that issued them.
 
 The BLAZE presentation is served at /deck.pdf. Set `VITE_BLAZE_EMBER_ADDRESS` to the team's token-aware Bitcoin Cash mainnet receiving address to enable the submission banner. `VITE_BLAZE_PRESENTATION_URL` can override the bundled PDF with another HTTPS presentation URL.
 
@@ -45,3 +45,9 @@ The refund spent output 0 of the original deposit and returned all 2,000 satoshi
 - Event and receipt history is local to each browser. Staff can hand off a receipt using its link or QR code.
 
 The application has a separate mainnet build configuration. Before enabling it, verify timed recovery with a funded wallet, review the money-handling and event policy, and get an independent covenant review. Mainnet validation and a live event pilot are pending. No private keys are needed by CupBack.
+
+## Solo demo
+
+One wallet can try the whole flow. "Start the demo" creates a 0.00001 BCH event where the connected wallet is the guest and the return booth. The deposit transaction also sends 2,000 satoshis back to the wallet's first receive address so the same wallet can pay the refund fee. The wallet needs one balance entry of at least 0.000039 BCH.
+
+Recovery uses a timestamp locktime, which the network compares with the median time of the last 11 blocks (about an hour behind the wall clock). The app checks that median before building a recovery transaction.

@@ -3,7 +3,10 @@ import QRCode from 'qrcode';
 import bchLogo from './bch.svg';
 import cashonizeLogo from './cashonize.png';
 import { depositSatoshis } from './amounts.js';
-import { addressScript, network, startWallet, stopWallet, walletAddress, pay, lookup, findRefund, refund } from './chain.js';
+import {
+  addressScript, network, startWallet, stopWallet, walletAddress, pay, lookup, findRefund, refund,
+  isApprover, soloReserve,
+} from './chain.js';
 
 const panel = document.querySelector('#panel');
 const notice = document.querySelector('#notice');
@@ -368,6 +371,35 @@ function showSetup() {
   }
 }
 
+const soloDeposit = '1000';
+
+function showSoloCard() {
+  const card = element('section', '', 'solo-card');
+  card.id = 'solo';
+  const needed = BigInt(soloDeposit) + soloReserve + 900n;
+  card.append(element('p', 'First time here? Start with this', 'preview-label'),
+    element('h2', 'Try the full loop in one minute'),
+    element('p', 'Your wallet plays the guest and the return booth. Pay a '
+      + formatAmount(soloDeposit) + ' deposit, then approve its refund yourself. The deposit comes back in full; '
+      + 'you only spend two small network fees.', 'hint'),
+    element('p', 'Needs a ' + (network === 'mainnet' ? 'Bitcoin Cash' : 'Chipnet')
+      + ' WizardConnect wallet (like Cashonize) with at least ' + formatAmount(needed.toString())
+      + ' in one balance entry.', 'field-help'));
+  const actions = element('div', '', 'actions');
+  card.append(actions);
+  walletAction('Start the demo', async () => {
+    const address = walletAddress();
+    const event = parseEvent({
+      name: 'CupBack demo', amount: soloDeposit, booth: address, organizer: address, network,
+      recovery: Math.floor(Date.now() / 1000) + 3600,
+    });
+    history.replaceState(null, '', makeLink('event', event));
+    showEvent(event);
+    notice.textContent = 'Step 1 of 2: pay the deposit.';
+  }, actions);
+  panel.append(card);
+}
+
 function showEntry(key) {
   const isEvent = key === 'event';
   const isStaff = tab === 'staff';
@@ -402,6 +434,7 @@ function showEntry(key) {
     e.preventDefault();
     open(input.value);
   });
+  if (isEvent) showSoloCard();
   if (isStaff || isEvent) addScanner(open, isStaff ? 'Scan receipt' : 'Scan pickup code');
   panel.append(form);
   if (!isEvent && !isStaff) {
@@ -583,6 +616,11 @@ async function showReceipt(receipt, submittedId) {
           staffUrl.searchParams.set('tab', 'staff');
           staff.href = staffUrl;
           controls.append(staff);
+          if (connected && isApprover(receipt.event, walletAddress())) {
+            controls.append(element('p', 'Your wallet is this event’s return booth, so you can approve the refund here.', 'hint'));
+            walletAction('Approve refund as the booth', () => sendRefund(receipt, false), controls);
+            notice.textContent = 'Step 2 of 2: approve the refund.';
+          }
           if (Date.now() >= receipt.event.recovery * 1000) {
             walletAction('Recover my deposit', () => sendRefund(receipt, true), controls);
           }
@@ -654,6 +692,7 @@ function openFromLocation() {
   }
   const requested = new URLSearchParams(location.search).get('tab');
   setTab(['setup', 'return', 'staff'].includes(requested) ? requested : 'deposit');
+  if (location.hash === '#solo') document.querySelector('#solo')?.scrollIntoView({ block: 'start' });
 }
 
 document.querySelectorAll('[data-tab]').forEach(node => node.addEventListener('click', () => {

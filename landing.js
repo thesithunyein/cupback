@@ -9,6 +9,16 @@ if (import.meta.env.VITE_BCH_NETWORK === 'mainnet') {
   for (const label of document.querySelectorAll('[data-mainnet-text]')) {
     label.textContent = label.dataset.mainnetText;
   }
+  // Show mainnet evidence only when real transaction IDs are configured.
+  const proofs = {
+    deposit: import.meta.env.VITE_PROOF_DEPOSIT_TX?.trim(),
+    refund: import.meta.env.VITE_PROOF_REFUND_TX?.trim(),
+  };
+  const valid = Object.values(proofs).every(id => /^[0-9a-f]{64}$/.test(id ?? ''));
+  for (const link of document.querySelectorAll('[data-proof]')) {
+    link.href = 'https://explorer.bitcoinunlimited.info/tx/' + proofs[link.dataset.proof];
+  }
+  if (!valid) document.querySelector('.network-proof')?.setAttribute('hidden', '');
 }
 
 const presentation = import.meta.env.VITE_BLAZE_PRESENTATION_URL || new URL('./cupback-presentation.pdf', location.href).href;

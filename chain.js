@@ -130,14 +130,26 @@ export async function broadcastSigned(node, signedTransaction, txid) {
   }
 }
 
+// When the guest wallet is also an approver (solo demo), set aside a coin on the
+// approver address so the same wallet can pay the refund fee right away.
+export const soloReserve = 2000n;
+
+export function isApprover(event, address) {
+  return address === event.booth || address === event.organizer;
+}
+
 export async function pay(event, persist) {
   const buyer = walletAddress();
   const receipt = { event, buyer, nonce: binToHex(crypto.getRandomValues(new Uint8Array(16))) };
   const contract = depositContract(receipt);
-  const coin = await funding(BigInt(event.amount));
+  const amount = BigInt(event.amount);
+  const reserve = isApprover(event, buyer) ? soloReserve : 0n;
+  const coin = await funding(amount + reserve);
+  const outputs = [output(hexToBin(contract.lockingBytecode), amount)];
+  if (reserve) outputs.push(output(addressScript(buyer), reserve));
   const transaction = {
     version: 2, locktime: 0, inputs: [input(coin)],
-    outputs: withChange([output(hexToBin(contract.lockingBytecode), BigInt(event.amount))], coin, BigInt(event.amount)),
+    outputs: withChange(outputs, coin, amount + reserve),
   };
   await signAndSend(transaction, [output(addressScript(coin.address), coin.satoshis)], coin, 0,
     'Pay your cup deposit', txid => {
@@ -175,8 +187,27 @@ export async function findRefund(receipt) {
   return null;
 }
 
+// Timestamp locktimes are checked against the median time of the last 11 blocks,
+// which runs roughly an hour behind the wall clock.
+export async function medianTimePast() {
+  const height = await provider.getBlockHeight();
+  const result = await provider.performRequest('blockchain.block.headers', height - 10, 11);
+  const bytes = hexToBin(result?.hex ?? '');
+  if (bytes.length < 80 * 11) throw Error('Could not read the network time. Try again.');
+  const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  const times = Array.from({ length: 11 }, (_, i) => view.getUint32(i * 80 + 68, true)).sort((a, b) => a - b);
+  return times[5];
+}
+
 export async function refund(receipt, recover, persist) {
   const { event, buyer } = receipt;
+  if (recover) {
+    const networkTime = await medianTimePast();
+    if (networkTime <= event.recovery) {
+      const minutes = Math.max(1, Math.ceil((event.recovery - networkTime) / 60));
+      throw Error('The network clock has not reached the recovery time yet. Try again in about ' + minutes + ' minutes.');
+    }
+  }
   const deposit = await lookup(receipt);
   if (!deposit) throw Error('This deposit has already been spent. Refresh the receipt.');
   const contract = depositContract(receipt);
