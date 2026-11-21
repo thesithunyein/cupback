@@ -23,5 +23,9 @@
     "qrcode": "^1.5.4",
     "vite": "^8.3.8"
   },
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "@emnapi/core": "2.0.0-beta.2",
+    "@emnapi/runtime": "2.0.0-beta.2"
+  }
 }
