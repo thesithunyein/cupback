@@ -199,20 +199,25 @@ async function showPickupCode(event, saved = true) {
 }
 
 function showSetup() {
-  panel.innerHTML = '<h2>Set up your event</h2><p class="hint">Choose who can approve returns.</p>' +
-    '<form><label>Event name<input name="name" required maxlength="60" placeholder="Saturday market"></label>' +
-    '<div class="grid"><label>Deposit (BCH)<input name="amount" required inputmode="decimal" autocomplete="off" placeholder="0.001"></label>' +
-    '<label>Self-refunds open<input name="recovery" type="datetime-local" required></label></div>' +
-    '<label>Return booth wallet address<input name="booth" required spellcheck="false"></label>' +
-    '<label>Organizer wallet address<input name="organizer" required spellcheck="false"></label>' +
-    '<p class="hint">Use the first receive address for each wallet. After this time, guests can get back a deposit that has not been refunded, even if they still have the cup.</p>' +
-    '<button>Create event link</button></form>';
+  panel.innerHTML = '<h2>Set up an event</h2><p class="hint">Set a deposit and make a pickup QR code.</p>' +
+    '<form class="event-form">' +
+    '<fieldset><legend>Event details</legend>' +
+    '<label>Event name<input name="name" required maxlength="60" placeholder="Saturday market"></label>' +
+    '<div class="setup-fields">' +
+    '<label>Deposit (BCH)<input name="amount" required inputmode="decimal" autocomplete="off" placeholder="0.001"></label>' +
+    '<label>Self-refunds start<input name="recovery" type="datetime-local" required aria-describedby="refund-time-help"></label></div>' +
+    '<p class="field-help" id="refund-time-help">After this time, guests can claim deposits that are still held, even if they kept the cup.</p></fieldset>' +
+    '<fieldset><legend>Who can approve refunds?</legend>' +
+    '<p class="field-help">Use the first receive address for each wallet.</p>' +
+    '<label>Return booth wallet<input name="booth" required spellcheck="false" autocapitalize="none" autocomplete="off"></label>' +
+    '<label>Organizer wallet<input name="organizer" required spellcheck="false" autocapitalize="none" autocomplete="off"></label></fieldset>' +
+    '<button>Create pickup code</button></form>';
   const form = panel.querySelector('form');
   const preview = element('aside', '', 'event-preview');
   preview.setAttribute('aria-label', 'Customer pickup preview');
-  const previewTitle = element('p', 'Customer view', 'preview-label');
-  const previewEvent = element('h3', 'Event name');
-  const previewAmount = element('p', 'Set the deposit', 'receipt-amount');
+  const previewTitle = element('p', 'Guest preview', 'preview-label');
+  const previewEvent = element('h3', 'Your event');
+  const previewAmount = element('p', 'Deposit amount', 'receipt-amount');
   preview.append(previewTitle, previewEvent, previewAmount,
     element('p', 'Pay at pickup. Get your deposit back when you return the cup.', 'hint'));
   const layout = element('div', '', 'setup-layout');
@@ -222,11 +227,28 @@ function showSetup() {
     previewEvent.textContent = form.elements.name.value.trim() || 'Your event';
     const amount = form.elements.amount.value;
     try { previewAmount.textContent = formatAmount(depositSatoshis(amount)); }
-    catch { previewAmount.textContent = 'Set the deposit'; }
+    catch { previewAmount.textContent = 'Deposit amount'; }
   });
   form.addEventListener('submit', e => {
     e.preventDefault();
     const values = Object.fromEntries(new FormData(e.currentTarget));
+    for (const [name, validate] of [
+      ['amount', depositSatoshis],
+      ['booth', addressScript],
+      ['organizer', addressScript],
+      ['recovery', value => {
+        if (!(new Date(value).valueOf() > Date.now())) throw Error('Choose a future time.');
+      }],
+    ]) {
+      const field = form.elements[name];
+      try { validate(values[name].trim()); }
+      catch (error) {
+        field.setCustomValidity(error.message);
+        field.reportValidity();
+        field.addEventListener('input', () => field.setCustomValidity(''), { once: true });
+        return;
+      }
+    }
     run(async () => {
       const event = parseEvent({ ...values, amount: depositSatoshis(values.amount), name: values.name.trim(), booth: values.booth.trim(),
         organizer: values.organizer.trim(), network, recovery: Math.floor(new Date(values.recovery).valueOf() / 1000) });
