@@ -22,6 +22,11 @@
   <a href="https://cupback.vercel.app/cupback-presentation.pdf">Presentation</a>
 </p>
 
+
+<p align="center">
+  <a href="https://cupback.vercel.app"><img src="docs/cupback-home.png" alt="CupBack home page: Borrow a cup. Get your deposit back." width="900"></a>
+</p>
+
 ---
 
 Guests pay a small BCH deposit when they take a reusable cup. When they bring it back, any authorized booth approves the refund and the full deposit goes back to the guest's wallet. A small contract holds each deposit, so it can only ever go back to the guest.
