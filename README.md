@@ -16,7 +16,7 @@ No project environment variables are required for Chipnet. Open / for the landin
 ## Chipnet checkout
 
 1. Prepare separate WizardConnect wallets for the buyer, return booth, and organizer. Fund the buyer and the return booth with Chipnet BCH. The current wallet integration spends a single BCH coin per transaction. Deposit funding searches the first eight receive and change paths. Refund funding uses the wallet's first receive address.
-2. Set up an event with the booth and organizer's first receive addresses, a deposit of at least 1,000 satoshis, and a future recovery time.
+2. Set up an event with the booth and organizer's first receive addresses, a deposit of at least 0.00001 BCH, and a future time for self-refunds. The event stays in this browser. Save the pickup link to open it elsewhere.
 3. Open the pickup QR from the buyer device. Pair the buyer wallet, approve the deposit, and save the receipt URL.
 4. Open the receipt from the booth device. Check the cup, pair the booth wallet, approve the refund, then refresh the receipt to verify both transactions.
 5. Scan the receipt again. The chain should report the original refund. Confirm that the buyer received the entire principal and the booth spent only the network fee.

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node compile.mjs && node contract.test.mjs",
+    "test": "node compile.mjs && node contract.test.mjs && node amounts.test.mjs",
     "dev": "vite",
     "predev": "node compile.mjs",
     "build": "node compile.mjs && vite build"

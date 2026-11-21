@@ -1,5 +1,6 @@
 import './style.css';
 import QRCode from 'qrcode';
+import { depositSatoshis } from './amounts.js';
 import { addressScript, network, startWallet, stopWallet, walletAddress, pay, lookup, findRefund, refund } from './chain.js';
 
 const panel = document.querySelector('#panel');
@@ -8,6 +9,7 @@ const networkBadge = document.querySelector('#network');
 networkBadge.textContent = network === 'mainnet' ? 'Bitcoin Cash' : 'Chipnet';
 
 const storageKey = 'cupback:receipts:' + network;
+const eventStorageKey = 'cupback:events:' + network;
 const idPattern = /^[0-9a-f]{64}$/;
 const explorer = network === 'mainnet'
   ? 'https://explorer.bitcoinunlimited.info/tx/' : 'https://chipnet.chaingraph.cash/tx/';
@@ -165,14 +167,45 @@ function walletAction(text, action, container = panel) {
   container.append(actionButton);
 }
 
+function readEvents() {
+  try {
+    const value = JSON.parse(localStorage.getItem(eventStorageKey) || '[]');
+    return Array.isArray(value) ? value : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveEvent(event) {
+  const events = readEvents().filter(previous => makeLink('event', previous) !== makeLink('event', event));
+  try {
+    localStorage.setItem(eventStorageKey, JSON.stringify([event, ...events].slice(0, 15)));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function showPickupCode(event, saved = true) {
+  const open = event.recovery * 1000 > Date.now();
+  panel.replaceChildren(element('p', 'Pickup code', 'preview-label'),
+    element('h2', event.name), element('p', formatAmount(event.amount), 'receipt-amount'),
+    element('p', open ? 'Show this code where guests pick up cups.' : 'This event is closed.', 'hint'));
+  if (!saved) panel.append(element('p', 'Save this link. This browser could not keep the event.', 'hint'));
+  await share('event', event);
+  const checkout = element('a', 'Open guest view', 'button secondary');
+  checkout.href = makeLink('event', event);
+  panel.append(checkout, button('Back to events', showSetup, 'secondary'));
+}
+
 function showSetup() {
   panel.innerHTML = '<h2>Set up your event</h2><p class="hint">Choose who can approve returns.</p>' +
     '<form><label>Event name<input name="name" required maxlength="60" placeholder="Saturday market"></label>' +
-    '<div class="grid"><label>Deposit (sats)<input name="amount" required type="number" min="1000" max="999999999" step="1" placeholder="10000"></label>' +
-    '<label>Recovery opens<input name="recovery" type="datetime-local" required></label></div>' +
+    '<div class="grid"><label>Deposit (BCH)<input name="amount" required inputmode="decimal" autocomplete="off" placeholder="0.001"></label>' +
+    '<label>Self-refunds open<input name="recovery" type="datetime-local" required></label></div>' +
     '<label>Return booth wallet address<input name="booth" required spellcheck="false"></label>' +
     '<label>Organizer wallet address<input name="organizer" required spellcheck="false"></label>' +
-    '<p class="hint">Use the first receive address for each wallet. After this time, guests can get back any deposit still on the receipt.</p>' +
+    '<p class="hint">Use the first receive address for each wallet. After this time, guests can claim any unused deposit with their wallet.</p>' +
     '<button>Create event link</button></form>';
   const form = panel.querySelector('form');
   const preview = element('aside', '', 'event-preview');
@@ -188,19 +221,35 @@ function showSetup() {
   form.addEventListener('input', () => {
     previewEvent.textContent = form.elements.name.value.trim() || 'Your event';
     const amount = form.elements.amount.value;
-    previewAmount.textContent = /^[0-9]{4,9}$/.test(amount) ? formatAmount(amount) : 'Set the deposit';
+    try { previewAmount.textContent = formatAmount(depositSatoshis(amount)); }
+    catch { previewAmount.textContent = 'Set the deposit'; }
   });
   form.addEventListener('submit', e => {
     e.preventDefault();
     const values = Object.fromEntries(new FormData(e.currentTarget));
     run(async () => {
-      const event = parseEvent({ ...values, name: values.name.trim(), booth: values.booth.trim(),
+      const event = parseEvent({ ...values, amount: depositSatoshis(values.amount), name: values.name.trim(), booth: values.booth.trim(),
         organizer: values.organizer.trim(), network, recovery: Math.floor(new Date(values.recovery).valueOf() / 1000) });
       if (event.recovery * 1000 <= Date.now()) throw Error('Choose a future recovery time.');
-      panel.replaceChildren(element('h2', event.name), element('p', 'Show this QR code at pickup.'));
-      await share('event', event);
+      await showPickupCode(event, saveEvent(event));
     });
   });
+
+  const events = readEvents();
+  if (events.length) {
+    const list = element('section', '', 'recent-receipts');
+    list.append(element('h3', 'Saved events'), element('p', 'Saved in this browser.', 'hint'));
+    for (const saved of events) {
+      try {
+        const event = parseEvent(saved);
+        const status = event.recovery * 1000 > Date.now() ? 'Open' : 'Closed';
+        list.append(button(event.name + ' ? ' + status, () => showPickupCode(event), 'secondary'));
+      } catch {
+        // Ignore event records that cannot be opened on this network.
+      }
+    }
+    panel.append(list);
+  }
 }
 
 function showEntry(key) {
