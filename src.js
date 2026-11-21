@@ -436,6 +436,7 @@ function showEntry(key) {
   if (isEvent) showSoloCard();
   if (!isEvent && !isStaff) {
     const recent = Object.values(loadSaved()).reverse().slice(0, 10);
+    if (!recent.length) panel.querySelector('.hint').textContent = 'No receipts on this device yet.';
     if (recent.length) {
       const list = element('section', '', 'recent-receipts');
       list.append(element('h3', 'Recent'));
