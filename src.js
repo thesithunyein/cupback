@@ -132,7 +132,7 @@ function connect(action) {
   if (connected) return action();
   const pairing = element('section');
   pairing.append(element('h2', 'Connect your wallet'),
-    element('p', 'Open Cashonize or another WizardConnect wallet. Scan this code.', 'hint'));
+    element('p', 'Scan this code from your wallet. On the same device, copy the link and paste it into Cashonize’s Connect tab.', 'hint'));
   const code = element('img', '', 'qr');
   const link = element('a', 'Open wallet');
   code.alt = 'WizardConnect pairing QR code';
@@ -148,7 +148,13 @@ function connect(action) {
   });
   if (!uri) return action();
   link.href = uri;
-  pairing.append(code, link);
+  const actions = element('div', '', 'actions');
+  const copy = button('Copy connection link', async () => {
+    await navigator.clipboard.writeText(uri);
+    notice.textContent = 'Link copied. Paste it in Cashonize’s Connect tab.';
+  }, 'secondary');
+  actions.append(copy, link);
+  pairing.append(code, actions);
   panel.querySelector('[data-pairing]')?.remove();
   pairing.dataset.pairing = '';
   panel.append(pairing);
