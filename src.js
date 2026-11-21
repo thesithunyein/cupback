@@ -165,7 +165,7 @@ function connect() {
     return choice;
   };
   picker.append(title,
-    option('Cashonize', 'Connect on this device or scan a code', false),
+    option('Cashonize', 'Open Cashonize with your connection ready', false),
     option('Other WizardConnect wallet', 'Scan a connection QR code', true),
     cancel);
   picker.addEventListener('close', () => picker.remove(), { once: true });
@@ -185,15 +185,19 @@ function pairWallet(otherWallet) {
   heading.append(otherWallet ? 'Connect a WizardConnect wallet' : 'Connect with Cashonize');
   pairing.append(heading,
     element('p', otherWallet ? 'Scan the QR code from your wallet to connect to CupBack.'
-      : 'Copy the link. In Cashonize, open Connect, paste it into Connection URI, and select Connect New dApp.', 'hint'));
+      : 'Open Cashonize, check that the wallet you want is active, then return here once it connects.', 'hint'));
   const code = element('img', '', 'qr');
-  const link = element('a', 'Open Cashonize', 'button secondary');
-  link.href = 'https://cashonize.com/';
+  const link = element('a', 'Open Cashonize', 'button');
   link.target = '_blank';
   link.rel = 'noopener noreferrer';
   code.alt = 'WizardConnect pairing QR code';
   const uri = startWallet(() => {
     connected = true;
+    const address = walletAddress();
+    walletIdentity.textContent = 'Connected · ' + address.slice(address.indexOf(':') + 1, address.indexOf(':') + 8) + '…' + address.slice(-5);
+    walletIdentity.title = address;
+    walletIdentity.setAttribute('aria-label', 'Connected wallet ' + address);
+    walletIdentity.hidden = false;
     walletControl.hidden = false;
     const destination = panel.querySelector('[data-destination]');
     if (destination) destination.textContent = 'Refund wallet: ' + walletAddress();
@@ -204,6 +208,9 @@ function pairWallet(otherWallet) {
     if (payment) { payment.hidden = false; payment.disabled = false; }
   });
   if (!uri) return;
+  const handoff = new URL('https://cashonize.com/');
+  handoff.searchParams.set('uri', uri);
+  link.href = handoff.href;
   const actions = element('div', '', 'actions');
   const copy = button('Copy connection link', async () => {
     try {
@@ -214,7 +221,7 @@ function pairWallet(otherWallet) {
       manual.hidden = false;
       requestAnimationFrame(() => uriInput.focus());
     }
-  });
+  }, 'secondary');
   const manual = element('label', 'Connection URI');
   manual.hidden = true;
   const uriInput = element('input');
@@ -222,12 +229,16 @@ function pairWallet(otherWallet) {
   uriInput.value = uri;
   uriInput.addEventListener('focus', () => uriInput.select());
   manual.append(uriInput);
-  actions.append(copy, link);
+  actions.append(copy);
+  const manualPairing = element('details');
+  manualPairing.append(element('summary', 'Connect manually'),
+    element('p', 'Copy the link. In Cashonize, open Connect, paste it into Connection URI, and select Connect New dApp.', 'hint'),
+    actions, manual);
   const otherDevice = element('details');
   otherDevice.append(element('summary', 'Connect from another device'),
     element('p', 'Scan this code from a WizardConnect wallet.', 'hint'), code);
   if (otherWallet) pairing.append(code);
-  else pairing.append(actions, manual, otherDevice);
+  else pairing.append(link, manualPairing, otherDevice);
   panel.querySelector('[data-pairing]')?.remove();
   pairing.dataset.pairing = '';
   panel.append(pairing);
@@ -657,6 +668,7 @@ const walletControl = button('Disconnect wallet', async () => {
   try { await stopWallet(); }
   finally {
     connected = false;
+    walletIdentity.hidden = true;
     walletControl.hidden = true;
     const destination = panel.querySelector('[data-destination]');
     if (destination) destination.textContent = '';
@@ -671,7 +683,9 @@ const walletControl = button('Disconnect wallet', async () => {
   }
 }, 'secondary');
 walletControl.hidden = true;
-networkBadge.after(walletControl);
+const walletIdentity = element('span', '', 'wallet-identity');
+walletIdentity.hidden = true;
+networkBadge.after(walletIdentity, walletControl);
 window.addEventListener('hashchange', openFromLocation);
 window.addEventListener('pagehide', () => stopCamera?.());
 openFromLocation();
