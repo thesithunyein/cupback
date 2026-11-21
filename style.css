@@ -62,3 +62,6 @@
 .receipt-section h2{margin:0 0 .4rem}.receipt-section p{margin:0;max-width:34rem}
 @media(max-width:670px){.venue-section{grid-template-columns:1fr}.receipt-section{grid-template-columns:auto 1fr;align-items:start}.receipt-section .button{grid-column:2;justify-self:start}}
 @media(max-width:460px){.landing-links{flex-wrap:wrap}}
+
+.hero-visual{overflow:hidden;background:radial-gradient(ellipse at 45% 35%,#f8fbf1,#e7f0dc)}
+.hero-visual img{display:block;width:100%;height:auto;max-width:35rem}

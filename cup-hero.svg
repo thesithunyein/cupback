@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 390" fill="none">
+  <defs>
+    <radialGradient id="halo" cx=".42" cy=".34" r=".72">
+      <stop stop-color="#F7FDE9"/>
+      <stop offset="1" stop-color="#DAEABB"/>
+    </radialGradient>
+    <linearGradient id="paper" x1="174" y1="154" x2="310" y2="179" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFF9"/>
+      <stop offset=".58" stop-color="#F7F8EA"/>
+      <stop offset="1" stop-color="#D2DFC6"/>
+    </linearGradient>
+    <linearGradient id="sleeve" x1="163" y1="190" x2="319" y2="206" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#DCF29F"/>
+      <stop offset=".54" stop-color="#C0E179"/>
+      <stop offset="1" stop-color="#87AF53"/>
+    </linearGradient>
+    <linearGradient id="lid" x1="148" y1="89" x2="321" y2="127" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3C7353"/>
+      <stop offset="1" stop-color="#173F30"/>
+    </linearGradient>
+    <filter id="shadow" x="105" y="276" width="270" height="85" filterUnits="userSpaceOnUse">
+      <feGaussianBlur stdDeviation="9"/>
+    </filter>
+  </defs>
+  <circle cx="240" cy="195" r="154" fill="url(#halo)"/>
+  <circle cx="240" cy="195" r="170" stroke="#A8C292" stroke-opacity=".38"/>
+  <path d="M95 201a145 145 0 0 1 57-114m233 102a145 145 0 0 1-54 110" stroke="#8AA878" stroke-opacity=".58" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="m142 86 10 1-2 10m191 202-10-1 2-10" stroke="#8AA878" stroke-opacity=".7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <ellipse cx="240" cy="318" rx="102" ry="15" fill="#315737" fill-opacity=".22" filter="url(#shadow)"/>
+  <g transform="rotate(-12 240 196)">
+    <path d="M165 117h150l-20 171a13 13 0 0 1-13 11h-84a13 13 0 0 1-13-11z" fill="url(#paper)" stroke="#285439" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M181 133h117" stroke="#9BAC97" stroke-opacity=".55" stroke-width="2" stroke-linecap="round"/>
+    <path d="m170 166 140 0-9 82H179z" fill="url(#sleeve)" stroke="#305F40" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M173 175h134m-127 65h120" stroke="#F2FFCE" stroke-opacity=".52" stroke-width="1.4"/>
+    <circle cx="240" cy="207" r="24" fill="#255039"/>
+    <path d="M230 208a10 10 0 1 1 9 9m-9-15v6h6" stroke="#E8FFB9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M160 101l7-12a7 7 0 0 1 6-4h134a7 7 0 0 1 6 4l7 12" fill="url(#lid)" stroke="#204733" stroke-width="2"/>
+    <rect x="150" y="99" width="180" height="24" rx="7" fill="url(#lid)" stroke="#204733" stroke-width="2"/>
+    <path d="M160 106h159" stroke="#8BBC98" stroke-opacity=".45" stroke-width="2" stroke-linecap="round"/>
+  </g>
+</svg>
