@@ -130,7 +130,7 @@ function connect(action) {
   if (connected) return action();
   const pairing = element('section');
   pairing.append(element('h2', 'Connect your wallet'),
-    element('p', 'Scan this code from a WizardConnect wallet, such as Cashonize.', 'hint'));
+    element('p', 'Open Cashonize or another WizardConnect wallet. Scan this code.', 'hint'));
   const code = element('img', '', 'qr');
   const link = element('a', 'Open wallet');
   code.alt = 'WizardConnect pairing QR code';
@@ -172,16 +172,16 @@ function showSetup() {
     '<label>Recovery opens<input name="recovery" type="datetime-local" required></label></div>' +
     '<label>Return booth wallet address<input name="booth" required spellcheck="false"></label>' +
     '<label>Organizer wallet address<input name="organizer" required spellcheck="false"></label>' +
-    '<p class="hint">Use each wallet’s first receive address. After this time, customers can recover unused deposits.</p>' +
+    '<p class="hint">Use the first receive address for each wallet. After this time, guests can get back any deposit still on the receipt.</p>' +
     '<button>Create event link</button></form>';
   const form = panel.querySelector('form');
   const preview = element('aside', '', 'event-preview');
   preview.setAttribute('aria-label', 'Customer pickup preview');
   const previewTitle = element('p', 'Customer view', 'preview-label');
-  const previewEvent = element('h3', 'Your event');
+  const previewEvent = element('h3', 'Event name');
   const previewAmount = element('p', 'Set the deposit', 'receipt-amount');
   preview.append(previewTitle, previewEvent, previewAmount,
-    element('p', 'Pay at pickup. Return your cup to get your deposit back.', 'hint'));
+    element('p', 'Pay at pickup. Get your deposit back when you return the cup.', 'hint'));
   const layout = element('div', '', 'setup-layout');
   form.before(layout);
   layout.append(form, preview);
@@ -206,8 +206,8 @@ function showSetup() {
 function showEntry(key) {
   const isEvent = key === 'event';
   panel.innerHTML = isEvent
-    ? '<h2>Pay a cup deposit</h2><p class="hint">Scan the pickup QR or paste the event link.</p>'
-    : '<h2>Find a receipt</h2><p class="hint">Scan your receipt QR or paste the link.</p>';
+    ? '<h2>Pay a cup deposit</h2><p class="hint">Scan the pickup code. Or paste the event link.</p>'
+    : '<h2>Find a receipt</h2><p class="hint">Scan your receipt code. Or paste the link.</p>';
   const form = element('form');
   const label = element('label', isEvent ? 'Event link' : 'Receipt link');
   const input = element('input');
@@ -253,7 +253,7 @@ function showEvent(event) {
   panel.replaceChildren(element('p', 'Cup deposit', 'preview-label'), element('h2', event.name), element('p', formatAmount(event.amount), 'receipt-amount'),
     element('p', 'Return the cup to get your deposit back.'),
     element('p', 'You can recover your deposit after ' + new Date(event.recovery * 1000).toLocaleString()
-      + '. Use a link supplied by event staff.', 'hint'));
+      + '. Use the link from event staff.', 'hint'));
   if (event.recovery * 1000 <= Date.now()) {
     panel.append(element('p', 'This event has closed.'));
     return;
@@ -262,7 +262,7 @@ function showEvent(event) {
   buyer.dataset.destination = '';
   panel.append(buyer);
   walletAction('Pay deposit', async () => {
-    notice.textContent = 'Approve the deposit in your wallet.';
+    notice.textContent = 'Open your wallet to approve.';
     const receipt = await pay(event, pendingReceipt => {
       save(pendingReceipt);
       history.replaceState(null, '', makeLink('receipt', pendingReceipt));
@@ -283,11 +283,11 @@ async function showReceipt(receipt) {
   panel.append(statusBar);
   await share('receipt', receipt);
   const unspent = await lookup(receipt).catch(error => {
-    status.textContent = 'Deposit not verified. Try refreshing.';
+    status.textContent = 'Could not check your deposit. Tap Refresh.';
     throw error;
   });
   if (!unspent) {
-    status.textContent = 'Deposit already spent.';
+    status.textContent = 'This deposit has been used.';
     const refundId = await findRefund(receipt);
     if (refundId) {
       status.textContent = 'Refunded';
@@ -332,7 +332,7 @@ async function showReceipt(receipt) {
 }
 
 async function sendRefund(receipt, recover) {
-  notice.textContent = 'Approve the refund in your wallet.';
+  notice.textContent = 'Open your wallet to approve the refund.';
   await refund(receipt, recover, refundId => save({ ...receipt, refundId }));
   await showReceipt(receipt);
 }

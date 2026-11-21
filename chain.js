@@ -76,7 +76,7 @@ async function funding(amount, permitted) {
     (await provider.getUtxos(path.address)).map(utxo => ({ ...utxo, ...path }))
   ))).flat().filter(utxo => !utxo.token && utxo.satoshis >= amount + fee)
     .sort((a, b) => a.satoshis < b.satoshis ? -1 : a.satoshis > b.satoshis ? 1 : 0);
-  if (!utxos.length) throw Error('No single spendable coin covers this amount and the network fee.');
+  if (!utxos.length) throw Error('The wallet needs one BCH balance entry large enough for the amount and fee.');
   return utxos[0];
 }
 
@@ -98,7 +98,7 @@ async function signAndSend(transaction, sourceOutputs, coin, index, prompt, befo
   const signedBytes = hexToBin(response.signedTransaction);
   const signed = decodeTransaction(signedBytes);
   if (typeof signed === 'string' || !signed.inputs[index]?.unlockingBytecode.length) {
-    throw Error('The wallet did not return a signed transaction.');
+    throw Error('The wallet did not approve. Nothing was sent.');
   }
   const comparable = { ...signed, inputs: signed.inputs.map((item, position) =>
     position === index ? { ...item, unlockingBytecode: new Uint8Array() } : item
@@ -111,7 +111,7 @@ async function signAndSend(transaction, sourceOutputs, coin, index, prompt, befo
   try {
     await provider.sendRawTransaction(response.signedTransaction);
   } catch {
-    throw Error('The network did not confirm submission. Check Find receipt before trying again.');
+    throw Error('We could not check if it went through. Open Find receipt before trying again.');
   }
   return txid;
 }
