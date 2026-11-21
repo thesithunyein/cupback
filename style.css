@@ -221,3 +221,4 @@ details[open] > summary::after{transform:translateY(.12rem) rotate(225deg)}
 .receipt-controls{margin:.2rem 0 .4rem}.receipt-controls .hint{margin:.2rem 0 .7rem}
 .deposit-terms a{display:block;margin:.35rem 0}
 @media(max-width:640px){.workspace nav{grid-template-columns:repeat(4,minmax(0,1fr))}.workspace nav button{justify-content:center;text-align:center}}
+.app-foot{color:var(--muted);font-size:.8rem;text-align:center;margin:1.2rem 0 2rem}.app-foot a{color:var(--muted)}

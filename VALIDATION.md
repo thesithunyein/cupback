@@ -33,4 +33,4 @@ Ask who would buy the product and what budget it would come from. Compare the re
 - [Chipnet guest deposit](https://chipnet.chaingraph.cash/tx/e984eef0fcd103acbfd3f0d2d6cd9defe2a229c57aa96728c86f05d8393357f9)
 - [Chipnet booth refund](https://chipnet.chaingraph.cash/tx/870d237a4690c23311d7609d568ae153507e7e04550b5dd45face54be5de3138)
 
-A separate booth wallet approved the refund and the guest received all 2,000 satoshis. Mainnet, the current two-phone workflow, independent covenant review, and a venue pilot are pending.
+A separate booth wallet approved the refund and the guest received all 2,000 satoshis. The mainnet solo flow (one wallet as guest and booth) is verified; see the mainnet links above. Still pending: a mainnet two-wallet run, a mainnet self-refund, an independent covenant review, and a venue pilot. (Previously: mainnet, the current two-phone workflow, independent covenant review, and a venue pilot were pending.

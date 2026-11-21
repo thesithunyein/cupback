@@ -16,7 +16,8 @@ bchMark.src = bchLogo;
 bchMark.alt = '';
 bchMark.width = bchMark.height = 18;
 bchMark.addEventListener('error', () => bchMark.remove());
-networkBadge.append(bchMark, network === 'mainnet' ? 'Bitcoin Cash' : 'Chipnet');
+networkBadge.replaceChildren(bchMark, network === 'mainnet' ? 'Bitcoin Cash' : 'Chipnet');
+if (network !== 'mainnet') document.querySelector('.app-foot')?.replaceChildren('Chipnet test network · WizardConnect');
 
 const storageKey = 'cupback:receipts:' + network;
 const eventStorageKey = 'cupback:events:' + network;
