@@ -1,0 +1,117 @@
+{
+  "contractName": "CupDeposit",
+  "constructorInputs": [
+    {
+      "name": "refundScript",
+      "type": "bytes25"
+    },
+    {
+      "name": "returnScript",
+      "type": "bytes25"
+    },
+    {
+      "name": "organizerScript",
+      "type": "bytes25"
+    },
+    {
+      "name": "recoveryTime",
+      "type": "int"
+    },
+    {
+      "name": "receiptId",
+      "type": "bytes16"
+    }
+  ],
+  "abi": [
+    {
+      "name": "refund",
+      "inputs": [
+        {
+          "name": "id",
+          "type": "bytes16"
+        }
+      ]
+    },
+    {
+      "name": "recover",
+      "inputs": [
+        {
+          "name": "id",
+          "type": "bytes16"
+        }
+      ]
+    }
+  ],
+  "bytecode": "OP_5 OP_PICK OP_0 OP_NUMEQUAL OP_IF OP_6 OP_ROLL OP_SIZE OP_16 OP_EQUALVERIFY OP_5 OP_ROLL OP_EQUALVERIFY OP_INPUTINDEX OP_0 OP_NUMEQUALVERIFY OP_TXINPUTCOUNT OP_2 OP_NUMEQUALVERIFY OP_1 OP_UTXOBYTECODE OP_ROT OP_EQUAL OP_1 OP_UTXOBYTECODE OP_3 OP_ROLL OP_EQUAL OP_BOOLOR OP_VERIFY OP_0 OP_OUTPUTBYTECODE OP_EQUALVERIFY OP_0 OP_OUTPUTVALUE OP_0 OP_UTXOVALUE OP_NUMEQUAL OP_NIP OP_NIP OP_ELSE OP_5 OP_ROLL OP_1 OP_NUMEQUALVERIFY OP_5 OP_ROLL OP_SIZE OP_16 OP_EQUALVERIFY OP_5 OP_ROLL OP_EQUALVERIFY OP_3 OP_ROLL OP_CHECKLOCKTIMEVERIFY OP_DROP OP_INPUTINDEX OP_0 OP_NUMEQUALVERIFY OP_TXINPUTCOUNT OP_2 OP_NUMEQUALVERIFY OP_1 OP_UTXOBYTECODE OP_OVER OP_EQUALVERIFY OP_0 OP_OUTPUTBYTECODE OP_EQUALVERIFY OP_0 OP_OUTPUTVALUE OP_0 OP_UTXOVALUE OP_NUMEQUAL OP_NIP OP_NIP OP_ENDIF",
+  "source": "pragma cashscript ^0.14.0;\n\ncontract CupDeposit(bytes25 refundScript, bytes25 returnScript, bytes25 organizerScript, int recoveryTime, bytes16 receiptId) {\n    function refund(bytes16 id) {\n        require(id == receiptId);\n        require(this.activeInputIndex == 0);\n        require(tx.inputs.length == 2);\n        require(tx.inputs[1].lockingBytecode == returnScript || tx.inputs[1].lockingBytecode == organizerScript);\n        require(tx.outputs[0].lockingBytecode == refundScript);\n        require(tx.outputs[0].value == tx.inputs[0].value);\n    }\n\n    function recover(bytes16 id) {\n        require(id == receiptId);\n        require(tx.time >= recoveryTime);\n        require(this.activeInputIndex == 0);\n        require(tx.inputs.length == 2);\n        require(tx.inputs[1].lockingBytecode == refundScript);\n        require(tx.outputs[0].lockingBytecode == refundScript);\n        require(tx.outputs[0].value == tx.inputs[0].value);\n    }\n}\r\n",
+  "fingerprint": "3969dd0ba0519b41d2894b71303ecfedd8967edd4dd1778d6c8b12df3eef377f",
+  "debug": {
+    "bytecode": "5579009c63567a826088557a88c0009dc3529d51c77b8751c7537a879b6900cd8800cc00c69c777767557a519d557a826088557a88537ab175c0009dc3529d51c7788800cd8800cc00c69c777768",
+    "sourceMap": "4:4:11:5;;;;;:20:4:30;;;;;5:22:5:31;;:8::33:1;6:16:6:37:0;:41::42;:8::44:1;7:16:7:32:0;:36::37;:8::39:1;8:26:8:27:0;:16::44:1;:48::60:0;:16:::1;:74::75:0;:64::92:1;:96::111:0;;:64:::1;:16;:8::113;9:27:9:28:0;:16::45:1;:8::63;10:27:10:28:0;:16::35:1;:49::50:0;:39::57:1;:8::59;4:32:11:5;;:4;13::21::0;;;;:21:13:31;;;;;14:22:14;;:8::33:1;15:27:15:39:0;;:8::41:1;;16:16:16:37:0;:41::42;:8::44:1;17:16:17:32:0;:36::37;:8::39:1;18:26:18:27:0;:16::44:1;:48::60:0;:8::62:1;19:27:19:28:0;:16::45:1;:8::63;20:27:20:28:0;:16::35:1;:49::50:0;:39::57:1;:8::59;13:33:21:5;;3:0:22:1",
+    "logs": [],
+    "requires": [
+      {
+        "ip": 17,
+        "line": 5
+      },
+      {
+        "ip": 20,
+        "line": 6
+      },
+      {
+        "ip": 23,
+        "line": 7
+      },
+      {
+        "ip": 34,
+        "line": 8
+      },
+      {
+        "ip": 37,
+        "line": 9
+      },
+      {
+        "ip": 43,
+        "line": 10
+      },
+      {
+        "ip": 57,
+        "line": 14
+      },
+      {
+        "ip": 60,
+        "line": 15
+      },
+      {
+        "ip": 64,
+        "line": 16
+      },
+      {
+        "ip": 67,
+        "line": 17
+      },
+      {
+        "ip": 71,
+        "line": 18
+      },
+      {
+        "ip": 74,
+        "line": 19
+      },
+      {
+        "ip": 80,
+        "line": 20
+      }
+    ],
+    "sourceTags": "5:9:pv;38:39:sc;45:49:pv;75:76:sc"
+  },
+  "compiler": {
+    "name": "cashc",
+    "version": "0.14.0",
+    "options": {
+      "enforceFunctionParameterTypes": true,
+      "enforceLocktimeGuard": true
+    }
+  },
+  "updatedAt": "2026-11-21T04:28:01.132Z"
+}

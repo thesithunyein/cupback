@@ -1,0 +1,22 @@
+pragma cashscript ^0.14.0;
+
+contract CupDeposit(bytes25 refundScript, bytes25 returnScript, bytes25 organizerScript, int recoveryTime, bytes16 receiptId) {
+    function refund(bytes16 id) {
+        require(id == receiptId);
+        require(this.activeInputIndex == 0);
+        require(tx.inputs.length == 2);
+        require(tx.inputs[1].lockingBytecode == returnScript || tx.inputs[1].lockingBytecode == organizerScript);
+        require(tx.outputs[0].lockingBytecode == refundScript);
+        require(tx.outputs[0].value == tx.inputs[0].value);
+    }
+
+    function recover(bytes16 id) {
+        require(id == receiptId);
+        require(tx.time >= recoveryTime);
+        require(this.activeInputIndex == 0);
+        require(tx.inputs.length == 2);
+        require(tx.inputs[1].lockingBytecode == refundScript);
+        require(tx.outputs[0].lockingBytecode == refundScript);
+        require(tx.outputs[0].value == tx.inputs[0].value);
+    }
+}

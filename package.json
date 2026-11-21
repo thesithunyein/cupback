@@ -1,0 +1,26 @@
+{
+  "name": "cupback",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node compile.mjs && node contract.test.mjs",
+    "dev": "vite",
+    "predev": "node compile.mjs",
+    "build": "node compile.mjs && vite build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@bitauth/libauth": "^3.1.0-next.8",
+    "@wizardconnect/core": "^0.2.11",
+    "@wizardconnect/dapp": "^0.2.8",
+    "cashc": "^0.14.0",
+    "cashscript": "^0.14.0",
+    "qrcode": "^1.5.4",
+    "vite": "^8.3.8"
+  },
+  "private": true
+}
