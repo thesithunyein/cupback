@@ -1,0 +1,324 @@
+{
+  "$schema": "https://libauth.org/schemas/wallet-template-v0.schema.json",
+  "name": "CupBack",
+  "description": "Reusable-cup deposits: pay at one booth, get refunded in full at any authorized booth. Implements the CupDeposit covenant used by cupback.vercel.app.",
+  "icon": "cup",
+  "version": "1",
+  "supported": [
+    "BCH_2025_05",
+    "BCH_2026_05"
+  ],
+  "resources": [
+    {
+      "name": "CupBack app",
+      "description": "The original CupBack web app (WizardConnect + CashScript) on Bitcoin Cash mainnet.",
+      "url": "https://cupback.vercel.app"
+    },
+    {
+      "name": "Source code",
+      "description": "CupDeposit.cash covenant, app and this template.",
+      "url": "https://github.com/thesithunyein/cupback"
+    }
+  ],
+  "roles": {
+    "guest": {
+      "name": "Guest",
+      "description": "Pays the cup deposit and receives the refund.",
+      "icon": "guest"
+    },
+    "booth": {
+      "name": "Return booth",
+      "description": "Checks the returned cup, approves the refund and pays the network fee.",
+      "icon": "booth"
+    }
+  },
+  "start": [
+    {
+      "action": "deposit",
+      "role": "guest"
+    }
+  ],
+  "actions": {
+    "deposit": {
+      "name": "Pay cup deposit",
+      "description": "Lock a refundable cup deposit in the CupDeposit covenant.",
+      "icon": "cup",
+      "roles": {
+        "guest": {
+          "requirements": {
+            "variables": [
+              "depositSatoshis",
+              "receiptId",
+              "recoveryTime",
+              "guestLockingScript",
+              "boothLockingScript",
+              "organizerLockingScript"
+            ]
+          }
+        }
+      },
+      "requirements": {
+        "participants": [
+          {
+            "role": "guest",
+            "slots": {
+              "min": 1,
+              "max": 1
+            }
+          }
+        ]
+      },
+      "transaction": "depositTransaction"
+    },
+    "refund": {
+      "name": "Refund at booth",
+      "description": "A return booth approves the refund. The covenant forces the full deposit back to the guest; the booth pays the fee.",
+      "icon": "refund",
+      "roles": {
+        "guest": {
+          "name": "Ask for refund",
+          "description": "Show the cup and this refund request at any booth.",
+          "icon": "guest",
+          "requirements": {}
+        },
+        "booth": {
+          "name": "Approve refund",
+          "description": "Add one coin from the booth wallet to pay the fee, then sign.",
+          "icon": "booth",
+          "requirements": {}
+        }
+      },
+      "requirements": {
+        "participants": [
+          {
+            "role": "guest",
+            "slots": {
+              "min": 1,
+              "max": 1
+            }
+          },
+          {
+            "role": "booth",
+            "slots": {
+              "min": 1,
+              "max": 1
+            }
+          }
+        ]
+      },
+      "transaction": "refundTransaction"
+    },
+    "recover": {
+      "name": "Self-refund after the event",
+      "description": "If no booth refunded the deposit, the guest takes it back after the recovery time.",
+      "icon": "refund",
+      "roles": {
+        "guest": {
+          "requirements": {}
+        }
+      },
+      "requirements": {
+        "participants": [
+          {
+            "role": "guest",
+            "slots": {
+              "min": 1,
+              "max": 1
+            }
+          }
+        ]
+      },
+      "transaction": "recoverTransaction"
+    }
+  },
+  "transactions": {
+    "depositTransaction": {
+      "name": "Cup deposit paid",
+      "description": "Paid a $(<depositSatoshis>) satoshi cup deposit.",
+      "icon": "cup",
+      "inputs": [],
+      "outputs": [
+        {
+          "output": "depositOutput"
+        }
+      ],
+      "version": 2,
+      "locktime": 0,
+      "composable": true
+    },
+    "refundTransaction": {
+      "name": "Cup deposit refunded",
+      "description": "Refunded the full $(<depositSatoshis>) satoshi deposit at a booth.",
+      "icon": "refund",
+      "inputs": [
+        {
+          "input": "depositRefundInput",
+          "inputIndex": 0
+        }
+      ],
+      "outputs": [
+        {
+          "output": "refundOutput",
+          "outputIndex": 0
+        }
+      ],
+      "version": 2,
+      "locktime": 0,
+      "composable": true
+    },
+    "recoverTransaction": {
+      "name": "Cup deposit recovered",
+      "description": "Recovered the full $(<depositSatoshis>) satoshi deposit after the event.",
+      "icon": "refund",
+      "inputs": [
+        {
+          "input": "depositRecoverInput",
+          "inputIndex": 0
+        }
+      ],
+      "outputs": [
+        {
+          "output": "refundOutput",
+          "outputIndex": 0
+        }
+      ],
+      "version": 2,
+      "locktime": "$(<recoveryTime>)",
+      "composable": true
+    }
+  },
+  "inputs": {
+    "depositRefundInput": {
+      "name": "Cup deposit",
+      "description": "The deposit held by the CupDeposit covenant.",
+      "icon": "cup",
+      "valueSatoshis": "$(<depositSatoshis>)",
+      "token": null,
+      "unlockingScript": "refundUnlockingBytecode"
+    },
+    "depositRecoverInput": {
+      "name": "Cup deposit",
+      "description": "The deposit held by the CupDeposit covenant.",
+      "icon": "cup",
+      "valueSatoshis": "$(<depositSatoshis>)",
+      "token": null,
+      "sequenceNumber": "4294967294",
+      "unlockingScript": "recoverUnlockingBytecode"
+    }
+  },
+  "outputs": {
+    "depositOutput": {
+      "name": "Cup deposit",
+      "description": "$(<depositSatoshis>) satoshis held until the cup is returned.",
+      "icon": "cup",
+      "lockingScript": "cupDepositLockingScript",
+      "valueSatoshis": "$(<depositSatoshis>)",
+      "token": null
+    },
+    "refundOutput": {
+      "name": "Refund",
+      "description": "The full $(<depositSatoshis>) satoshi deposit back to the guest.",
+      "icon": "refund",
+      "lockingScript": "$(<guestLockingScript>)",
+      "valueSatoshis": "$(<depositSatoshis>)",
+      "token": null
+    }
+  },
+  "lockingScripts": {
+    "cupDepositLockingScript": {
+      "name": "CupDeposit covenant",
+      "description": "Holds a cup deposit. It can only pay the full amount back to the guest.",
+      "icon": "cup",
+      "lockingType": "p2s",
+      "lockingBytecode": "cupDepositP2SH32LockingBytecode",
+      "selectable": false,
+      "roles": {
+        "guest": {
+          "state": {
+            "variables": [
+              "depositSatoshis",
+              "receiptId",
+              "recoveryTime",
+              "guestLockingScript",
+              "boothLockingScript",
+              "organizerLockingScript"
+            ],
+            "secrets": []
+          },
+          "actions": [
+            {
+              "action": "refund",
+              "role": "guest"
+            },
+            {
+              "action": "recover",
+              "role": "guest"
+            }
+          ],
+          "balance": {
+            "satoshis": true
+          },
+          "selectable": false
+        }
+      }
+    }
+  },
+  "scripts": {
+    "cupDepositContract": "OP_5 OP_PICK OP_0 OP_NUMEQUAL OP_IF OP_6 OP_ROLL OP_SIZE OP_16 OP_EQUALVERIFY OP_5 OP_ROLL OP_EQUALVERIFY OP_INPUTINDEX OP_0 OP_NUMEQUALVERIFY OP_TXINPUTCOUNT OP_2 OP_NUMEQUALVERIFY OP_1 OP_UTXOBYTECODE OP_ROT OP_EQUAL OP_1 OP_UTXOBYTECODE OP_3 OP_ROLL OP_EQUAL OP_BOOLOR OP_VERIFY OP_0 OP_OUTPUTBYTECODE OP_EQUALVERIFY OP_0 OP_OUTPUTVALUE OP_0 OP_UTXOVALUE OP_NUMEQUAL OP_NIP OP_NIP OP_ELSE OP_5 OP_ROLL OP_1 OP_NUMEQUALVERIFY OP_5 OP_ROLL OP_SIZE OP_16 OP_EQUALVERIFY OP_5 OP_ROLL OP_EQUALVERIFY OP_3 OP_ROLL OP_CHECKLOCKTIMEVERIFY OP_DROP OP_INPUTINDEX OP_0 OP_NUMEQUALVERIFY OP_TXINPUTCOUNT OP_2 OP_NUMEQUALVERIFY OP_1 OP_UTXOBYTECODE OP_OVER OP_EQUALVERIFY OP_0 OP_OUTPUTBYTECODE OP_EQUALVERIFY OP_0 OP_OUTPUTVALUE OP_0 OP_UTXOVALUE OP_NUMEQUAL OP_NIP OP_NIP OP_ENDIF",
+    "cupDepositRedeemBytecode": "<receiptId> <recoveryTime> <organizerLockingScript> <boothLockingScript> <guestLockingScript> cupDepositContract",
+    "cupDepositP2SH32LockingBytecode": "OP_HASH256 <$(<cupDepositRedeemBytecode> OP_HASH256)> OP_EQUAL",
+    "refundUnlockingBytecode": "<receiptId> <0> <cupDepositRedeemBytecode>",
+    "recoverUnlockingBytecode": "<receiptId> <1> <cupDepositRedeemBytecode>"
+  },
+  "constants": {},
+  "variables": {
+    "depositSatoshis": {
+      "name": "Deposit",
+      "description": "Cup deposit in satoshis (minimum 1000).",
+      "type": "satoshis"
+    },
+    "receiptId": {
+      "name": "Receipt ID",
+      "description": "Random 16-byte receipt identifier. Makes each deposit a unique contract that can be refunded once.",
+      "type": "bytes"
+    },
+    "recoveryTime": {
+      "name": "Self-refund time",
+      "description": "Unix time after which the guest can recover an unrefunded deposit.",
+      "type": "integer"
+    },
+    "guestLockingScript": {
+      "name": "Guest refund address",
+      "description": "Where the refund is paid (the guest's P2PKH locking script).",
+      "type": "locking_script"
+    },
+    "boothLockingScript": {
+      "name": "Booth address",
+      "description": "The return booth wallet that may approve refunds (its P2PKH locking script).",
+      "type": "locking_script"
+    },
+    "organizerLockingScript": {
+      "name": "Organizer address",
+      "description": "A second wallet that may approve refunds. Use the booth address if there is none.",
+      "type": "locking_script"
+    }
+  },
+  "icons": [
+    {
+      "name": "cup",
+      "hash": "0000000000000000000000"
+    },
+    {
+      "name": "refund",
+      "hash": "0000000000000000000000"
+    },
+    {
+      "name": "guest",
+      "hash": "0000000000000000000000"
+    },
+    {
+      "name": "booth",
+      "hash": "0000000000000000000000"
+    }
+  ]
+}
