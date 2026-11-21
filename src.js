@@ -210,7 +210,7 @@ function showSetup() {
     '<fieldset><legend>Who can approve refunds?</legend>' +
     '<p class="field-help">Use the first receive address for each wallet.</p>' +
     '<label>Return booth wallet<input name="booth" required spellcheck="false" autocapitalize="none" autocomplete="off"></label>' +
-    '<label>Organizer wallet<input name="organizer" required spellcheck="false" autocapitalize="none" autocomplete="off"></label></fieldset>' +
+    '<label>Organizer wallet (optional)<input name="organizer" spellcheck="false" autocapitalize="none" autocomplete="off" aria-describedby="organizer-help"></label><p class="field-help" id="organizer-help">Leave blank if only the return booth approves refunds.</p></fieldset>' +
     '<button>Create pickup code</button></form>';
   const form = panel.querySelector('form');
   const preview = element('aside', '', 'event-preview');
@@ -235,7 +235,7 @@ function showSetup() {
     for (const [name, validate] of [
       ['amount', depositSatoshis],
       ['booth', addressScript],
-      ['organizer', addressScript],
+      ['organizer', value => { if (value) addressScript(value); }],
       ['recovery', value => {
         if (!(new Date(value).valueOf() > Date.now())) throw Error('Choose a future time.');
       }],
@@ -251,7 +251,7 @@ function showSetup() {
     }
     run(async () => {
       const event = parseEvent({ ...values, amount: depositSatoshis(values.amount), name: values.name.trim(), booth: values.booth.trim(),
-        organizer: values.organizer.trim(), network, recovery: Math.floor(new Date(values.recovery).valueOf() / 1000) });
+        organizer: values.organizer.trim() || values.booth.trim(), network, recovery: Math.floor(new Date(values.recovery).valueOf() / 1000) });
       if (event.recovery * 1000 <= Date.now()) throw Error('Choose a future recovery time.');
       await showPickupCode(event, saveEvent(event));
     });
