@@ -12,7 +12,11 @@
 <body class="landing">
   <header>
     <a href="./" class="brand" aria-label="CupBack home"><img src="/mark.svg" width="38" height="38" alt="">CupBack</a>
-    <a class="button secondary" href="./app.html">Open app</a>
+    <div class="actions landing-links">
+      <a href="#how-it-works">How it works</a>
+      <a href="#faq">FAQ</a>
+      <a class="button secondary" href="./app.html">Open app</a>
+    </div>
   </header>
   <main>
     <section class="landing-hero">
@@ -37,10 +41,22 @@
         </svg>
       </div>
     </section>
-    <section class="steps" aria-label="How CupBack works">
-      <article><h2>Pay a deposit</h2><p>Scan the pickup code and save your receipt.</p></article>
-      <article><h2>Return the cup</h2><p>Show your receipt at a participating booth.</p></article>
-      <article><h2>Get your refund</h2><p>The original deposit goes back to your wallet.</p></article>
+    <section class="guide-section" id="how-it-works" aria-labelledby="how-title">
+      <h2 id="how-title">How it works</h2>
+      <div class="steps">
+        <article><h3>Pay a deposit</h3><p>Scan the pickup code, approve the deposit in your wallet, and save your receipt.</p></article>
+        <article><h3>Return the cup</h3><p>Bring the cup to a participating booth and show staff your receipt QR.</p></article>
+        <article><h3>Get your refund</h3><p>Staff approves the return. Your deposit goes back to the wallet on your receipt.</p></article>
+      </div>
+    </section>
+    <section class="guide-section faq" id="faq" aria-labelledby="faq-title">
+      <h2 id="faq-title">FAQ</h2>
+      <details><summary>Where can I return my cup?</summary><p>At a booth that participates in your event. Ask pickup staff which booths accept returns.</p></details>
+      <details><summary>Which wallet do I need?</summary><p>Use a Bitcoin Cash wallet that supports WizardConnect, such as Cashonize. Your wallet must use the same network as the event. This site currently uses Chipnet.</p></details>
+      <details><summary>What if I lose my receipt?</summary><p>Open <a href="./app.html">Find receipt</a> on the same browser you used to pay. Recent deposits are saved on that device. You can also reopen a saved receipt link.</p></details>
+      <details><summary>How can I tell if I got my refund?</summary><p>Open your receipt and select Refresh status. Once the refund is recorded on the network, you’ll see a link to the transaction.</p></details>
+      <details><summary>What if I miss the return window?</summary><p>Open your receipt to check the event’s recovery time. Once recovery opens, you can use the original wallet to reclaim an unspent deposit.</p></details>
+      <details><summary>How do I run CupBack at my event?</summary><p>Open <a href="./app.html?tab=setup">Set up an event</a>, enter the deposit and the wallets that can approve returns, and share the pickup QR with your booth staff.</p></details>
     </section>
   </main>
   <footer>Deposits and refunds settle on Bitcoin Cash.</footer>
