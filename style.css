@@ -37,3 +37,14 @@
 .receipt-status{width:max-content;max-width:100%;padding:.35rem .65rem;border-radius:.55rem;background:var(--pale);font-weight:650;margin-top:1rem}
 .receipt-status[data-result=paid]{background:#dbefdb;color:#174731}
 @media(max-width:650px){.setup-layout{grid-template-columns:1fr}.hero-copy .actions{row-gap:.55rem}}
+
+.share-card{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:1rem;padding:1rem;background:#f7faf5;border:1px solid var(--line);border-radius:1rem;margin:.75rem 0 1rem}
+.share-card .qr{width:148px;height:148px;margin:0;border-radius:.5rem}
+.link-tools{min-width:0}
+.link-tools input{font-size:.9rem;text-overflow:ellipsis}
+.receipt-status-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.6rem;margin:.9rem 0}
+.receipt-status-bar .receipt-status{margin:0}
+.recent-receipts{display:grid;gap:.5rem;border-top:1px solid var(--line);margin-top:1.5rem;padding-top:1rem}
+.recent-receipts h3{font-size:1rem;margin:0}
+.recent-receipts button{text-align:left;overflow-wrap:anywhere}
+@media(max-width:450px){.share-card{grid-template-columns:1fr}.share-card .qr{justify-self:center}.link-tools .secondary{width:100%}}

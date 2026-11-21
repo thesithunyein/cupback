@@ -62,7 +62,7 @@ function parseLink(value, key) {
 }
 
 function makeLink(key, data) {
-  const url = new URL(location.pathname, location.origin);
+  const url = new URL('./app.html', location.href);
   url.hash = new URLSearchParams({[key]: JSON.stringify(data)});
   return url.href;
 }
@@ -107,7 +107,7 @@ function txLink(label, txid) {
 
 async function share(key, data) {
   const link = makeLink(key, data);
-  const section = element('section');
+  const section = element('section', '', 'share-card');
   const image = element('img', '', 'qr');
   image.alt = key === 'event' ? 'QR code for this event' : 'QR code for this receipt';
   image.src = await QRCode.toDataURL(link, { width: 340, margin: 2, errorCorrectionLevel: 'L' });
@@ -117,10 +117,12 @@ async function share(key, data) {
   input.value = link;
   input.addEventListener('focus', () => input.select());
   label.append(input);
-  section.append(image, label, button('Copy link', async () => {
+  const linkTools = element('div', '', 'link-tools');
+  linkTools.append(label, button('Copy link', async () => {
     await navigator.clipboard.writeText(link);
     notice.textContent = 'Link copied.';
   }, 'secondary'));
+  section.append(image, linkTools);
   panel.append(section);
 }
 
@@ -217,17 +219,32 @@ function showEntry(key) {
     e.preventDefault();
     run(async () => {
       const data = parseLink(input.value.trim(), key);
-      if (isEvent) showEvent(parseEvent(data));
-      else await showReceipt(parseReceipt(data));
+      if (isEvent) {
+        const event = parseEvent(data);
+        history.replaceState(null, '', makeLink('event', event));
+        showEvent(event);
+      } else {
+        const receipt = parseReceipt(data);
+        history.replaceState(null, '', makeLink('receipt', receipt));
+        await showReceipt(receipt);
+      }
     });
   });
   panel.append(form);
   if (!isEvent) {
     const recent = Object.values(loadSaved()).reverse().slice(0, 10);
-    if (recent.length) panel.append(element('h2', 'Recent deposits'));
-    for (const item of recent) {
-      panel.append(button(item.event.name + ' · ' + item.txid.slice(0, 8),
-        () => showReceipt(parseReceipt(item)), 'secondary'));
+    if (recent.length) {
+      const list = element('section', '', 'recent-receipts');
+      list.append(element('h3', 'Recent deposits'));
+      for (const item of recent) {
+        const open = button(item.event.name + ' · ' + formatAmount(item.event.amount), () => {
+          const receipt = parseReceipt(item);
+          history.replaceState(null, '', makeLink('receipt', receipt));
+          return showReceipt(receipt);
+        }, 'secondary');
+        list.append(open);
+      }
+      panel.append(list);
     }
   }
 }
@@ -246,7 +263,10 @@ function showEvent(event) {
   panel.append(buyer);
   walletAction('Pay deposit', async () => {
     notice.textContent = 'Approve the deposit in your wallet.';
-    const receipt = await pay(event, save);
+    const receipt = await pay(event, pendingReceipt => {
+      save(pendingReceipt);
+      history.replaceState(null, '', makeLink('receipt', pendingReceipt));
+    });
     await showReceipt(receipt);
   });
 }
@@ -258,9 +278,10 @@ async function showReceipt(receipt) {
     txLink('View deposit transaction', receipt.txid));
   const status = element('p', 'Checking the deposit…', 'receipt-status');
   status.setAttribute('role', 'status');
-  panel.append(status);
+  const statusBar = element('div', '', 'receipt-status-bar');
+  statusBar.append(status, button('Refresh', () => showReceipt(receipt), 'secondary'));
+  panel.append(statusBar);
   await share('receipt', receipt);
-  panel.append(button('Refresh status', () => showReceipt(receipt), 'secondary'));
   const unspent = await lookup(receipt).catch(error => {
     status.textContent = 'Deposit not verified. Try refreshing.';
     throw error;
@@ -341,9 +362,11 @@ function openFromLocation() {
 
 document.querySelectorAll('[data-tab]').forEach(node => node.addEventListener('click', () => {
   if (busy) return;
-  history.replaceState(null, '', location.pathname);
-  notice.textContent = '';
-  setTab(node.dataset.tab);
+    const url = new URL('./app.html', location.href);
+    if (node.dataset.tab !== 'deposit') url.searchParams.set('tab', node.dataset.tab);
+    history.replaceState(null, '', url);
+    notice.textContent = '';
+    setTab(node.dataset.tab);
 }));
 const walletControl = button('Disconnect wallet', async () => {
   try { await stopWallet(); }
