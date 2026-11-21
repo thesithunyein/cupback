@@ -16,7 +16,7 @@ if (import.meta.env.VITE_BCH_NETWORK === 'mainnet') {
   };
   const valid = Object.values(proofs).every(id => /^[0-9a-f]{64}$/.test(id ?? ''));
   for (const link of document.querySelectorAll('[data-proof]')) {
-    link.href = 'https://explorer.bitcoinunlimited.info/tx/' + proofs[link.dataset.proof];
+    link.href = 'https://blockchair.com/bitcoin-cash/transaction/' + proofs[link.dataset.proof];
   }
   if (!valid) document.querySelector('.network-proof')?.setAttribute('hidden', '');
 }

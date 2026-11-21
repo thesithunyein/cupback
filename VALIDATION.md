@@ -27,8 +27,8 @@ Ask who would buy the product and what budget it would come from. Compare the re
 
 ## Current evidence
 
-- [Mainnet solo deposit](https://explorer.bitcoinunlimited.info/tx/0067f9705f54cc2dbc9821d39d48380000e081f8f9db55dccdefa7601eefa28b)
-- [Mainnet solo refund](https://explorer.bitcoinunlimited.info/tx/b1e866ad97b2ccd4c496b4735e577f93692a5105e8d0963702a63441e5f9aa85)
+- [Mainnet solo deposit](https://blockchair.com/bitcoin-cash/transaction/0067f9705f54cc2dbc9821d39d48380000e081f8f9db55dccdefa7601eefa28b)
+- [Mainnet solo refund](https://blockchair.com/bitcoin-cash/transaction/b1e866ad97b2ccd4c496b4735e577f93692a5105e8d0963702a63441e5f9aa85)
 
 - [Chipnet guest deposit](https://chipnet.chaingraph.cash/tx/e984eef0fcd103acbfd3f0d2d6cd9defe2a229c57aa96728c86f05d8393357f9)
 - [Chipnet booth refund](https://chipnet.chaingraph.cash/tx/870d237a4690c23311d7609d568ae153507e7e04550b5dd45face54be5de3138)

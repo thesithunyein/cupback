@@ -50,8 +50,8 @@ The application has a separate mainnet build configuration. Before enabling it, 
 
 One Cashonize wallet paid a 1,000-satoshi deposit and approved its own refund as the return booth. The full deposit came back.
 
-- [Mainnet deposit](https://explorer.bitcoinunlimited.info/tx/0067f9705f54cc2dbc9821d39d48380000e081f8f9db55dccdefa7601eefa28b)
-- [Mainnet refund](https://explorer.bitcoinunlimited.info/tx/b1e866ad97b2ccd4c496b4735e577f93692a5105e8d0963702a63441e5f9aa85)
+- [Mainnet deposit](https://blockchair.com/bitcoin-cash/transaction/0067f9705f54cc2dbc9821d39d48380000e081f8f9db55dccdefa7601eefa28b)
+- [Mainnet refund](https://blockchair.com/bitcoin-cash/transaction/b1e866ad97b2ccd4c496b4735e577f93692a5105e8d0963702a63441e5f9aa85)
 
 ## Solo demo
 

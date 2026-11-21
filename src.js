@@ -22,7 +22,7 @@ const storageKey = 'cupback:receipts:' + network;
 const eventStorageKey = 'cupback:events:' + network;
 const idPattern = /^[0-9a-f]{64}$/;
 const explorer = network === 'mainnet'
-  ? 'https://explorer.bitcoinunlimited.info/tx/' : 'https://chipnet.chaingraph.cash/tx/';
+  ? 'https://blockchair.com/bitcoin-cash/transaction/' : 'https://chipnet.chaingraph.cash/tx/';
 let connected = false;
 let busy = false;
 let tab = 'deposit';
