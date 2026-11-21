@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f8f3">
+  <meta name="description" content="How to set up cup deposits, pay at pickup, and approve returns with CupBack.">
+  <title>Docs | CupBack</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="icon" href="/mark.svg">
+</head>
+<body class="docs">
+  <header>
+    <a href="./" class="brand" aria-label="CupBack home"><img src="/mark.svg" width="38" height="38" alt="">CupBack</a>
+    <a class="button secondary" href="./app.html">Open app</a>
+  </header>
+  <main class="docs-layout">
+    <nav class="docs-nav" aria-label="On this page">
+      <a href="#guests">Guests</a>
+      <a href="#staff">Booth staff</a>
+      <a href="#organizers">Organizers</a>
+      <a href="#wallet">Wallet setup</a>
+    </nav>
+    <article>
+      <h1>CupBack docs</h1>
+      <p>Pay for a reusable cup, return it at the booth, and track your refund.</p>
+      <p class="docs-network"><img src="/bch.svg" width="24" height="24" alt="">The public app uses Chipnet, the Bitcoin Cash test network. Use a Chipnet wallet and test BCH.</p>
+      <section id="guests">
+        <h2>Pay and return a cup</h2>
+        <ol>
+          <li>Scan the event’s pickup QR code and check the deposit amount.</li>
+          <li>Connect your wallet, select <strong>Pay deposit</strong>, and approve in your wallet.</li>
+          <li>Save the receipt. Show it with your cup at the return booth.</li>
+          <li>Open the receipt again to check the refund. Use <strong>Refresh</strong> if the status hasn’t updated.</li>
+        </ol>
+        <p>After the event’s self-refund time, the original payer can recover any deposit that hasn’t been refunded.</p>
+        <a href="./app.html?tab=return">Find a receipt</a>
+      </section>
+      <section id="staff">
+        <h2>Approve a return</h2>
+        <ol>
+          <li>Open <a href="./app.html?tab=staff">Return booth</a>. Scan the guest’s receipt or paste its link.</li>
+          <li>Check the cup and confirm the receipt says <strong>Ready to return</strong>.</li>
+          <li>Connect the event’s booth wallet. Select <strong>Approve refund</strong>, then approve in your wallet.</li>
+          <li>Check the result and use <strong>Scan next receipt</strong> for the next return.</li>
+        </ol>
+        <p>The guest receives the full deposit. The booth wallet covers the network fee.</p>
+      </section>
+      <section id="organizers">
+        <h2>Set up an event</h2>
+        <ol>
+          <li>Open <a href="./app.html?tab=setup">Set up event</a>. Enter the event name, deposit amount, and when self-refunds begin.</li>
+          <li>Paste the booth wallet’s first receive address. Add an organizer wallet only if it should also approve refunds.</li>
+          <li>Create the pickup QR code and display it where guests pick up cups.</li>
+        </ol>
+        <p>Save the pickup link to share it across devices. The saved events list lives in the browser that created the event.</p>
+      </section>
+      <section id="wallet">
+        <h2>Connect a wallet</h2>
+        <p>Choose <strong>Cashonize</strong> in the wallet picker. On the same device, copy the connection link, paste it into <strong>Connection URI</strong> in Cashonize’s <strong>Connect</strong> tab, and select <strong>Connect New dApp</strong>.</p>
+        <p>To pair from another device, scan the connection QR code from Cashonize or another WizardConnect wallet. Keep CupBack open while pairing.</p>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

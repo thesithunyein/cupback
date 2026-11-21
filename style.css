@@ -142,6 +142,34 @@ details[open] > summary::after{transform:translateY(.12rem) rotate(225deg)}
 .recent-receipts .saved-event{display:flex;align-items:center;justify-content:space-between;gap:.75rem;text-align:left}
 .saved-event span:first-child{overflow-wrap:anywhere}
 .saved-event-status{flex:none;border:1px solid currentColor;border-radius:2rem;padding:.1rem .5rem;font-size:.8rem}
+
+/* The cup settles into view, then the three steps follow in order. */
+.deposit-orbit{position:relative;isolation:isolate;display:grid;place-items:center;min-width:0;min-height:0;aspect-ratio:1.16;margin:0;border:1px solid var(--line);border-radius:1.5rem;background:radial-gradient(ellipse at 48% 42%,#fcfff7,#e6efdc);perspective:650px;overflow:hidden}
+.orbit-ring{position:absolute;left:50%;top:50%;aspect-ratio:1;border:1px dashed #63865d75;border-radius:50%;transform:translate(-50%,-50%) rotateX(48deg) rotateZ(-25deg)}
+.orbit-ring-outer{width:91%}
+.orbit-ring-inner{width:67%}
+.orbit-cup{width:62%;transform:rotateY(-10deg) rotateX(7deg);animation:orbit-cup-in 2s cubic-bezier(.2,.75,.25,1) both}
+.orbit-cup img{display:block;width:100%;height:auto;filter:drop-shadow(0 16px 18px #264b2830)}
+.orbit-step{position:absolute;display:inline-flex;align-items:center;gap:.4rem;padding:.35rem .6rem;border:1px solid #c9dbbe;border-radius:2rem;background:var(--paper);color:var(--green);box-shadow:0 6px 18px #264b281a;font-size:clamp(.68rem,1.4vw,.88rem);font-weight:700;white-space:nowrap;animation:orbit-step-in .75s cubic-bezier(.2,.75,.25,1) both;animation-delay:var(--step-delay)}
+.orbit-pay{top:18%;left:7%;--step-delay:.25s}
+.orbit-return{top:43%;right:4%;--step-delay:.55s}
+.orbit-refund{bottom:15%;left:13%;--step-delay:.85s}
+.orbit-refund>span{display:grid;place-items:center;background:var(--pale);border-radius:50%;width:22px;height:22px}
+@keyframes orbit-cup-in{from{transform:rotateY(17deg) rotateX(-9deg) translateZ(-110px)}to{transform:rotateY(-10deg) rotateX(7deg) translateZ(0)}}
+@keyframes orbit-step-in{from{opacity:0;transform:translate3d(0,16px,-95px) rotateX(30deg)}to{opacity:1;transform:translate3d(0,0,0) rotateX(0)}}
+@media(prefers-reduced-motion:reduce){.orbit-cup,.orbit-step{animation:none}}
+
+.docs-layout{display:grid;grid-template-columns:12rem minmax(0,44rem);justify-content:center;gap:clamp(1.25rem,5vw,4rem);padding-block:clamp(1.5rem,5vw,4rem)}
+.docs-nav{position:sticky;top:1rem;align-self:start;flex-direction:column;padding:.4rem 0;border:0}
+.docs-nav a{padding:.5rem .65rem;border-radius:.5rem;font-weight:650;text-decoration:none}
+.docs-nav a:hover{background:var(--pale);text-decoration:underline}
+.docs-layout h1{font-size:clamp(2.4rem,6vw,4.2rem)}
+.docs-layout p,.docs-layout li{color:var(--muted)}
+.docs-layout li+li{margin-top:.45rem}
+.docs-layout section{border-top:1px solid var(--line);margin-top:1.5rem;padding-top:1.5rem;scroll-margin-top:1rem}
+.docs-network{display:flex;align-items:center;gap:.65rem;background:var(--pale);border-radius:.75rem;padding:.8rem 1rem}
+.docs-network img{flex:none}
+@media(max-width:640px){.docs-layout{grid-template-columns:1fr;gap:1rem}.docs-nav{position:static;flex-direction:row;flex-wrap:wrap}.landing header{flex-wrap:wrap;gap:.5rem}}
 .wallet-pairing .actions{margin-bottom:.85rem}
 .wallet-pairing summary{font-weight:650;color:var(--green);cursor:pointer;min-height:44px;padding:.6rem 0}
 .wallet-pairing details .qr{display:block;margin-top:.5rem}

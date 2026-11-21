@@ -7,6 +7,7 @@ export default defineConfig({
       input: {
         landing: fileURLToPath(new URL('./index.html', import.meta.url)),
         app: fileURLToPath(new URL('./app.html', import.meta.url)),
+        docs: fileURLToPath(new URL('./docs.html', import.meta.url)),
       },
     },
   },
