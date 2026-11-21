@@ -10,16 +10,16 @@
   <link rel="icon" href="/mark.svg">
 </head>
 <body class="landing">
-  <aside id="blaze-banner" class="blaze-banner" aria-label="BCH BLAZE submission" hidden>
+  <aside id="blaze-banner" class="blaze-banner" aria-label="BCH BLAZE 2026 submission">
     <div>
       <span class="blaze-tag">BCH BLAZE 2026</span>
       <nav class="blaze-links" aria-label="Submission links">
-        <a data-presentation target="_blank" rel="noopener">Presentation <span aria-hidden="true">↗</span></a>
+        <a data-presentation href="/cupback-presentation.pdf" target="_blank" rel="noopener">Presentation <span aria-hidden="true">↗</span></a>
         <a href="https://github.com/thesithunyein/cupback" target="_blank" rel="noopener">Source code <span aria-hidden="true">↗</span></a>
       </nav>
       <div class="blaze-vote">
         <span class="blaze-vote-label">EMBER2026 vote</span>
-        <code data-ember></code>
+        <code data-ember>%VITE_BLAZE_EMBER_ADDRESS%</code>
         <button type="button" data-copy-ember>Copy address</button>
       </div>
     </div>
@@ -89,17 +89,17 @@
       <img src="/bch.svg" width="38" height="38" alt="">
       <div>
         <h2 id="network-proof-title">Every refund is public</h2>
-        <p data-mainnet-text="Each deposit and refund is a Bitcoin Cash payment anyone can check.">See a 2,000-satoshi deposit and its full return on the Bitcoin Cash test network.</p>
+        <p data-chipnet-text="See a 2,000-satoshi deposit and its full return on the Bitcoin Cash test network.">Each deposit and refund is a Bitcoin Cash payment anyone can check.</p>
         <div class="actions">
-          <a data-proof="deposit" href="https://chipnet.chaingraph.cash/tx/e984eef0fcd103acbfd3f0d2d6cd9defe2a229c57aa96728c86f05d8393357f9">View deposit</a>
-          <a data-proof="refund" href="https://chipnet.chaingraph.cash/tx/870d237a4690c23311d7609d568ae153507e7e04550b5dd45face54be5de3138">View refund</a>
+          <a data-proof="deposit" data-chipnet-href="https://chipnet.chaingraph.cash/tx/e984eef0fcd103acbfd3f0d2d6cd9defe2a229c57aa96728c86f05d8393357f9" href="https://blockchair.com/bitcoin-cash/transaction/%VITE_PROOF_DEPOSIT_TX%">View deposit</a>
+          <a data-proof="refund" data-chipnet-href="https://chipnet.chaingraph.cash/tx/870d237a4690c23311d7609d568ae153507e7e04550b5dd45face54be5de3138" href="https://blockchair.com/bitcoin-cash/transaction/%VITE_PROOF_REFUND_TX%">View refund</a>
         </div>
       </div>
     </section>
     <section class="guide-section faq" id="faq" aria-labelledby="faq-title">
       <h2 id="faq-title">FAQ</h2>
       <details><summary>Where can I return my cup?</summary><p>At any booth at the event that takes returns.</p></details>
-      <details><summary>Which wallet do I need?</summary><p data-mainnet-text="A Bitcoin Cash wallet that supports WizardConnect, like Cashonize.">Use a wallet with WizardConnect, like Cashonize. Set it to Chipnet, the Bitcoin Cash test network.</p></details>
+      <details><summary>Which wallet do I need?</summary><p data-chipnet-text="Use a wallet with WizardConnect, like Cashonize. Set it to Chipnet, the Bitcoin Cash test network.">A Bitcoin Cash wallet that supports WizardConnect, like Cashonize.</p></details>
       <details><summary>What if I lose my receipt?</summary><p>Open <a href="./app.html?tab=return">Find receipt</a> on the device you paid with.</p></details>
       <details><summary>How can I tell if I got my refund?</summary><p>Your receipt says <strong>Refunded</strong>.</p></details>
       <details><summary>What if I miss the return window?</summary><p>You can still take it back yourself after the time shown on your receipt.</p></details>

@@ -5,25 +5,22 @@ if (oldLink.has('event') || oldLink.has('receipt')) {
   location.replace(new URL('./app.html' + location.hash, location.href));
 }
 
-if (import.meta.env.VITE_BCH_NETWORK === 'mainnet') {
-  for (const label of document.querySelectorAll('[data-mainnet-text]')) {
-    label.textContent = label.dataset.mainnetText;
-  }
-  // Show mainnet evidence only when real transaction IDs are configured.
-  const proofs = {
-    deposit: import.meta.env.VITE_PROOF_DEPOSIT_TX?.trim(),
-    refund: import.meta.env.VITE_PROOF_REFUND_TX?.trim(),
-  };
-  const valid = Object.values(proofs).every(id => /^[0-9a-f]{64}$/.test(id ?? ''));
-  for (const link of document.querySelectorAll('[data-proof]')) {
-    link.href = 'https://blockchair.com/bitcoin-cash/transaction/' + proofs[link.dataset.proof];
-  }
+// Pages ship mainnet text and links in the HTML itself, so they read correctly without JavaScript.
+if (import.meta.env.VITE_BCH_NETWORK !== 'mainnet') {
+  for (const label of document.querySelectorAll('[data-chipnet-text]')) label.textContent = label.dataset.chipnetText;
+  for (const link of document.querySelectorAll('[data-chipnet-href]')) link.href = link.dataset.chipnetHref;
+} else {
+  const valid = [import.meta.env.VITE_PROOF_DEPOSIT_TX, import.meta.env.VITE_PROOF_REFUND_TX]
+    .every(id => /^[0-9a-f]{64}$/.test(id?.trim() ?? ''));
   if (!valid) document.querySelector('.network-proof')?.setAttribute('hidden', '');
 }
 
 const presentation = import.meta.env.VITE_BLAZE_PRESENTATION_URL || new URL('./cupback-presentation.pdf', location.href).href;
 const votingAddress = import.meta.env.VITE_BLAZE_EMBER_ADDRESS?.trim();
 const banner = document.querySelector('#blaze-banner');
+if (banner) {
+  banner.hidden = true;
+}
 if (banner && presentation && votingAddress) {
   const url = URL.canParse(presentation) ? new URL(presentation) : null;
   const address = decodeCashAddress(votingAddress);

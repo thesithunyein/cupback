@@ -222,9 +222,20 @@ Found a security problem? Please report it privately. See [SECURITY.md](SECURITY
 
 Issues and pull requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) and our [Code of Conduct](CODE_OF_CONDUCT.md).
 
-## BCH BLAZE 2026
+## BCH BLAZE 2026: eligibility checklist
 
-CupBack is entered in the BCH BLAZE 2026 Mainnet track. [Presentation](https://cupback.vercel.app/cupback-presentation.pdf) · EMBER2026 voting address: `bitcoincash:zzfpcwe2655yg8p5w3u0mmxu46ar8hgmpc5le4uzm6`
+CupBack is entered in the **BCH BLAZE 2026 Mainnet track**.
+
+| Rule | How CupBack meets it | Evidence |
+|---|---|---|
+| Anyone can make a useful BCH **mainnet** transaction with the app | Tap **Try it**: pay a 0.00001 BCH cup deposit, then refund it. Both are mainnet transactions. | [App](https://cupback.vercel.app/app.html#solo) · [deposit tx](https://blockchair.com/bitcoin-cash/transaction/0067f9705f54cc2dbc9821d39d48380000e081f8f9db55dccdefa7601eefa28b) · [refund tx](https://blockchair.com/bitcoin-cash/transaction/b1e866ad97b2ccd4c496b4735e577f93692a5105e8d0963702a63441e5f9aa85) (block 978,345) |
+| Live, usable demo at a link | Hosted on Vercel, no sign-up | https://cupback.vercel.app |
+| **WizardConnect** or XO integration | WizardConnect (`@wizardconnect/core`, `@wizardconnect/dapp`), tested with Cashonize | [`chain.js`](chain.js) |
+| Top-of-page banner: presentation link | Banner on the home page links the deck | [Presentation (Widget Factory template)](https://cupback.vercel.app/cupback-presentation.pdf) |
+| Top-of-page banner: source code link | Banner links this repository | https://github.com/thesithunyein/cupback |
+| Top-of-page banner: unique CashTokens address for EMBER2026 votes | Token-aware address, used only for CupBack | `bitcoincash:zzfpcwe2655yg8p5w3u0mmxu46ar8hgmpc5le4uzm6` |
+| Original work built during the hackathon | First commit November 21, 2026, inside the Nov 14–22 submission period | [Commit history](https://github.com/thesithunyein/cupback/commits/main) |
+| Team size | Solo builder: Sithu Nyein ([@thesithunyein](https://x.com/thesithunyein)) | |
 
 ## License
 
