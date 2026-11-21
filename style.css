@@ -48,3 +48,17 @@
 .recent-receipts h3{font-size:1rem;margin:0}
 .recent-receipts button{text-align:left;overflow-wrap:anywhere}
 @media(max-width:450px){.share-card{grid-template-columns:1fr}.share-card .qr{justify-self:center}.link-tools .secondary{width:100%}}
+
+.section-icon{width:2.5rem;height:2.5rem;padding:.45rem;background:var(--pale);color:var(--green);border-radius:.65rem;flex:none}
+.venue-section{display:grid;grid-template-columns:1fr 1.08fr;align-items:start;gap:clamp(1.4rem,5vw,4rem);border-bottom:1px solid var(--line)}
+.venue-intro h2,.receipt-section h2{font-size:clamp(1.6rem,4vw,2.4rem);margin:.5rem 0;line-height:1.15}
+.venue-intro p,.receipt-section p,.venue-checklist dd{color:var(--muted)}
+.venue-checklist{margin:0;border:1px solid var(--line);border-radius:1rem;background:var(--paper)}
+.venue-checklist div{padding:1rem 1.15rem}
+.venue-checklist div+div{border-top:1px solid var(--line)}
+.venue-checklist dt{font-weight:750;margin-bottom:.2rem}
+.venue-checklist dd{margin:0}
+.receipt-section{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:1rem;border-bottom:1px solid var(--line)}
+.receipt-section h2{margin:0 0 .4rem}.receipt-section p{margin:0;max-width:34rem}
+@media(max-width:670px){.venue-section{grid-template-columns:1fr}.receipt-section{grid-template-columns:auto 1fr;align-items:start}.receipt-section .button{grid-column:2;justify-self:start}}
+@media(max-width:460px){.landing-links{flex-wrap:wrap}}
