@@ -6,6 +6,13 @@ CupBack links a reusable-cup deposit to a BCH wallet. Any authorized return boot
 
 Use Node 22.12+ and run npm ci, then npm run dev. Run npm test for the local BCH VM checks and npm run build to create dist/. Serve dist/ over HTTPS for camera-based QR navigation and clipboard support. The default network is Chipnet.
 
+## Deploy to Vercel
+
+Import the GitHub repo as a Vercel project. Use the repository root and Node.js 22.x or 24.x. The checked-in vercel.json sets the Vite preset, npm ci, npm run build, and the dist output folder. Keep clean URLs off so /app.html and existing link URLs resolve.
+
+No project environment variables are required for Chipnet. Open / for the landing page and /app.html for the app. On a new domain, create pickup and receipt links from that domain. Existing links should be opened on the domain that issued them.
+
+
 ## Chipnet checkout
 
 1. Prepare separate WizardConnect wallets for the buyer, return booth, and organizer. Fund the buyer and the return booth with Chipnet BCH. The current wallet integration spends a single BCH coin per transaction. Deposit funding searches the first eight receive and change paths. Refund funding uses the wallet's first receive address.
