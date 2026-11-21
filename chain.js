@@ -4,6 +4,7 @@ import {
 } from '@bitauth/libauth';
 import { Contract, ElectrumNetworkProvider } from 'cashscript';
 import { initiateDappRelay } from '@wizardconnect/core';
+import { sourceOutputToRelay } from '@wizardconnect/core/hdwalletv1-serialize';
 import { DappConnectionManager } from '@wizardconnect/dapp';
 import artifact from './contract.json' with { type: 'json' };
 
@@ -86,11 +87,17 @@ function withChange(outputs, coin, spent) {
   return outputs;
 }
 
+export function serializeWalletInputs(transaction, sourceOutputs) {
+  return sourceOutputs.map((output, index) =>
+    sourceOutputToRelay({ ...transaction.inputs[index], ...output })
+  );
+}
+
 async function signAndSend(transaction, sourceOutputs, coin, index, prompt, beforeBroadcast) {
   const response = await manager.signTransaction({
     transaction: {
       transaction: binToHex(encodeTransaction(transaction)),
-      sourceOutputs: sourceOutputs.map((value, position) => ({ ...transaction.inputs[position], ...value })),
+      sourceOutputs: serializeWalletInputs(transaction, sourceOutputs),
       broadcast: false, userPrompt: prompt,
     },
     inputPaths: [[index, coin.branch === 0 ? 'receive' : 'change', coin.index]],

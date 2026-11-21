@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { binToHex, createVirtualMachineBCH, decodeTransaction, hexToBin } from '@bitauth/libauth';
 import { MockNetworkProvider, SignatureTemplate, TransactionBuilder } from 'cashscript';
-import { broadcastSigned, depositContract } from './chain.js';
+import { broadcastSigned, depositContract, serializeWalletInputs } from './chain.js';
 import { hashTransaction } from '@bitauth/libauth';
 
 const provider = new MockNetworkProvider();
@@ -101,4 +101,20 @@ test('two competing returns can only spend the deposit once, even if the first r
     async sendRawTransaction() { throw Error('Offline'); },
     async getRawTransaction() { throw Error('Unknown transaction'); },
   }, first, firstId), /could not check if it went through/);
+});
+
+test('WizardConnect source outputs use relay-safe amount and byte encoding', () => {
+  const transaction = { inputs: [
+    { outpointTransactionHash: hexToBin('11'.repeat(32)), outpointIndex: 0, sequenceNumber: 0xfffffffe, unlockingBytecode: new Uint8Array() },
+    { outpointTransactionHash: hexToBin('22'.repeat(32)), outpointIndex: 1, sequenceNumber: 0xfffffffe, unlockingBytecode: hexToBin('51') },
+  ] };
+  const sources = [
+    { valueSatoshis: 10000n, lockingBytecode: hexToBin(buyer.lockingBytecode) },
+    { valueSatoshis: 9000n, lockingBytecode: hexToBin(booth.lockingBytecode) },
+  ];
+  const encoded = JSON.parse(JSON.stringify(serializeWalletInputs(transaction, sources)));
+  assert.equal(encoded[0].valueSatoshis, '<bigint: 10000n>');
+  assert.equal(encoded[0].lockingBytecode, buyer.lockingBytecode);
+  assert.equal(encoded[1].unlockingBytecode, '51');
+  assert.equal(encoded[1].outpointTransactionHash, '22'.repeat(32));
 });
