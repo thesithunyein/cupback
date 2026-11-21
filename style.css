@@ -109,3 +109,14 @@
 .event-preview{border-top:3px solid #9fbc83;padding:1rem}
 .event-preview .receipt-amount{font-size:1.35rem;margin:.4rem 0 .6rem;font-variant-numeric:tabular-nums}
 @media(max-width:650px){.setup-layout{grid-template-columns:1fr;gap:1rem}.event-preview{margin-top:.1rem}.app-title{margin-top:1.2rem}}
+
+.deposit-summary{border:1px solid var(--line);border-radius:1rem;background:#f7faf5;padding:1.15rem}
+.deposit-summary h2{overflow-wrap:anywhere}
+.deposit-summary .receipt-amount{font-size:clamp(1.55rem,5vw,2.15rem);margin:.3rem 0;font-variant-numeric:tabular-nums}
+.deposit-summary .hint{margin-bottom:0}
+.deposit-terms{margin:.65rem 0 1rem}
+.deposit-terms summary{cursor:pointer;min-height:44px;padding:.65rem 0;font-weight:650;color:var(--green)}
+.deposit-terms .hint{margin:0 0 .75rem}
+.wallet-pairing{margin-top:1rem;padding:1rem;border:1px solid var(--line);border-radius:1rem}
+.wallet-pairing .qr{max-width:100%;height:auto}
+@media(max-width:480px){.deposit-terms~button{width:100%}}

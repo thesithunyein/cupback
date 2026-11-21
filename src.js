@@ -130,7 +130,7 @@ async function share(key, data) {
 
 function connect(action) {
   if (connected) return action();
-  const pairing = element('section');
+  const pairing = element('section', '', 'wallet-pairing');
   pairing.append(element('h2', 'Connect your wallet'),
     element('p', 'Scan this code from your wallet. On the same device, copy the link and paste it into Cashonize’s Connect tab.', 'hint'));
   const code = element('img', '', 'qr');
@@ -144,7 +144,8 @@ function connect(action) {
     pairing.remove();
     notice.textContent = 'Wallet connected.';
     panel.querySelector('[data-connect]')?.remove();
-    if (panel.querySelector('[data-wallet-action]')) panel.querySelector('[data-wallet-action]').disabled = false;
+    const payment = panel.querySelector('[data-wallet-action]');
+    if (payment) { payment.hidden = false; payment.disabled = false; }
   });
   if (!uri) return action();
   link.href = uri;
@@ -163,12 +164,13 @@ function connect(action) {
 
 function walletAction(text, action, container = panel) {
   if (!connected) {
-    const connectButton = button('Connect wallet', () => connect(action), 'secondary');
+    const connectButton = button('Connect wallet', () => connect(action));
     connectButton.dataset.connect = '';
     container.append(connectButton);
   }
   const actionButton = button(text, action);
   actionButton.dataset.walletAction = '';
+  actionButton.hidden = !connected;
   actionButton.disabled = !connected;
   container.append(actionButton);
 }
@@ -327,10 +329,15 @@ function showEntry(key) {
 }
 
 function showEvent(event) {
-  panel.replaceChildren(element('p', 'Cup deposit', 'preview-label'), element('h2', event.name), element('p', formatAmount(event.amount), 'receipt-amount'),
-    element('p', 'Return the cup to get your deposit back.'),
-    element('p', 'You can recover your deposit after ' + new Date(event.recovery * 1000).toLocaleString()
-      + '. Use the link from event staff.', 'hint'));
+  const summary = element('section', '', 'deposit-summary');
+  summary.append(element('p', 'Refundable cup deposit', 'preview-label'),
+    element('h2', event.name), element('p', formatAmount(event.amount), 'receipt-amount'),
+    element('p', 'Return your cup to get your deposit back.', 'hint'));
+  const terms = element('details', '', 'deposit-terms');
+  terms.append(element('summary', 'Refund details'),
+    element('p', 'You can claim an unused deposit after '
+      + new Date(event.recovery * 1000).toLocaleString() + '.', 'hint'));
+  panel.replaceChildren(summary, terms);
   if (event.recovery * 1000 <= Date.now()) {
     panel.append(element('p', 'This event has closed.'));
     return;
@@ -454,8 +461,9 @@ const walletControl = button('Disconnect wallet', async () => {
     if (destination) destination.textContent = '';
     const current = panel.querySelector('[data-wallet-action]');
     if (current) {
+      current.hidden = true;
       current.disabled = true;
-      const reconnect = button('Connect wallet', () => connect(() => {}), 'secondary');
+      const reconnect = button('Connect wallet', () => connect(() => {}));
       reconnect.dataset.connect = '';
       current.before(reconnect);
     }
