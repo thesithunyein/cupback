@@ -30,9 +30,21 @@ if (banner && presentation && votingAddress) {
   if (url?.protocol === 'https:' && typeof address !== 'string' &&
       address.prefix === 'bitcoincash' && address.type === 'p2pkhWithTokens') {
     banner.querySelector('[data-presentation]').href = url.href;
-    const addressInput = banner.querySelector('input');
-    addressInput.value = votingAddress;
-    addressInput.addEventListener('focus', () => addressInput.select());
+    const display = banner.querySelector('[data-ember]');
+    display.textContent = votingAddress;
+    display.title = votingAddress;
+    display.setAttribute('aria-label', 'EMBER2026 voting address ' + votingAddress);
+    const copy = banner.querySelector('[data-copy-ember]');
+    copy.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(votingAddress);
+        copy.textContent = 'Copied ✓';
+        setTimeout(() => { copy.textContent = 'Copy address'; }, 1800);
+      } catch {
+        // Clipboard blocked: show the full address selected so it can be copied by hand.
+        getSelection()?.selectAllChildren(display);
+      }
+    });
     banner.hidden = false;
   }
 }

@@ -12,10 +12,16 @@
 <body class="landing">
   <aside id="blaze-banner" class="blaze-banner" aria-label="BCH BLAZE submission" hidden>
     <div>
-      <strong>BCH BLAZE 2026</strong>
-      <a data-presentation>Project presentation</a>
-      <a href="https://github.com/thesithunyein/cupback">Source code</a>
-      <label>EMBER2026 voting address <input readonly></label>
+      <span class="blaze-tag">BCH BLAZE 2026</span>
+      <nav class="blaze-links" aria-label="Submission links">
+        <a data-presentation target="_blank" rel="noopener">Presentation <span aria-hidden="true">↗</span></a>
+        <a href="https://github.com/thesithunyein/cupback" target="_blank" rel="noopener">Source code <span aria-hidden="true">↗</span></a>
+      </nav>
+      <div class="blaze-vote">
+        <span class="blaze-vote-label">EMBER2026 vote</span>
+        <code data-ember></code>
+        <button type="button" data-copy-ember>Copy address</button>
+      </div>
     </div>
   </aside>
   <header>
