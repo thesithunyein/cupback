@@ -77,7 +77,7 @@ async function funding(amount, permitted) {
     (await provider.getUtxos(path.address)).map(utxo => ({ ...utxo, ...path }))
   ))).flat().filter(utxo => !utxo.token && utxo.satoshis >= amount + fee)
     .sort((a, b) => a.satoshis < b.satoshis ? -1 : a.satoshis > b.satoshis ? 1 : 0);
-  if (!utxos.length) throw Error('The wallet needs one BCH balance entry large enough for the amount and fee.');
+  if (!utxos.length) throw Error('Not enough BCH in this wallet. Add a little and try again.');
   return utxos[0];
 }
 
@@ -130,7 +130,7 @@ export async function broadcastSigned(node, signedTransaction, txid) {
   }
 }
 
-// When the guest wallet is also an approver (solo demo), set aside a coin on the
+// When the guest wallet is also an approver (try-it flow), set aside a coin on the
 // approver address so the same wallet can pay the refund fee right away.
 export const soloReserve = 2000n;
 
@@ -205,7 +205,7 @@ export async function refund(receipt, recover, persist) {
     const networkTime = await medianTimePast();
     if (networkTime <= event.recovery) {
       const minutes = Math.max(1, Math.ceil((event.recovery - networkTime) / 60));
-      throw Error('The network clock has not reached the recovery time yet. Try again in about ' + minutes + ' minutes.');
+      throw Error('Not open yet. Try again in about ' + minutes + ' minutes.');
     }
   }
   const deposit = await lookup(receipt);

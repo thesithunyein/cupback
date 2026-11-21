@@ -187,8 +187,8 @@ function pairWallet(otherWallet) {
   if (!otherWallet) heading.append(icon);
   heading.append(otherWallet ? 'Connect a WizardConnect wallet' : 'Connect with Cashonize');
   pairing.append(heading,
-    element('p', otherWallet ? 'Scan the QR code from your wallet to connect to CupBack.'
-      : 'Open Cashonize, check that the wallet you want is active, then return here once it connects.', 'hint'));
+    element('p', otherWallet ? 'Scan this QR code with your wallet.'
+      : 'Open Cashonize, pick your wallet, then come back here.', 'hint'));
   const code = element('img', '', 'qr');
   const link = element('a', 'Open Cashonize', 'button');
   link.target = '_blank';
@@ -285,7 +285,7 @@ async function showPickupCode(event, saved = true) {
   const open = event.recovery * 1000 > Date.now();
   panel.replaceChildren(element('p', 'Pickup code', 'preview-label'),
     element('h2', event.name), element('p', formatAmount(event.amount), 'receipt-amount'),
-    element('p', open ? 'Show this code where guests pick up cups.' : 'This event is closed.', 'hint'));
+    element('p', open ? 'Show this where guests pick up cups.' : 'This event is closed.', 'hint'));
   if (!saved) panel.append(element('p', 'Save this link. This browser could not keep the event.', 'hint'));
   await share('event', event);
   const checkout = element('a', 'Open guest view', 'button secondary');
@@ -294,27 +294,27 @@ async function showPickupCode(event, saved = true) {
 }
 
 function showSetup() {
-  panel.innerHTML = '<h2>Set up an event</h2><p class="hint">Set a deposit and make a pickup QR code.</p>' +
+  panel.innerHTML = '<h2>Set up an event</h2><p class="hint">Set a deposit. Get a QR code for guests.</p>' +
     '<form class="event-form">' +
     '<fieldset><legend>Event details</legend>' +
     '<label>Event name<input name="name" required maxlength="60" placeholder="Saturday market"></label>' +
     '<div class="setup-fields">' +
     '<label>Deposit (BCH)<input name="amount" required inputmode="decimal" autocomplete="off" placeholder="0.001"></label>' +
-    '<label>Self-refunds start<input name="recovery" type="datetime-local" required aria-describedby="refund-time-help"></label></div>' +
-    '<p class="field-help" id="refund-time-help">After this time, guests can reclaim any unrefunded deposit without returning the cup.</p></fieldset>' +
+    '<label>Guests can self-refund after<input name="recovery" type="datetime-local" required aria-describedby="refund-time-help"></label></div>' +
+    '<p class="field-help" id="refund-time-help">After this time, guests can take back any deposit that was not refunded.</p></fieldset>' +
     '<fieldset><legend>Refund approval</legend>' +
-    '<label>Return booth address<input name="booth" required spellcheck="false" autocapitalize="none" autocomplete="off" aria-describedby="booth-help"></label>' +
-    '<p class="field-help" id="booth-help">Paste the first receive address from the wallet staff will use to approve refunds.</p>' +
-    '<details class="setup-optional"><summary>Add an organizer wallet (optional)</summary>' +
-    '<label>Organizer address<input name="organizer" spellcheck="false" autocapitalize="none" autocomplete="off" aria-describedby="organizer-help"></label><p class="field-help" id="organizer-help">Use its first receive address to let this wallet approve refunds too.</p></details></fieldset>' +
-    '<button class="setup-submit">Create pickup QR code</button></form>';
+    '<label>Booth wallet address<input name="booth" required spellcheck="false" autocapitalize="none" autocomplete="off" aria-describedby="booth-help"></label>' +
+    '<p class="field-help" id="booth-help">The wallet staff use to approve refunds. Paste its first address.</p>' +
+    '<details class="setup-optional"><summary>Add a second approver (optional)</summary>' +
+    '<label>Organizer address<input name="organizer" spellcheck="false" autocapitalize="none" autocomplete="off" aria-describedby="organizer-help"></label><p class="field-help" id="organizer-help">This wallet can approve refunds too.</p></details></fieldset>' +
+    '<button class="setup-submit">Create QR code</button></form>';
   const form = panel.querySelector('form');
   const preview = element('details', '', 'event-preview');
   const previewTitle = element('summary', 'Preview guest checkout');
   const previewEvent = element('h3', 'Your event');
   const previewAmount = element('p', 'Deposit amount', 'receipt-amount');
   preview.append(previewTitle, previewEvent, previewAmount,
-    element('p', 'Pay at pickup. Get your deposit back when you return the cup.', 'hint'));
+    element('p', 'Pay now. Get it back when you return the cup.', 'hint'));
   const layout = element('div', '', 'setup-layout');
   form.before(layout);
   layout.append(form, preview);
@@ -377,20 +377,17 @@ function showSoloCard() {
   const card = element('section', '', 'solo-card');
   card.id = 'solo';
   const needed = BigInt(soloDeposit) + soloReserve + 900n;
-  card.append(element('p', 'First time here? Start with this', 'preview-label'),
-    element('h2', 'Try the full loop in one minute'),
-    element('p', 'Your wallet plays the guest and the return booth. Pay a '
-      + formatAmount(soloDeposit) + ' deposit, then approve its refund yourself. The deposit comes back in full; '
-      + 'you only spend two small network fees.', 'hint'),
-    element('p', 'Needs a ' + (network === 'mainnet' ? 'Bitcoin Cash' : 'Chipnet')
-      + ' WizardConnect wallet (like Cashonize) with at least ' + formatAmount(needed.toString())
-      + ' in one balance entry.', 'field-help'));
+  card.append(element('p', 'New to CupBack?', 'preview-label'),
+    element('h2', 'Try it with your wallet'),
+    element('p', 'Pay a tiny deposit, then refund it to yourself. You get it all back.', 'hint'),
+    element('p', 'You need ' + formatAmount(needed.toString()) + ' in a '
+      + (network === 'mainnet' ? 'Bitcoin Cash' : 'Chipnet') + ' wallet like Cashonize. Fees are under 1 cent.', 'field-help'));
   const actions = element('div', '', 'actions');
   card.append(actions);
-  walletAction('Start the demo', async () => {
+  walletAction('Try it', async () => {
     const address = walletAddress();
     const event = parseEvent({
-      name: 'CupBack demo', amount: soloDeposit, booth: address, organizer: address, network,
+      name: 'Test cup', amount: soloDeposit, booth: address, organizer: address, network,
       recovery: Math.floor(Date.now() / 1000) + 3600,
     });
     history.replaceState(null, '', makeLink('event', event));
@@ -404,10 +401,10 @@ function showEntry(key) {
   const isEvent = key === 'event';
   const isStaff = tab === 'staff';
   panel.innerHTML = isEvent
-    ? '<h2>Pay a cup deposit</h2><p class="hint">Scan the pickup code. Or paste the event link.</p>'
+    ? '<h2>Pay a deposit</h2><p class="hint">Scan the QR code at the booth, or paste the link.</p>'
     : isStaff
-      ? '<h2>Return booth</h2><p class="hint">Scan the guest’s receipt to check the deposit before approving a refund.</p>'
-      : '<h2>Find a receipt</h2><p class="hint">Open a saved receipt or paste your receipt link.</p>';
+      ? '<h2>Return booth</h2><p class="hint">Scan the receipt. Check the cup. Approve.</p>'
+      : '<h2>Find a receipt</h2><p class="hint">Open a saved receipt or paste its link.</p>';
   const form = element('form');
   const label = element('label', isEvent ? 'Event link' : 'Receipt link');
   const input = element('input');
@@ -539,10 +536,10 @@ function showEvent(event) {
   const summary = element('section', '', 'deposit-summary');
   summary.append(element('p', 'Refundable cup deposit', 'preview-label'),
     element('h2', event.name), element('p', formatAmount(event.amount), 'receipt-amount'),
-    element('p', 'Return your cup to get your deposit back.', 'hint'));
+    element('p', 'Return the cup to get it back.', 'hint'));
   const terms = element('details', '', 'deposit-terms');
-  terms.append(element('summary', 'Refund details'),
-    element('p', 'You can claim an unused deposit after '
+  terms.append(element('summary', 'Refund rules'),
+    element('p', 'If no booth refunds you, you can take it back after '
       + new Date(event.recovery * 1000).toLocaleString() + '.', 'hint'));
   panel.replaceChildren(summary, terms);
   if (event.recovery * 1000 <= Date.now()) {
@@ -607,19 +604,19 @@ async function showReceipt(receipt, submittedId) {
         status.textContent = 'Ready to return';
         status.dataset.result = 'ready';
         if (isStaff) {
-          controls.append(element('p', 'Check the cup before you approve the refund.', 'hint'));
+          controls.append(element('p', 'Check the cup, then approve.', 'hint'));
           walletAction('Approve refund', () => sendRefund(receipt, false), controls);
         } else {
-          controls.append(element('p', 'Show this receipt and your cup to staff.', 'hint'));
+          controls.append(element('p', 'Show this and your cup at any booth.', 'hint'));
           const staff = element('a', 'Open in return booth', 'secondary');
           const staffUrl = new URL(makeLink('receipt', receipt));
           staffUrl.searchParams.set('tab', 'staff');
           staff.href = staffUrl;
           controls.append(staff);
           if (connected && isApprover(receipt.event, walletAddress())) {
-            controls.append(element('p', 'Your wallet is this event’s return booth, so you can approve the refund here.', 'hint'));
-            walletAction('Approve refund as the booth', () => sendRefund(receipt, false), controls);
-            notice.textContent = 'Step 2 of 2: approve the refund.';
+            controls.append(element('p', 'You are the booth for this cup. Refund it here.', 'hint'));
+            walletAction('Refund now', () => sendRefund(receipt, false), controls);
+            notice.textContent = 'Step 2 of 2: refund it.';
           }
           if (Date.now() >= receipt.event.recovery * 1000) {
             walletAction('Recover my deposit', () => sendRefund(receipt, true), controls);
@@ -662,7 +659,7 @@ async function sendRefund(receipt, recover) {
   const address = walletAddress();
   const authorized = recover ? [receipt.buyer] : [receipt.event.booth, receipt.event.organizer];
   if (!authorized.includes(address)) {
-    throw Error(recover ? 'Connect the wallet that paid this deposit.' : 'Disconnect and connect this event’s return-booth wallet.');
+    throw Error(recover ? 'Connect the wallet that paid this deposit.' : 'Connect this event’s booth wallet.');
   }
   notice.textContent = 'Open Cashonize to approve the refund.';
   const refundId = await refund(receipt, recover, id => save({ ...receipt, refundId: id }));
