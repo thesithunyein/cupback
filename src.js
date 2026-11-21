@@ -1,12 +1,19 @@
 import './style.css';
 import QRCode from 'qrcode';
+import bchLogo from './bch.svg';
+import cashonizeLogo from './cashonize.png';
 import { depositSatoshis } from './amounts.js';
 import { addressScript, network, startWallet, stopWallet, walletAddress, pay, lookup, findRefund, refund } from './chain.js';
 
 const panel = document.querySelector('#panel');
 const notice = document.querySelector('#notice');
 const networkBadge = document.querySelector('#network');
-networkBadge.textContent = network === 'mainnet' ? 'Bitcoin Cash' : 'Chipnet';
+const bchMark = document.createElement('img');
+bchMark.src = bchLogo;
+bchMark.alt = '';
+bchMark.width = bchMark.height = 18;
+bchMark.addEventListener('error', () => bchMark.remove());
+networkBadge.append(bchMark, network === 'mainnet' ? 'Bitcoin Cash' : 'Chipnet');
 
 const storageKey = 'cupback:receipts:' + network;
 const eventStorageKey = 'cupback:events:' + network;
@@ -17,6 +24,7 @@ let connected = false;
 let busy = false;
 let tab = 'deposit';
 let receiptTimer;
+let stopCamera;
 
 function stopReceiptWatch() {
   clearInterval(receiptTimer);
@@ -54,7 +62,9 @@ function parseReceipt(receipt) {
 }
 
 function parseLink(value, key) {
-  const url = new URL(value);
+  let url;
+  try { url = new URL(value); }
+  catch { throw Error('Paste the full CupBack link.'); }
   const encoded = new URLSearchParams(url.hash.slice(1)).get(key);
   if (url.origin !== location.origin || !encoded || encoded.length > 4096) {
     throw Error('Paste the CupBack link from this site.');
@@ -128,13 +138,22 @@ async function share(key, data) {
   panel.append(section);
 }
 
-function connect(action) {
-  if (connected) return action();
+function connect() {
+  if (connected) return;
   const pairing = element('section', '', 'wallet-pairing');
-  pairing.append(element('h2', 'Connect your wallet'),
-    element('p', 'Scan this code from your wallet. On the same device, copy the link and paste it into Cashonize’s Connect tab.', 'hint'));
+  const heading = element('h2', '', 'wallet-heading');
+  const icon = element('img');
+  icon.src = cashonizeLogo;
+  icon.alt = '';
+  icon.width = icon.height = 32;
+  heading.append(icon, 'Connect with Cashonize');
+  pairing.append(heading,
+    element('p', 'Copy the link. In Cashonize, open Connect, paste it into Connection URI, and select Connect New dApp.', 'hint'));
   const code = element('img', '', 'qr');
-  const link = element('a', 'Open wallet');
+  const link = element('a', 'Open Cashonize', 'button secondary');
+  link.href = 'https://cashonize.com/';
+  link.target = '_blank';
+  link.rel = 'noopener noreferrer';
   code.alt = 'WizardConnect pairing QR code';
   const uri = startWallet(() => {
     connected = true;
@@ -147,24 +166,40 @@ function connect(action) {
     const payment = panel.querySelector('[data-wallet-action]');
     if (payment) { payment.hidden = false; payment.disabled = false; }
   });
-  if (!uri) return action();
-  link.href = uri;
+  if (!uri) return;
   const actions = element('div', '', 'actions');
   const copy = button('Copy connection link', async () => {
-    await navigator.clipboard.writeText(uri);
-    notice.textContent = 'Link copied. Paste it in Cashonize’s Connect tab.';
-  }, 'secondary');
+    try {
+      await navigator.clipboard.writeText(uri);
+      copy.textContent = 'Connection link copied';
+      notice.textContent = 'Paste the link in Cashonize’s Connect tab.';
+    } catch {
+      manual.hidden = false;
+      requestAnimationFrame(() => uriInput.focus());
+    }
+  });
+  const manual = element('label', 'Connection URI');
+  manual.hidden = true;
+  const uriInput = element('input');
+  uriInput.readOnly = true;
+  uriInput.value = uri;
+  uriInput.addEventListener('focus', () => uriInput.select());
+  manual.append(uriInput);
   actions.append(copy, link);
-  pairing.append(code, actions);
+  const otherDevice = element('details');
+  otherDevice.append(element('summary', 'Connect from another device'),
+    element('p', 'Scan this code from a WizardConnect wallet.', 'hint'), code);
+  pairing.append(actions, manual, otherDevice);
   panel.querySelector('[data-pairing]')?.remove();
   pairing.dataset.pairing = '';
   panel.append(pairing);
+  pairing.scrollIntoView({ block: 'nearest' });
   return QRCode.toDataURL(uri, {width: 340}).then(source => { code.src = source; });
 }
 
 function walletAction(text, action, container = panel) {
   if (!connected) {
-    const connectButton = button('Connect wallet', () => connect(action));
+    const connectButton = button('Connect wallet', connect);
     connectButton.dataset.connect = '';
     container.append(connectButton);
   }
@@ -284,9 +319,12 @@ function showSetup() {
 
 function showEntry(key) {
   const isEvent = key === 'event';
+  const isStaff = tab === 'staff';
   panel.innerHTML = isEvent
     ? '<h2>Pay a cup deposit</h2><p class="hint">Scan the pickup code. Or paste the event link.</p>'
-    : '<h2>Find a receipt</h2><p class="hint">Scan your receipt code. Or paste the link.</p>';
+    : isStaff
+      ? '<h2>Return booth</h2><p class="hint">Scan the guest’s receipt to check the deposit before approving a refund.</p>'
+      : '<h2>Find a receipt</h2><p class="hint">Open a saved receipt or paste your receipt link.</p>';
   const form = element('form');
   const label = element('label', isEvent ? 'Event link' : 'Receipt link');
   const input = element('input');
@@ -294,23 +332,28 @@ function showEntry(key) {
   input.required = true;
   label.append(input);
   form.append(label, element('button', 'Open'));
+  const open = value => run(async () => {
+    const data = parseLink(value.trim(), key);
+    stopCamera?.();
+    if (isEvent) {
+      const event = parseEvent(data);
+      history.replaceState(null, '', makeLink('event', event));
+      showEvent(event);
+    } else {
+      const receipt = parseReceipt(data);
+      const url = new URL(makeLink('receipt', receipt));
+      if (isStaff) url.searchParams.set('tab', 'staff');
+      history.replaceState(null, '', url);
+      await showReceipt(receipt);
+    }
+  });
   form.addEventListener('submit', e => {
     e.preventDefault();
-    run(async () => {
-      const data = parseLink(input.value.trim(), key);
-      if (isEvent) {
-        const event = parseEvent(data);
-        history.replaceState(null, '', makeLink('event', event));
-        showEvent(event);
-      } else {
-        const receipt = parseReceipt(data);
-        history.replaceState(null, '', makeLink('receipt', receipt));
-        await showReceipt(receipt);
-      }
-    });
+    open(input.value);
   });
+  if (isStaff || isEvent) addScanner(open, isStaff ? 'Scan receipt' : 'Scan pickup code');
   panel.append(form);
-  if (!isEvent) {
+  if (!isEvent && !isStaff) {
     const recent = Object.values(loadSaved()).reverse().slice(0, 10);
     if (recent.length) {
       const list = element('section', '', 'recent-receipts');
@@ -326,6 +369,86 @@ function showEntry(key) {
       panel.append(list);
     }
   }
+}
+
+function addScanner(open, label) {
+  const scanner = element('section', '', 'scanner');
+  const video = element('video');
+  video.playsInline = true;
+  video.muted = true;
+  video.hidden = true;
+  const scan = element('button', label);
+  scan.type = 'button';
+  scan.onclick = async () => {
+    if (stopCamera) {
+      stopCamera();
+      return;
+    }
+    if (!navigator.mediaDevices?.getUserMedia) {
+      notice.textContent = 'Use your phone’s camera app to scan the QR code, then paste the link below.';
+      return;
+    }
+    let stream;
+    let stopped = false;
+    stopCamera = () => {
+      stopped = true;
+      stream?.getTracks().forEach(track => track.stop());
+      video.srcObject = null;
+      video.hidden = true;
+      scan.textContent = label;
+      stopCamera = undefined;
+    };
+    const close = stopCamera;
+    scan.textContent = 'Stop camera';
+    notice.textContent = 'Requesting camera access…';
+    try {
+      const { default: decodeQr } = await import('jsqr');
+      if (stopped) return;
+      const canvas = document.createElement('canvas');
+      const pixels = canvas.getContext('2d', { willReadFrequently: true });
+      if (!pixels) throw Error('Camera preview unavailable.');
+      stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' } } });
+      if (stopped) {
+        stream.getTracks().forEach(track => track.stop());
+        return;
+      }
+      video.srcObject = stream;
+      video.hidden = false;
+      await video.play();
+      if (stopped) return;
+      notice.textContent = 'Hold the QR code inside the camera view.';
+      const check = () => {
+        try {
+          if (stopped) return;
+          if (video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) {
+            window.setTimeout(check, 200);
+            return;
+          }
+          const scale = Math.min(1, 1280 / Math.max(video.videoWidth, video.videoHeight));
+          canvas.width = Math.round(video.videoWidth * scale);
+          canvas.height = Math.round(video.videoHeight * scale);
+          pixels.drawImage(video, 0, 0, canvas.width, canvas.height);
+          const frame = pixels.getImageData(0, 0, canvas.width, canvas.height);
+          const code = decodeQr(frame.data, frame.width, frame.height);
+          if (code) {
+            close();
+            void open(code.data);
+          } else window.setTimeout(check, 200);
+        } catch {
+          if (stopped) return;
+          close();
+          notice.textContent = 'Could not read the QR code. Try again or paste the link.';
+        }
+      };
+      check();
+    } catch {
+      if (stopped) return;
+      close();
+      notice.textContent = 'Camera unavailable. Scan with your phone’s camera app or paste the link.';
+    }
+  };
+  scanner.append(scan, video);
+  panel.append(scanner);
 }
 
 function showEvent(event) {
@@ -346,7 +469,7 @@ function showEvent(event) {
   buyer.dataset.destination = '';
   panel.append(buyer);
   walletAction('Pay deposit', async () => {
-    notice.textContent = 'Open your wallet to approve.';
+    notice.textContent = 'Open Cashonize to approve the deposit.';
     const receipt = await pay(event, pendingReceipt => {
       save(pendingReceipt);
       history.replaceState(null, '', makeLink('receipt', pendingReceipt));
@@ -355,58 +478,89 @@ function showEvent(event) {
   });
 }
 
-async function showReceipt(receipt) {
+async function showReceipt(receipt, submittedId) {
   stopReceiptWatch();
+  const isStaff = tab === 'staff';
   panel.replaceChildren(element('p', 'Return receipt', 'preview-label'), element('h2', receipt.event.name),
-    element('p', formatAmount(receipt.event.amount), 'receipt-amount'),
-    txLink('View deposit transaction', receipt.txid));
-  const status = element('p', 'Checking the deposit…', 'receipt-status');
+    element('p', formatAmount(receipt.event.amount), 'receipt-amount'));
+  const status = element('p', submittedId ? 'Refund submitted' : 'Checking the deposit…', 'receipt-status');
   status.setAttribute('role', 'status');
   const statusBar = element('div', '', 'receipt-status-bar');
-  statusBar.append(status, button('Refresh', () => showReceipt(receipt), 'secondary'));
+  statusBar.append(status, button('Refresh', () => showReceipt(receipt, submittedId), 'secondary'));
   panel.append(statusBar);
-  await share('receipt', receipt);
-  const unspent = await lookup(receipt).catch(error => {
-    status.textContent = 'Could not check your deposit. Tap Refresh.';
-    throw error;
+  const proof = element('details', '', 'deposit-terms');
+  proof.append(element('summary', 'Transaction details'), txLink('View deposit transaction', receipt.txid));
+  const controls = element('section', '', 'receipt-controls');
+  const next = element('a', 'Scan next receipt', 'button secondary');
+  next.href = './app.html?tab=staff';
+  next.addEventListener('click', event => {
+    if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    if (busy) return;
+    history.replaceState(null, '', next.href);
+    notice.textContent = '';
+    setTab('staff');
   });
-  if (!unspent) {
-    status.textContent = 'This deposit has been used.';
+  const markRefunded = refundId => {
+    if (status.dataset.result === 'paid') return;
+    stopReceiptWatch();
+    status.textContent = isStaff ? 'Already refunded' : 'Refunded';
+    if (submittedId) status.textContent = 'Refunded';
+    status.dataset.result = 'paid';
+    proof.append(txLink('View refund transaction', refundId));
+    controls.replaceChildren(element('p', 'Returned ' + formatAmount(receipt.event.amount) + ' to the guest wallet.', 'hint'));
+    if (isStaff) controls.append(next);
+  };
+  if (!isStaff) await share('receipt', receipt);
+  panel.append(controls, proof);
+  if (submittedId) {
+    controls.append(element('p', 'Checking that the refund appears on the network.', 'hint'));
+    if (isStaff) controls.append(next);
+  } else {
+    try {
+      const unspent = await lookup(receipt);
+      if (unspent) {
+        status.textContent = 'Ready to return';
+        status.dataset.result = 'ready';
+        if (isStaff) {
+          controls.append(element('p', 'Check the cup before you approve the refund.', 'hint'));
+          walletAction('Approve refund', () => sendRefund(receipt, false), controls);
+        } else {
+          controls.append(element('p', 'Show this receipt and your cup to staff.', 'hint'));
+          const staff = element('a', 'Open in return booth', 'secondary');
+          const staffUrl = new URL(makeLink('receipt', receipt));
+          staffUrl.searchParams.set('tab', 'staff');
+          staff.href = staffUrl;
+          controls.append(staff);
+          if (Date.now() >= receipt.event.recovery * 1000) {
+            walletAction('Recover my deposit', () => sendRefund(receipt, true), controls);
+          }
+        }
+      } else {
+        status.textContent = 'Checking refund…';
+        if (isStaff) controls.append(next);
+      }
+    } catch (error) {
+      status.textContent = 'Could not check the deposit. Tap Refresh.';
+      if (isStaff) controls.append(next);
+      throw error;
+    }
+  }
+  const checkRefund = async () => {
     const refundId = await findRefund(receipt);
     if (refundId) {
-      status.textContent = 'Refunded';
-      status.dataset.result = 'paid';
-      panel.append(txLink('View refund transaction', refundId));
+      if (status.isConnected) markRefunded(refundId);
+      return true;
     }
-    return;
-  }
-  status.textContent = 'Ready to return';
-  status.dataset.result = 'ready';
-  panel.append(element('p', 'Show this receipt and your cup to staff.', 'hint'));
-  const staff = element('details', '', 'staff-tools');
-  staff.append(element('summary', 'Staff: approve a return'),
-    element('p', 'Check the cup before you approve.', 'hint'));
-  walletAction('Approve refund', () => sendRefund(receipt, false), staff);
-  panel.append(staff);
-  if (Date.now() >= receipt.event.recovery * 1000) {
-    panel.append(button('Recover my deposit', () => connect(() => sendRefund(receipt, true)), 'secondary'));
-  }
+    return false;
+  };
+  if (status.dataset.result !== 'ready' && await checkRefund().catch(() => false)) return;
   let checking = false;
   receiptTimer = setInterval(async () => {
     if (busy || checking || document.hidden || !status.isConnected) return;
     checking = true;
     try {
-      const refundId = await findRefund(receipt);
-      if (!refundId || busy || !status.isConnected) return;
-      stopReceiptWatch();
-      status.textContent = 'Refunded';
-      status.dataset.result = 'paid';
-      const proof = txLink('View refund transaction', refundId);
-      status.after(proof);
-      staff.remove();
-      for (const control of panel.querySelectorAll('button')) {
-        if (control.textContent === 'Recover my deposit') control.remove();
-      }
+      await checkRefund();
     } catch {
       // Keep the last verified status when the network is temporarily unavailable.
     } finally {
@@ -416,12 +570,19 @@ async function showReceipt(receipt) {
 }
 
 async function sendRefund(receipt, recover) {
-  notice.textContent = 'Open your wallet to approve the refund.';
-  await refund(receipt, recover, refundId => save({ ...receipt, refundId }));
-  await showReceipt(receipt);
+  const address = walletAddress();
+  const authorized = recover ? [receipt.buyer] : [receipt.event.booth, receipt.event.organizer];
+  if (!authorized.includes(address)) {
+    throw Error(recover ? 'Connect the wallet that paid this deposit.' : 'Disconnect and connect this event’s return-booth wallet.');
+  }
+  notice.textContent = 'Open Cashonize to approve the refund.';
+  const refundId = await refund(receipt, recover, id => save({ ...receipt, refundId: id }));
+  notice.textContent = '';
+  await showReceipt(receipt, refundId);
 }
 
 function setTab(next) {
+  stopCamera?.();
   stopReceiptWatch();
   tab = next;
   document.querySelectorAll('[data-tab]').forEach(node =>
@@ -433,7 +594,7 @@ function setTab(next) {
 function openFromLocation() {
   const params = new URLSearchParams(location.hash.slice(1));
   if (params.has('receipt')) {
-    setTab('return');
+    setTab(new URLSearchParams(location.search).get('tab') === 'staff' ? 'staff' : 'return');
     return run(() => showReceipt(parseReceipt(parseLink(location.href, 'receipt'))));
   }
   if (params.has('event')) {
@@ -441,7 +602,7 @@ function openFromLocation() {
     return run(() => showEvent(parseEvent(parseLink(location.href, 'event'))));
   }
   const requested = new URLSearchParams(location.search).get('tab');
-  setTab(requested === 'setup' || requested === 'return' ? requested : 'deposit');
+  setTab(['setup', 'return', 'staff'].includes(requested) ? requested : 'deposit');
 }
 
 document.querySelectorAll('[data-tab]').forEach(node => node.addEventListener('click', () => {
@@ -463,7 +624,7 @@ const walletControl = button('Disconnect wallet', async () => {
     if (current) {
       current.hidden = true;
       current.disabled = true;
-      const reconnect = button('Connect wallet', () => connect(() => {}));
+      const reconnect = button('Connect wallet', connect);
       reconnect.dataset.connect = '';
       current.before(reconnect);
     }
@@ -472,5 +633,6 @@ const walletControl = button('Disconnect wallet', async () => {
 walletControl.hidden = true;
 networkBadge.after(walletControl);
 window.addEventListener('hashchange', openFromLocation);
+window.addEventListener('pagehide', () => stopCamera?.());
 openFromLocation();
 

@@ -120,3 +120,25 @@
 .wallet-pairing{margin-top:1rem;padding:1rem;border:1px solid var(--line);border-radius:1rem}
 .wallet-pairing .qr{max-width:100%;height:auto}
 @media(max-width:480px){.deposit-terms~button{width:100%}}
+
+#network{display:inline-flex;align-items:center;gap:.4rem;white-space:nowrap}
+.workspace nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.wallet-pairing{background:#f7faf5}
+.wallet-heading{display:flex;align-items:center;gap:.6rem}
+.wallet-pairing .actions{margin-bottom:.85rem}
+.wallet-pairing summary{font-weight:650;color:var(--green);cursor:pointer;min-height:44px;padding:.6rem 0}
+.wallet-pairing details .qr{display:block;margin-top:.5rem}
+.scanner{margin:1rem 0 1.3rem}
+.scanner video{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:.85rem;margin-top:.75rem;background:var(--green)}
+.scanner video[hidden]{display:none}
+.receipt-controls{margin-top:1rem}
+.receipt-controls .hint{margin-bottom:.75rem}
+.deposit-terms a + a{margin-inline-start:1rem}
+.network-proof{display:flex;align-items:flex-start;gap:1rem}
+.network-proof img{flex:none}
+.network-proof p{color:var(--muted)}
+@media(max-width:640px){
+  .workspace nav{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .workspace nav button{justify-content:flex-start;text-align:left}
+  .scanner button,.receipt-controls button,.wallet-pairing .actions>*{width:100%}
+}
