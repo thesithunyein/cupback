@@ -205,7 +205,7 @@ function showSetup() {
     '<label>Self-refunds open<input name="recovery" type="datetime-local" required></label></div>' +
     '<label>Return booth wallet address<input name="booth" required spellcheck="false"></label>' +
     '<label>Organizer wallet address<input name="organizer" required spellcheck="false"></label>' +
-    '<p class="hint">Use the first receive address for each wallet. After this time, guests can claim any unused deposit with their wallet.</p>' +
+    '<p class="hint">Use the first receive address for each wallet. After this time, guests can get back a deposit that has not been refunded, even if they still have the cup.</p>' +
     '<button>Create event link</button></form>';
   const form = panel.querySelector('form');
   const preview = element('aside', '', 'event-preview');

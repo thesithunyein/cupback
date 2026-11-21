@@ -2,7 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { binToHex, createVirtualMachineBCH, decodeTransaction, hexToBin } from '@bitauth/libauth';
 import { MockNetworkProvider, SignatureTemplate, TransactionBuilder } from 'cashscript';
-import { depositContract } from './chain.js';
+import { broadcastSigned, depositContract } from './chain.js';
+import { hashTransaction } from '@bitauth/libauth';
 
 const provider = new MockNetworkProvider();
 const vm = createVirtualMachineBCH();
@@ -62,3 +63,42 @@ test('customer recovery requires the configured time and buyer authorization', (
   assert.notEqual(evaluate({ signer: stranger, recover: true, locktime: recovery }), true);
 });
 
+
+test('two competing returns can only spend the deposit once, even if the first reply is lost', async () => {
+  const ledger = new MockNetworkProvider();
+  const buyerCoin = ledger.addUtxo(buyer.address, { txid: '33'.repeat(32), vout: 0, satoshis: 20000n });
+  const boothCoin = ledger.addUtxo(booth.address, { txid: '44'.repeat(32), vout: 0, satoshis: feeCoin });
+  const organizerCoin = ledger.addUtxo(organizer.address, { txid: '55'.repeat(32), vout: 0, satoshis: feeCoin });
+  const payment = await new TransactionBuilder({ provider: ledger })
+    .addInput(buyerCoin, buyer.unlock)
+    .addOutput({ to: deposit.address, amount: principal })
+    .addOutput({ to: buyer.address, amount: 9000n })
+    .send();
+  const [locked] = await ledger.getUtxos(deposit.address);
+  assert.equal(locked.txid, payment.txid);
+  const returnTransaction = (operator, coin) => new TransactionBuilder({ provider: ledger })
+    .addInput(locked, deposit.unlock.refund(hexToBin(receipt.nonce)))
+    .addInput(coin, operator.unlock)
+    .addOutput({ to: buyer.address, amount: principal })
+    .addOutput({ to: operator.address, amount: 9000n })
+    .build();
+  const first = returnTransaction(booth, boothCoin);
+  const second = returnTransaction(organizer, organizerCoin);
+  const firstId = hashTransaction(hexToBin(first));
+  const interruptedNode = {
+    async sendRawTransaction(raw) {
+      await ledger.sendRawTransaction(raw);
+      throw Error('Connection lost after broadcast');
+    },
+    getRawTransaction: txid => ledger.getRawTransaction(txid),
+  };
+  await broadcastSigned(interruptedNode, first, firstId);
+  assert.equal((await ledger.getUtxos(deposit.address)).length, 0);
+  assert.equal((await ledger.getUtxos(buyer.address)).find(coin => coin.txid === firstId)?.satoshis, principal);
+  await assert.rejects(() => ledger.sendRawTransaction(second));
+  assert.equal((await ledger.getUtxos(organizer.address))[0].txid, organizerCoin.txid);
+  await assert.rejects(() => broadcastSigned({
+    async sendRawTransaction() { throw Error('Offline'); },
+    async getRawTransaction() { throw Error('Unknown transaction'); },
+  }, first, firstId), /could not check if it went through/);
+});

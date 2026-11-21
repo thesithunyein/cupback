@@ -108,12 +108,19 @@ async function signAndSend(transaction, sourceOutputs, coin, index, prompt, befo
   }
   const txid = hashTransaction(signedBytes);
   beforeBroadcast(txid);
+  await broadcastSigned(provider, response.signedTransaction, txid);
+  return txid;
+}
+
+export async function broadcastSigned(node, signedTransaction, txid) {
   try {
-    await provider.sendRawTransaction(response.signedTransaction);
+    await node.sendRawTransaction(signedTransaction);
   } catch {
+    // A node can accept a transaction even if its reply never reaches the app.
+    const raw = await node.getRawTransaction(txid).catch(() => null);
+    if (typeof raw === 'string' && /^[a-f0-9]+$/i.test(raw) && hashTransaction(hexToBin(raw)) === txid) return;
     throw Error('We could not check if it went through. Open Find receipt before trying again.');
   }
-  return txid;
 }
 
 export async function pay(event, persist) {
