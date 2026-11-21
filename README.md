@@ -2,6 +2,8 @@
 
 CupBack links a reusable-cup deposit to a BCH wallet. Any authorized return booth can approve the full refund from that original deposit. Its wallet pays the transaction fee. A refund can consume the deposit only once.
 
+[Open CupBack on Chipnet](https://cupback.vercel.app/app.html)
+
 ## Run locally
 
 Use Node 22.12+ and run npm ci, then npm run dev. Run npm test for the local BCH VM checks and npm run build to create dist/. Serve dist/ over HTTPS for camera-based QR navigation and clipboard support. The default network is Chipnet.
@@ -15,11 +17,20 @@ No project environment variables are required for Chipnet. Open / for the landin
 
 ## Chipnet checkout
 
-1. Prepare separate WizardConnect wallets for the buyer, return booth, and organizer. Fund the buyer and the return booth with Chipnet BCH. The current wallet integration spends a single BCH coin per transaction. Deposit funding searches the first eight receive and change paths. Refund funding uses the wallet's first receive address.
-2. Set up an event with the booth and organizer's first receive addresses, a deposit of at least 0.00001 BCH, and a future time for self-refunds. The event stays in this browser. Save the pickup link to open it elsewhere.
+1. Prepare separate WizardConnect wallets for the guest and return booth. Fund the buyer and the return booth with Chipnet BCH. The current wallet integration spends a single BCH coin per transaction. Deposit funding searches the first eight receive and change paths. Refund funding uses the wallet's first receive address.
+2. Set up an event with the booth wallet's first receive address, a deposit of at least 0.00001 BCH, and a future time for self-refunds. Leave the organizer wallet blank if only the booth approves refunds. The event stays in this browser. Save the pickup link to open it elsewhere.
 3. Open the pickup QR from the buyer device. Pair the buyer wallet, approve the deposit, and save the receipt URL.
 4. Open the receipt from the booth device. Check the cup, pair the booth wallet, approve the refund, then refresh the receipt to verify both transactions.
 5. Scan the receipt again. The chain should report the original refund. Confirm that the buyer received the entire principal and the booth spent only the network fee.
+
+## Verified Chipnet browser test
+
+On November 21, 2026, a guest paid a 2,000-satoshi deposit from Cashonize using WizardConnect. Staff opened the receipt and approved the return with a separate Cashonize booth wallet. The CupBack receipt changed from **Ready to return** to **Refunded**.
+
+- [Guest deposit transaction](https://chipnet.chaingraph.cash/tx/e984eef0fcd103acbfd3f0d2d6cd9defe2a229c57aa96728c86f05d8393357f9)
+- [Staff refund transaction](https://chipnet.chaingraph.cash/tx/870d237a4690c23311d7609d568ae153507e7e04550b5dd45face54be5de3138)
+
+The refund spent output 0 of the original deposit and returned all 2,000 satoshis to the guest. The booth wallet covered the network fee.
 
 ## Pilot limits
 
@@ -27,6 +38,6 @@ No project environment variables are required for Chipnet. Open / for the landin
 - Buyers can recover an unspent deposit after the event's published recovery time, even if the cup was never returned. This makes the deposit a temporary hold. An organizer must accept this policy before offering it to customers.
 - Event links come from the organizer and carry public configuration. Receipts carry the public deposit details used to reconstruct the contract. Save or share a receipt link across devices. Recent history on a single device is stored in that browser.
 - The browser uses Electrum and WizardConnect relay services. A compatible app and live connectivity are required.
-- There is no shared organizer ledger. Deployment does not establish support for a real-wallet transaction, operator adoption, or prize eligibility.
+- Event and receipt history is local to each browser. Staff can hand off a receipt using its link or QR code.
 
-The application has a separate mainnet build configuration. Before enabling it, verify funded Chipnet pairing, broadcast, refund and recovery with two real wallets, review the money-handling and event policy, and independently review the covenant. No private keys are needed by CupBack.
+The application has a separate mainnet build configuration. Before enabling it, verify timed recovery with a funded wallet, review the money-handling and event policy, and get an independent covenant review. Mainnet validation and a live event pilot are pending. No private keys are needed by CupBack.
