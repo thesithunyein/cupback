@@ -46,6 +46,13 @@ The refund spent output 0 of the original deposit and returned all 2,000 satoshi
 
 The application has a separate mainnet build configuration. Before enabling it, verify timed recovery with a funded wallet, review the money-handling and event policy, and get an independent covenant review. Mainnet validation and a live event pilot are pending. No private keys are needed by CupBack.
 
+## Verified mainnet solo demo (November 21, 2026)
+
+One Cashonize wallet paid a 1,000-satoshi deposit and approved its own refund as the return booth. The full deposit came back.
+
+- [Mainnet deposit](https://explorer.bitcoinunlimited.info/tx/0067f9705f54cc2dbc9821d39d48380000e081f8f9db55dccdefa7601eefa28b)
+- [Mainnet refund](https://explorer.bitcoinunlimited.info/tx/b1e866ad97b2ccd4c496b4735e577f93692a5105e8d0963702a63441e5f9aa85)
+
 ## Solo demo
 
 One wallet can try the whole flow. "Start the demo" creates a 0.00001 BCH event where the connected wallet is the guest and the return booth. The deposit transaction also sends 2,000 satoshis back to the wallet's first receive address so the same wallet can pay the refund fee. The wallet needs one balance entry of at least 0.000039 BCH.
