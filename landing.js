@@ -11,7 +11,7 @@ if (import.meta.env.VITE_BCH_NETWORK === 'mainnet') {
   }
 }
 
-const presentation = import.meta.env.VITE_BLAZE_PRESENTATION_URL || new URL('./deck.pdf', location.href).href;
+const presentation = import.meta.env.VITE_BLAZE_PRESENTATION_URL || new URL('./cupback-presentation.pdf', location.href).href;
 const votingAddress = import.meta.env.VITE_BLAZE_EMBER_ADDRESS?.trim();
 const banner = document.querySelector('#blaze-banner');
 if (banner && presentation && votingAddress) {

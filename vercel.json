@@ -4,5 +4,8 @@
   "installCommand": "npm ci",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "cleanUrls": false
+  "cleanUrls": false,
+  "redirects": [
+    { "source": "/deck.pdf", "destination": "/cupback-presentation.pdf", "permanent": false }
+  ]
 }
