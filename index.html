@@ -1,7 +1,49 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#f5f8f3"><title>CupBack · Reusable cup deposits</title></head>
-<body><header><a href="./" class="brand" aria-label="CupBack home"><svg viewBox="0 0 40 40" width="38" height="38" aria-hidden="true"><rect width="40" height="40" rx="12" fill="#174731"/><path d="M12 13h13l-2 15h-9l-2-15Zm13 3h2a3 3 0 0 1 0 6h-3M11 13h15" fill="none" stroke="#ecffb9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>CupBack</a><span id="network"></span></header>
-<main><section class="intro"><p class="eyebrow">REUSABLE CUP DEPOSITS</p><h1>Take a cup.<br>Bring it back.</h1><p>Pay a deposit at pickup. Get it back when you return your cup to a participating booth.</p><svg class="art" viewBox="0 0 220 220" aria-hidden="true"><circle cx="110" cy="110" r="96" fill="#dcebbd"/><g transform="rotate(-12 110 110)" stroke="#174731" stroke-width="3" stroke-linejoin="round"><path d="M82 65h57l-8 108H90z" fill="#f7ffe8"/><path d="M74 63h72v13H74z" fill="#174731"/><path d="M85 110h51l-3 35H88z" fill="#d1eb8e"/><path d="M103 129q8-14 16 0" fill="none" stroke-linecap="round"/></g></svg></section>
-<section class="workspace" aria-label="CupBack tools"><nav aria-label="Tasks"><button data-tab="deposit">Pay deposit</button><button data-tab="return">Find receipt</button><button data-tab="setup">Set up event</button></nav>
-<div id="panel"></div><p id="notice" role="status" aria-live="polite"></p></section></main>
-<footer>Deposits and refunds settle on Bitcoin Cash.</footer><script type="module" src="/src.js"></script></body></html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f8f3">
+  <title>CupBack | Reusable cup deposits</title>
+  <meta name="description" content="Pay a cup deposit at one booth and get it back at another.">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="icon" href="/mark.svg">
+</head>
+<body class="landing">
+  <header>
+    <a href="./" class="brand" aria-label="CupBack home"><img src="/mark.svg" width="38" height="38" alt="">CupBack</a>
+    <a class="button secondary" href="./app.html">Open app</a>
+  </header>
+  <main>
+    <section class="landing-hero">
+      <div class="hero-copy">
+        <h1>Borrow a cup.<br>Return it at any booth.</h1>
+        <p>Pay a deposit at pickup. Return your cup to a participating booth and get the deposit back in your wallet.</p>
+        <div class="actions">
+          <a class="button" href="./app.html">Open CupBack</a>
+          <a class="button secondary" href="./app.html?tab=setup">Set up an event</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <svg viewBox="0 0 330 290" aria-hidden="true">
+          <circle cx="165" cy="145" r="110" fill="#dcebbd"/>
+          <ellipse cx="165" cy="239" rx="53" ry="11" fill="#254934" opacity=".14"/>
+          <g transform="rotate(-12 165 145)" stroke="#174731" stroke-width="3" stroke-linejoin="round">
+            <path d="M117 89h92l-12 133h-66Z" fill="#fffef7"/>
+            <path d="M110 81h106v18H110Z" fill="#174731"/>
+            <path d="M122 140h82l-5 44h-73Z" fill="#cce88a"/>
+            <path d="M147 163a15 15 0 1 1 11 14m-12-8 1-6 6 1" fill="none" stroke-linecap="round"/>
+          </g>
+        </svg>
+      </div>
+    </section>
+    <section class="steps" aria-label="How CupBack works">
+      <article><h2>Pay a deposit</h2><p>Scan the pickup code and save your receipt.</p></article>
+      <article><h2>Return the cup</h2><p>Show your receipt at a participating booth.</p></article>
+      <article><h2>Get your refund</h2><p>The original deposit goes back to your wallet.</p></article>
+    </section>
+  </main>
+  <footer>Deposits and refunds settle on Bitcoin Cash.</footer>
+  <script type="module" src="/landing.js"></script>
+</body>
+</html>

@@ -282,7 +282,7 @@ function openFromLocation() {
     setTab('deposit');
     return run(() => showEvent(parseEvent(parseLink(location.href, 'event'))));
   }
-  setTab('deposit');
+  setTab(new URLSearchParams(location.search).get('tab') === 'setup' ? 'setup' : 'deposit');
 }
 
 document.querySelectorAll('[data-tab]').forEach(node => node.addEventListener('click', () => {
@@ -311,3 +311,4 @@ walletControl.hidden = true;
 networkBadge.after(walletControl);
 window.addEventListener('hashchange', openFromLocation);
 openFromLocation();
+

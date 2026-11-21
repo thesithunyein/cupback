@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f8f3">
+  <title>CupBack App</title>
+  <link rel="icon" href="/mark.svg">
+</head>
+<body class="app">
+  <header>
+    <a href="./" class="brand" aria-label="CupBack home"><img src="/mark.svg" width="38" height="38" alt="">CupBack</a>
+    <div class="actions"><span id="network"></span></div>
+  </header>
+  <main>
+    <h1 class="app-title">Cup deposits</h1>
+    <section class="workspace" aria-label="CupBack tools">
+      <nav aria-label="Tasks">
+        <button data-tab="deposit">Pay deposit</button>
+        <button data-tab="return">Find receipt</button>
+        <button data-tab="setup">Set up event</button>
+      </nav>
+      <div id="panel"></div>
+      <p id="notice" role="status" aria-live="polite"></p>
+    </section>
+  </main>
+  <footer><a href="./">About CupBack</a></footer>
+  <script type="module" src="/src.js"></script>
+</body>
+</html>
