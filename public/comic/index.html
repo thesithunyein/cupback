@@ -44,6 +44,12 @@ figcaption b{display:block;font-size:.75rem;letter-spacing:.1em;text-transform:u
 .facts div{background:var(--pale);border-radius:.8rem;padding:1rem}
 .facts strong{display:block;font-size:1.05rem;color:var(--green)}
 footer{color:var(--muted);font-size:.9rem;padding:1.5rem 0 2.5rem;border-top:1px solid var(--line)}
+.strip svg :is(path,circle,rect,ellipse):not([stroke]):not(.bg):not(.tex){stroke:#14271c;stroke-width:2.5px;stroke-linejoin:round;stroke-linecap:round;paint-order:stroke}
+.strip svg text{paint-order:stroke}
+body{background:#f6f0e4}
+figure{border-radius:1rem;box-shadow:7px 7px 0 #14271c}
+figcaption{background:#fffdf8;font-size:1.03rem}
+.end{background:#fffdf8}.facts div{background:#eaf1df;border:2px solid #14271c}
 @media(max-width:700px){.strip{grid-template-columns:1fr}.facts{grid-template-columns:1fr}}
 </style>
 </head>
@@ -63,12 +69,14 @@ footer{color:var(--muted);font-size:.9rem;padding:1.5rem 0 2.5rem;border-top:1px
 </header>
 
 <main>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><pattern id="dots" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.4" fill="#14271c"/></pattern></defs></svg>
+
 <section class="strip" aria-label="Comic, six panels">
 
 <!-- 1 -->
 <figure>
 <svg viewBox="0 0 400 260" role="img" aria-label="Mia at a festival bar gets a drink in a reusable cup and a plastic token">
-  <rect width="400" height="260" fill="#1f2b4d"/>
+  <rect class="bg" width="400" height="260" fill="#1f2b4d"/>
   <g fill="#f3b23f"><circle cx="40" cy="30" r="5"/><circle cx="95" cy="22" r="5" fill="#5fae5a"/><circle cx="150" cy="32" r="5" fill="#c9503e"/><circle cx="205" cy="22" r="5"/><circle cx="260" cy="32" r="5" fill="#5fae5a"/><circle cx="315" cy="22" r="5" fill="#c9503e"/><circle cx="370" cy="30" r="5"/></g>
   <path d="M0 28 Q100 45 200 26 T400 28" fill="none" stroke="#ffffff55" stroke-width="2"/>
   <rect x="210" y="120" width="190" height="140" fill="#6b4a2f"/><rect x="210" y="112" width="190" height="14" fill="#8a6440"/>
@@ -85,18 +93,18 @@ footer{color:var(--muted);font-size:.9rem;padding:1.5rem 0 2.5rem;border-top:1px
   <circle cx="60" cy="200" r="16" fill="#c9503e" stroke="#14271c" stroke-width="3"/><text x="60" y="205" text-anchor="middle" font-size="12" font-weight="800" fill="#fff" font-family="system-ui">TKN</text>
   <rect x="22" y="70" width="120" height="34" rx="10" fill="#fff"/><path d="M90 104 L100 116 L102 104Z" fill="#fff"/>
   <text x="82" y="92" text-anchor="middle" font-size="13" font-weight="700" fill="#14271c" font-family="system-ui">Keep the token!</text>
-</svg>
+<rect class="tex" width="400" height="260" fill="url(#dots)" opacity=".10"/></svg>
 <figcaption><b>8 PM · the festival</b>Mia buys a drink. The reusable cup costs a $3 deposit. She gets a little plastic token to get it back later.</figcaption>
 </figure>
 
 <!-- 2 -->
 <figure>
 <svg viewBox="0 0 400 260" role="img" aria-label="At midnight a long queue waits at the only refund stall, which is closed">
-  <rect width="400" height="260" fill="#151d36"/>
-  <circle cx="350" cy="45" r="22" fill="#f4efd2"/><circle cx="360" cy="40" r="20" fill="#151d36"/>
+  <rect class="bg" width="400" height="260" fill="#151d36"/>
+  <circle cx="350" cy="45" r="22" fill="#f4efd2"/><circle cx="360" cy="40" r="20" fill="#151d36" stroke="none"/>
   <rect x="250" y="90" width="140" height="170" fill="#3a3f55"/><rect x="250" y="82" width="140" height="14" fill="#4b5170"/>
   <rect x="262" y="110" width="116" height="60" rx="6" fill="#c9503e"/>
-  <text x="320" y="134" text-anchor="middle" font-size="13" font-weight="800" fill="#fff" font-family="system-ui">REFUNDS: STALL 4</text>
+  <text x="320" y="134" text-anchor="middle" font-size="11.5" font-weight="800" fill="#fff" font-family="system-ui">REFUNDS: STALL 4</text>
   <text x="320" y="156" text-anchor="middle" font-size="18" font-weight="900" fill="#fff" font-family="system-ui">CLOSED</text>
   <g fill="#2a3150">
     <circle cx="225" cy="150" r="16"/><path d="M205 260 Q205 175 225 170 Q245 175 245 260Z"/>
@@ -108,14 +116,14 @@ footer{color:var(--muted);font-size:.9rem;padding:1.5rem 0 2.5rem;border-top:1px
   <circle cx="43" cy="146" r="2.5" fill="#14271c"/><circle cx="57" cy="146" r="2.5" fill="#14271c"/><path d="M43 158 Q50 153 57 158" stroke="#14271c" stroke-width="2.5" fill="none" stroke-linecap="round"/>
   <path d="M22 260 Q22 175 50 170 Q78 175 78 260Z" fill="#5fae5a"/>
   <text x="140" y="118" text-anchor="middle" font-size="26" font-weight="900" fill="#f3b23f" font-family="system-ui">. . .</text>
-</svg>
+<rect class="tex" width="400" height="260" fill="url(#dots)" opacity=".10"/></svg>
 <figcaption><b>Midnight · the queue</b>Only one stall does refunds. The queue is forty people long, and the stall just closed.</figcaption>
 </figure>
 
 <!-- 3 -->
 <figure>
 <svg viewBox="0 0 400 260" role="img" aria-label="Mia checks her empty pockets; the token and the three dollars are gone">
-  <rect width="400" height="260" fill="#fbe9e4"/>
+  <rect class="bg" width="400" height="260" fill="#fbe9e4"/>
   <circle cx="200" cy="95" r="40" fill="#c98e63"/><path d="M160 90 Q200 30 240 90 Q240 64 200 55 Q160 64 160 90Z" fill="#2a1a12"/>
   <path d="M185 92 l8 6 M193 92 l-8 6 M207 92 l8 6 M215 92 l-8 6" stroke="#14271c" stroke-width="3" stroke-linecap="round"/>
   <ellipse cx="200" cy="116" rx="9" ry="7" fill="#14271c"/>
@@ -125,14 +133,14 @@ footer{color:var(--muted);font-size:.9rem;padding:1.5rem 0 2.5rem;border-top:1px
   <text x="70" y="70" font-size="40" font-weight="900" fill="#c9503e" font-family="system-ui">?!</text>
   <g transform="translate(320 70) rotate(18)"><circle r="22" fill="#c9503e" stroke="#14271c" stroke-width="3" opacity=".35"/><line x1="-30" y1="-30" x2="30" y2="30" stroke="#14271c" stroke-width="5"/></g>
   <text x="320" y="135" text-anchor="middle" font-size="30" font-weight="900" fill="#c9503e" font-family="system-ui">−$3</text>
-</svg>
+<rect class="tex" width="400" height="260" fill="url(#dots)" opacity=".10"/></svg>
 <figcaption><b>12:30 AM · the loss</b>The token fell out somewhere near the main stage. No token, no refund. The $3 is gone. Now multiply that by every guest, every night.</figcaption>
 </figure>
 
 <!-- 4 -->
 <figure>
 <svg viewBox="0 0 400 260" role="img" aria-label="Next year Mia scans a QR code at the bar and pays the deposit from her phone wallet">
-  <rect width="400" height="260" fill="#ecf3e2"/>
+  <rect class="bg" width="400" height="260" fill="#ecf3e2"/>
   <text x="20" y="34" font-size="15" font-weight="800" fill="#2b7849" font-family="system-ui">ONE YEAR LATER</text>
   <rect x="230" y="60" width="130" height="150" rx="10" fill="#fff" stroke="#14271c" stroke-width="3"/>
   <g fill="#14271c"><rect x="250" y="80" width="28" height="28"/><rect x="312" y="80" width="28" height="28"/><rect x="250" y="142" width="28" height="28"/><rect x="290" y="95" width="10" height="10"/><rect x="300" y="120" width="12" height="12"/><rect x="285" y="150" width="10" height="10"/><rect x="315" y="145" width="20" height="10"/><rect x="315" y="160" width="10" height="12"/></g>
@@ -145,15 +153,15 @@ footer{color:var(--muted);font-size:.9rem;padding:1.5rem 0 2.5rem;border-top:1px
   <rect x="172" y="120" width="40" height="70" rx="7" fill="#14271c"/><rect x="176" y="126" width="32" height="56" rx="4" fill="#fff"/>
   <path d="M184 152 l6 6 l12 -14" stroke="#2b7849" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
   <path d="M212 140 Q222 140 228 130" stroke="#2b7849" stroke-width="3" stroke-dasharray="4 4" fill="none"/>
-</svg>
+<rect class="tex" width="400" height="260" fill="url(#dots)" opacity=".10"/></svg>
 <figcaption><b>Next year · pay</b>This time the festival uses CupBack. Mia scans the QR code and pays the deposit in Bitcoin Cash from her phone. Her receipt lives in her wallet, not in her pocket.</figcaption>
 </figure>
 
 <!-- 5 -->
 <figure>
 <svg viewBox="0 0 400 260" role="img" aria-label="At a different booth, staff scan Mia's receipt as she hands back the cup">
-  <rect width="400" height="260" fill="#ecf3e2"/>
-  <rect x="0" y="170" width="400" height="90" fill="#cfe2c3"/>
+  <rect class="bg" width="400" height="260" fill="#ecf3e2"/>
+  <rect class="bg" x="0" y="170" width="400" height="90" fill="#cfe2c3"/>
   <rect x="230" y="105" width="170" height="155" fill="#174731"/>
   <text x="315" y="135" text-anchor="middle" font-size="15" font-weight="800" fill="#fff" font-family="system-ui">RETURN BOOTH 9</text>
   <circle cx="315" cy="170" r="24" fill="#8d5a3b"/><circle cx="307" cy="168" r="2.5" fill="#14271c"/><circle cx="323" cy="168" r="2.5" fill="#14271c"/><path d="M307 179 Q315 185 323 179" stroke="#14271c" stroke-width="2.5" fill="none" stroke-linecap="round"/>
@@ -169,14 +177,14 @@ footer{color:var(--muted);font-size:.9rem;padding:1.5rem 0 2.5rem;border-top:1px
   <path d="M150 215 L176 215 L172 245 L154 245Z" fill="#edf4e7" stroke="#14271c" stroke-width="3"/><path d="M159 228 q4 -7 8 0 q-4 7 -8 0Z" fill="#5fae5a"/>
   <rect x="20" y="20" width="160" height="34" rx="10" fill="#fff"/><path d="M90 54 L98 66 L102 54Z" fill="#fff"/>
   <text x="100" y="42" text-anchor="middle" font-size="13" font-weight="700" fill="#14271c" font-family="system-ui">Different booth. Fine?</text>
-</svg>
+<rect class="tex" width="400" height="260" fill="url(#dots)" opacity=".10"/></svg>
 <figcaption><b>Midnight · return</b>Mia drops the cup at a different booth on the other side of the field. Any booth the organizer allows can approve it. Staff scan her receipt.</figcaption>
 </figure>
 
 <!-- 6 -->
 <figure>
 <svg viewBox="0 0 400 260" role="img" aria-label="Mia's phone shows the full deposit refunded in seconds">
-  <rect width="400" height="260" fill="#174731"/>
+  <rect class="bg" width="400" height="260" fill="#174731"/>
   <g stroke="#5fae5a" stroke-width="4" stroke-linecap="round" opacity=".6"><line x1="200" y1="20" x2="200" y2="40"/><line x1="120" y1="40" x2="135" y2="55"/><line x1="280" y1="40" x2="265" y2="55"/><line x1="90" y1="110" x2="110" y2="110"/><line x1="310" y1="110" x2="290" y2="110"/></g>
   <rect x="140" y="55" width="120" height="190" rx="16" fill="#14271c"/><rect x="148" y="66" width="104" height="168" rx="10" fill="#fff"/>
   <circle cx="200" cy="118" r="26" fill="#2b7849"/><path d="M187 118 l9 9 l18 -20" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
@@ -186,7 +194,7 @@ footer{color:var(--muted);font-size:.9rem;padding:1.5rem 0 2.5rem;border-top:1px
   <text x="60" y="200" text-anchor="middle" font-size="34" font-weight="900" fill="#f3b23f" font-family="system-ui">+$3</text>
   <path d="M310 175 L336 175 L332 205 L314 205Z" fill="#edf4e7" stroke="#fff" stroke-width="3"/><path d="M319 188 q4 -7 8 0 q-4 7 -8 0Z" fill="#5fae5a"/>
   <text x="323" y="232" text-anchor="middle" font-size="12" font-weight="700" fill="#cfe2c3" font-family="system-ui">cup back</text>
-</svg>
+<rect class="tex" width="400" height="260" fill="url(#dots)" opacity=".10"/></svg>
 <figcaption><b>3 seconds later · refunded</b>Ping. The full deposit is back in Mia's wallet. No cash, no token, no queue. The contract can only pay her, so nobody can keep her money.</figcaption>
 </figure>
 
