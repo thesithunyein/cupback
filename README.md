@@ -67,7 +67,7 @@ Verified on November 21, 2026 with one Cashonize wallet. Both transactions are i
 
 An earlier Chipnet test used two separate wallets for the guest and the booth. See [VALIDATION.md](VALIDATION.md).
 
-**Also on XO.** The same covenant is packaged as an [XO template](xo/). Deposit, refund and recover have all run on mainnet through XO invitations. The transactions and signed invitations are in [`xo/`](xo/README.md).
+**Also on XO.** The same covenant is packaged as an [XO template](xo/). Deposit, refund and recover have all run on mainnet through XO invitations, including a [refund between two separate wallets](https://blockchair.com/bitcoin-cash/transaction/88f0008c4d453932ce5d4f5a964285fdd4e0b66e6788755969909c6297b03bf3): the guest asks, the booth approves. The transactions, signed invitations and screenshots are in [`xo/`](xo/README.md).
 
 ## Architecture
 
