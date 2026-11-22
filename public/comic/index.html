@@ -15,6 +15,7 @@
 <meta name="twitter:description" content="You paid a deposit for the cup. Good luck getting it back.">
 <meta name="twitter:image" content="https://cupback.vercel.app/comic/og.png">
 <link rel="icon" href="mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
 <style>
 :root{--green:#174731;--mid:#2b7849;--leaf:#5fae5a;--pale:#edf4e7;--ink:#14271c;--muted:#476053;--line:#d9e4d9;--paper:#fff;--bg:#f5f8f3;--warm:#f3b23f;--red:#c9503e;--sky:#1f2b4d}
 *{box-sizing:border-box}
@@ -50,6 +51,17 @@ body{background:#f6f0e4}
 figure{border-radius:1rem;box-shadow:7px 7px 0 #14271c}
 figcaption{background:#fffdf8;font-size:1.03rem}
 .end{background:#fffdf8}.facts div{background:#eaf1df;border:2px solid #14271c}
+
+h1,.end h2{font-family:Bangers,Impact,system-ui;letter-spacing:.03em;font-weight:400}
+h1{font-size:clamp(3.2rem,9vw,5.6rem);color:#14271c;text-shadow:4px 4px 0 #f3b23f}
+.end h2{font-size:clamp(2rem,5.5vw,3.2rem);line-height:1.05}
+.strip{gap:1.4rem}
+figure{border:4px solid #14271c;border-radius:.35rem;box-shadow:8px 8px 0 #14271c}
+figure svg{border-bottom:4px solid #14271c}
+figcaption{font-family:"Comic Neue","Comic Sans MS",system-ui;font-weight:700;text-transform:uppercase;font-size:.98rem;letter-spacing:.01em;line-height:1.35;background:#fff7d6}
+figcaption b{font-family:Bangers,Impact,system-ui;font-weight:400;font-size:1.15rem;letter-spacing:.06em;color:#c9503e}
+.sfx{font-family:Bangers,Impact,system-ui;letter-spacing:1px}
+.bubble{font-family:"Comic Neue","Comic Sans MS",system-ui;font-weight:700}
 @media(max-width:700px){.strip{grid-template-columns:1fr}.facts{grid-template-columns:1fr}}
 </style>
 </head>
@@ -91,9 +103,9 @@ figcaption{background:#fffdf8;font-size:1.03rem}
   <line x1="168" y1="190" x2="186" y2="178" stroke="#5fae5a" stroke-width="12" stroke-linecap="round"/>
   <!-- token -->
   <circle cx="60" cy="200" r="16" fill="#c9503e" stroke="#14271c" stroke-width="3"/><text x="60" y="205" text-anchor="middle" font-size="12" font-weight="800" fill="#fff" font-family="system-ui">TKN</text>
-  <rect x="22" y="70" width="120" height="34" rx="10" fill="#fff"/><path d="M90 104 L100 116 L102 104Z" fill="#fff"/>
-  <text x="82" y="92" text-anchor="middle" font-size="13" font-weight="700" fill="#14271c" font-family="system-ui">Keep the token!</text>
-<rect class="tex" width="400" height="260" fill="url(#dots)" opacity=".10"/></svg>
+  <rect x="14" y="70" width="140" height="34" rx="10" fill="#fff"/><path d="M90 104 L100 116 L102 104Z" fill="#fff"/>
+  <text x="84" y="92" text-anchor="middle" font-size="13" font-weight="700" fill="#14271c" font-family="system-ui" class="bubble" textLength="118" lengthAdjust="spacingAndGlyphs">KEEP THE TOKEN!</text>
+<rect x="8" y="8" width="180" height="26" fill="#f3b23f" stroke="#14271c" stroke-width="3"/><text x="16" y="26" font-size="14" fill="#14271c" class="sfx" font-family="Bangers,Impact,system-ui" textLength="164" lengthAdjust="spacingAndGlyphs">8 PM. THE FESTIVAL.</text><rect class="tex" width="400" height="260" fill="url(#dots)" opacity=".13"/></svg>
 <figcaption><b>8 PM · the festival</b>Mia buys a drink. The reusable cup costs a $3 deposit. She gets a little plastic token to get it back later.</figcaption>
 </figure>
 
@@ -116,7 +128,7 @@ figcaption{background:#fffdf8;font-size:1.03rem}
   <circle cx="43" cy="146" r="2.5" fill="#14271c"/><circle cx="57" cy="146" r="2.5" fill="#14271c"/><path d="M43 158 Q50 153 57 158" stroke="#14271c" stroke-width="2.5" fill="none" stroke-linecap="round"/>
   <path d="M22 260 Q22 175 50 170 Q78 175 78 260Z" fill="#5fae5a"/>
   <text x="140" y="118" text-anchor="middle" font-size="26" font-weight="900" fill="#f3b23f" font-family="system-ui">. . .</text>
-<rect class="tex" width="400" height="260" fill="url(#dots)" opacity=".10"/></svg>
+<rect x="8" y="8" width="120" height="26" fill="#f3b23f" stroke="#14271c" stroke-width="3"/><text x="16" y="26" font-size="14" fill="#14271c" class="sfx" font-family="Bangers,Impact,system-ui" textLength="104" lengthAdjust="spacingAndGlyphs">MIDNIGHT...</text><text x="140" y="95" text-anchor="middle" font-size="30" fill="#f3b23f" stroke="#14271c" stroke-width="2.5" paint-order="stroke" class="sfx" font-family="Bangers,Impact,system-ui" transform="rotate(-6 140 95)">SIGH...</text><rect class="tex" width="400" height="260" fill="url(#dots)" opacity=".13"/></svg>
 <figcaption><b>Midnight · the queue</b>Only one stall does refunds. The queue is forty people long, and the stall just closed.</figcaption>
 </figure>
 
@@ -132,8 +144,8 @@ figcaption{background:#fffdf8;font-size:1.03rem}
   <path d="M270 200 L250 175 L240 215 Z" fill="#fff" stroke="#14271c" stroke-width="3"/>
   <text x="70" y="70" font-size="40" font-weight="900" fill="#c9503e" font-family="system-ui">?!</text>
   <g transform="translate(320 70) rotate(18)"><circle r="22" fill="#c9503e" stroke="#14271c" stroke-width="3" opacity=".35"/><line x1="-30" y1="-30" x2="30" y2="30" stroke="#14271c" stroke-width="5"/></g>
-  <text x="320" y="135" text-anchor="middle" font-size="30" font-weight="900" fill="#c9503e" font-family="system-ui">−$3</text>
-<rect class="tex" width="400" height="260" fill="url(#dots)" opacity=".10"/></svg>
+  <text x="320" y="165" text-anchor="middle" font-size="30" font-weight="900" fill="#c9503e" font-family="system-ui">−$3</text>
+<rect x="8" y="8" width="160" height="26" fill="#f3b23f" stroke="#14271c" stroke-width="3"/><text x="16" y="26" font-size="14" fill="#14271c" class="sfx" font-family="Bangers,Impact,system-ui" textLength="144" lengthAdjust="spacingAndGlyphs">12:30 AM. UH-OH.</text><polygon points="373.0,75.0 353.5,84.3 363.8,103.2 342.6,99.3 339.8,120.7 325.0,105.0 310.2,120.7 307.4,99.3 286.2,103.2 296.5,84.3 277.0,75.0 296.5,65.7 286.2,46.8 307.4,50.7 310.2,29.3 325.0,45.0 339.8,29.3 342.6,50.7 363.8,46.8 353.5,65.7" fill="#f3b23f" stroke="#14271c" stroke-width="3" stroke-linejoin="round"/><text x="325" y="86" text-anchor="middle" font-size="30" fill="#c9503e" stroke="#14271c" stroke-width="2.5" paint-order="stroke" class="sfx" font-family="Bangers,Impact,system-ui" transform="rotate(-8 325 86)" textLength="62" lengthAdjust="spacingAndGlyphs">GONE!</text><rect class="tex" width="400" height="260" fill="url(#dots)" opacity=".13"/></svg>
 <figcaption><b>12:30 AM · the loss</b>The token fell out somewhere near the main stage. No token, no refund. The $3 is gone. Now multiply that by every guest, every night.</figcaption>
 </figure>
 
@@ -141,7 +153,7 @@ figcaption{background:#fffdf8;font-size:1.03rem}
 <figure>
 <svg viewBox="0 0 400 260" role="img" aria-label="Next year Mia scans a QR code at the bar and pays the deposit from her phone wallet">
   <rect class="bg" width="400" height="260" fill="#ecf3e2"/>
-  <text x="20" y="34" font-size="15" font-weight="800" fill="#2b7849" font-family="system-ui">ONE YEAR LATER</text>
+  <rect x="8" y="8" width="170" height="26" fill="#f3b23f" stroke="#14271c" stroke-width="3"/><text x="16" y="26" font-size="14" fill="#14271c" class="sfx" font-family="Bangers,Impact,system-ui" textLength="154" lengthAdjust="spacingAndGlyphs">ONE YEAR LATER...</text>
   <rect x="230" y="60" width="130" height="150" rx="10" fill="#fff" stroke="#14271c" stroke-width="3"/>
   <g fill="#14271c"><rect x="250" y="80" width="28" height="28"/><rect x="312" y="80" width="28" height="28"/><rect x="250" y="142" width="28" height="28"/><rect x="290" y="95" width="10" height="10"/><rect x="300" y="120" width="12" height="12"/><rect x="285" y="150" width="10" height="10"/><rect x="315" y="145" width="20" height="10"/><rect x="315" y="160" width="10" height="12"/></g>
   <rect x="256" y="86" width="16" height="16" fill="#fff"/><rect x="318" y="86" width="16" height="16" fill="#fff"/><rect x="256" y="148" width="16" height="16" fill="#fff"/>
@@ -153,7 +165,7 @@ figcaption{background:#fffdf8;font-size:1.03rem}
   <rect x="172" y="120" width="40" height="70" rx="7" fill="#14271c"/><rect x="176" y="126" width="32" height="56" rx="4" fill="#fff"/>
   <path d="M184 152 l6 6 l12 -14" stroke="#2b7849" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
   <path d="M212 140 Q222 140 228 130" stroke="#2b7849" stroke-width="3" stroke-dasharray="4 4" fill="none"/>
-<rect class="tex" width="400" height="260" fill="url(#dots)" opacity=".10"/></svg>
+<rect class="tex" width="400" height="260" fill="url(#dots)" opacity=".13"/></svg>
 <figcaption><b>Next year · pay</b>This time the festival uses CupBack. Mia scans the QR code and pays the deposit in Bitcoin Cash from her phone. Her receipt lives in her wallet, not in her pocket.</figcaption>
 </figure>
 
@@ -175,9 +187,9 @@ figcaption{background:#fffdf8;font-size:1.03rem}
   <g fill="#14271c"><rect x="187" y="149" width="7" height="7"/><rect x="196" y="149" width="7" height="7"/><rect x="187" y="160" width="7" height="7"/><rect x="198" y="164" width="4" height="4"/></g>
   <path d="M212 160 L248 205" stroke="#c9503e" stroke-width="3" stroke-dasharray="5 4"/>
   <path d="M150 215 L176 215 L172 245 L154 245Z" fill="#edf4e7" stroke="#14271c" stroke-width="3"/><path d="M159 228 q4 -7 8 0 q-4 7 -8 0Z" fill="#5fae5a"/>
-  <rect x="20" y="20" width="160" height="34" rx="10" fill="#fff"/><path d="M90 54 L98 66 L102 54Z" fill="#fff"/>
-  <text x="100" y="42" text-anchor="middle" font-size="13" font-weight="700" fill="#14271c" font-family="system-ui">Different booth. Fine?</text>
-<rect class="tex" width="400" height="260" fill="url(#dots)" opacity=".10"/></svg>
+  <rect x="14" y="20" width="176" height="34" rx="10" fill="#fff"/><path d="M90 54 L98 66 L102 54Z" fill="#fff"/>
+  <text x="102" y="42" text-anchor="middle" font-size="13" font-weight="700" fill="#14271c" font-family="system-ui" class="bubble" textLength="152" lengthAdjust="spacingAndGlyphs">DIFFERENT BOOTH. FINE?</text>
+<polygon points="243.0,105.0 231.0,110.8 236.4,123.0 223.5,119.7 219.9,132.6 212.0,121.7 201.0,129.2 202.0,115.9 188.7,114.6 198.0,105.0 188.7,95.4 202.0,94.1 201.0,80.8 212.0,88.3 219.9,77.4 223.5,90.3 236.4,87.0 231.0,99.2" fill="#fff" stroke="#14271c" stroke-width="3" stroke-linejoin="round"/><text x="215" y="113" text-anchor="middle" font-size="20" fill="#c9503e" stroke="#14271c" stroke-width="2" paint-order="stroke" class="sfx" font-family="Bangers,Impact,system-ui" transform="rotate(-10 215 113)" textLength="40" lengthAdjust="spacingAndGlyphs">BEEP!</text><rect class="tex" width="400" height="260" fill="url(#dots)" opacity=".13"/></svg>
 <figcaption><b>Midnight · return</b>Mia drops the cup at a different booth on the other side of the field. Any booth the organizer allows can approve it. Staff scan her receipt.</figcaption>
 </figure>
 
@@ -194,7 +206,7 @@ figcaption{background:#fffdf8;font-size:1.03rem}
   <text x="60" y="200" text-anchor="middle" font-size="34" font-weight="900" fill="#f3b23f" font-family="system-ui">+$3</text>
   <path d="M310 175 L336 175 L332 205 L314 205Z" fill="#edf4e7" stroke="#fff" stroke-width="3"/><path d="M319 188 q4 -7 8 0 q-4 7 -8 0Z" fill="#5fae5a"/>
   <text x="323" y="232" text-anchor="middle" font-size="12" font-weight="700" fill="#cfe2c3" font-family="system-ui">cup back</text>
-<rect class="tex" width="400" height="260" fill="url(#dots)" opacity=".10"/></svg>
+<g stroke="#9fd29a" stroke-width="3" stroke-linecap="round"><line x1="20" y1="60" x2="70" y2="80"/><line x1="15" y1="120" x2="70" y2="125"/><line x1="380" y1="60" x2="330" y2="80"/><line x1="385" y1="130" x2="330" y2="132"/></g><polygon points="370.0,62.0 352.8,69.4 362.4,85.5 344.1,81.4 342.4,100.0 330.0,86.0 317.6,100.0 315.9,81.4 297.6,85.5 307.2,69.4 290.0,62.0 307.2,54.6 297.6,38.5 315.9,42.6 317.6,24.0 330.0,38.0 342.4,24.0 344.1,42.6 362.4,38.5 352.8,54.6" fill="#f3b23f" stroke="#14271c" stroke-width="3" stroke-linejoin="round"/><text x="330" y="73" text-anchor="middle" font-size="30" fill="#c9503e" stroke="#14271c" stroke-width="2.5" paint-order="stroke" class="sfx" font-family="Bangers,Impact,system-ui" transform="rotate(8 330 73)" textLength="54" lengthAdjust="spacingAndGlyphs">PING!</text><rect class="tex" width="400" height="260" fill="url(#dots)" opacity=".13"/></svg>
 <figcaption><b>3 seconds later · refunded</b>Ping. The full deposit is back in Mia's wallet. No cash, no token, no queue. The contract can only pay her, so nobody can keep her money.</figcaption>
 </figure>
 
