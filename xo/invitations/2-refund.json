@@ -1,0 +1,173 @@
+{
+  "invitationIdentifier": "75d353b9558e50f06b53a7f6bfe223ae",
+  "templateIdentifier": "dd178bd48f3c3a12b536e0cc96ef0690e157873385d174ad1eac7c07194bf0c0",
+  "actionIdentifier": "refund",
+  "createdAtTimestamp": 1795315404040,
+  "commits": [
+    {
+      "commitIdentifier": "f04c42f70763cd378bfe2e220d0a4285",
+      "createdAtTimestamp": 1795315412728,
+      "data": {
+        "roleIdentifier": "guest"
+      },
+      "expiresAtTimestamp": 1795333412727,
+      "signature": "0c899b571a6197cdce660882725d7ee4f8ecc465ca38c50c20e00cf5c5234ccd7b1b84a85ea3b97f41e2f7c49a734f19edcd5b789007c918ccb184522a69c6a0",
+      "entityIdentifier": "xpub6FQWVPmyzruGq9AXGJVrUrq9FFKaFYMHi8CwryKs65LsFGbx9NfebokVdtKX88rzKTrXM3hcks7mi9Mgs1kXNnom3m4vkGqV39TrVsHRfNy"
+    },
+    {
+      "commitIdentifier": "6d43ee37bbc2452fa0fd6f06a78f12cf",
+      "previousCommitIdentifier": "f04c42f70763cd378bfe2e220d0a4285",
+      "createdAtTimestamp": 1795315426971,
+      "data": {
+        "variables": [
+          {
+            "variableIdentifier": "depositSatoshis",
+            "value": 2000,
+            "roleIdentifier": "guest"
+          },
+          {
+            "variableIdentifier": "receiptId",
+            "value": "5b52dbfca8285f307580614f40a99de8",
+            "roleIdentifier": "guest"
+          },
+          {
+            "variableIdentifier": "recoveryTime",
+            "value": 1795296213,
+            "roleIdentifier": "guest"
+          },
+          {
+            "variableIdentifier": "guestLockingScript",
+            "value": "76a91477cfada5dd4742d66de8a0a87a160fbf4e76f33f88ac",
+            "roleIdentifier": "guest"
+          },
+          {
+            "variableIdentifier": "boothLockingScript",
+            "value": "76a91477cfada5dd4742d66de8a0a87a160fbf4e76f33f88ac",
+            "roleIdentifier": "guest"
+          },
+          {
+            "variableIdentifier": "organizerLockingScript",
+            "value": "76a91477cfada5dd4742d66de8a0a87a160fbf4e76f33f88ac",
+            "roleIdentifier": "guest"
+          }
+        ]
+      },
+      "expiresAtTimestamp": 1795333426971,
+      "signature": "f914f3fd7fbe9cf78526bec0ffb20706db79c2979d6c2f23b834bc723b56c82bf9ff07465a264c3377edbecd119068072387ec1057dfcc0baba961c81ada3b21",
+      "entityIdentifier": "xpub6FQWVPmyzruGq9AXGJVrUrq9FFKaFYMHi8CwryKs65LsFGbx9NfebokVdtKX88rzKTrXM3hcks7mi9Mgs1kXNnom3m4vkGqV39TrVsHRfNy"
+    },
+    {
+      "commitIdentifier": "ccb17374c90c8943de9d1d0c84a45af0",
+      "previousCommitIdentifier": "6d43ee37bbc2452fa0fd6f06a78f12cf",
+      "createdAtTimestamp": 1795315435795,
+      "data": {
+        "roleIdentifier": "booth"
+      },
+      "expiresAtTimestamp": 1795333435794,
+      "signature": "59610be612d584e71a196c60f86af6993b2e02d4654fe69c417c10372b9aa9b2427bf84db99f6c131fd285d8794a91b5f288f82f265703fb28dede3f66f626d2",
+      "entityIdentifier": "xpub6FQWVPmyzruGq9AXGJVrUrq9FFKaFYMHi8CwryKs65LsFGbx9NfebokVdtKX88rzKTrXM3hcks7mi9Mgs1kXNnom3m4vkGqV39TrVsHRfNy"
+    },
+    {
+      "commitIdentifier": "2ba3ed9d437c8af360299c32fda84a91",
+      "previousCommitIdentifier": "ccb17374c90c8943de9d1d0c84a45af0",
+      "createdAtTimestamp": 1795315453549,
+      "data": {
+        "inputs": [
+          {
+            "outpointTransactionHash": "<uint8array: 7b347d2e6939ba964399d1e2f3da261263c66e389da367a56c120ac52fb9fc2a>",
+            "outpointIndex": 0,
+            "inputIdentifier": "depositRefundInput",
+            "transactionIndex": 0,
+            "unlockingBytecode": "<uint8array: 105b52dbfca8285f307580614f40a99de8004cb2105b52dbfca8285f307580614f40a99de804d50b026b1976a91477cfada5dd4742d66de8a0a87a160fbf4e76f33f88ac1976a91477cfada5dd4742d66de8a0a87a160fbf4e76f33f88ac1976a91477cfada5dd4742d66de8a0a87a160fbf4e76f33f88ac5579009c63567a826088557a88c0009dc3529d51c77b8751c7537a879b6900cd8800cc00c69c777767557a519d557a826088557a88537ab175c0009dc3529d51c7788800cd8800cc00c69c777768>",
+            "valueSatoshis": "<bigint: 2000n>"
+          }
+        ]
+      },
+      "expiresAtTimestamp": 1795333453549,
+      "signature": "252ee36387ff28b1d4285deaba04825616d7afc9af0cb1a7eb29be46b544104ca1a3b8cc2a88650b7ef69a5390b0649c9b85f05a9040e39b68eda0f6c334e541",
+      "entityIdentifier": "xpub6FQWVPmyzruGq9AXGJVrUrq9FFKaFYMHi8CwryKs65LsFGbx9NfebokVdtKX88rzKTrXM3hcks7mi9Mgs1kXNnom3m4vkGqV39TrVsHRfNy"
+    },
+    {
+      "commitIdentifier": "204df2a83a457364fcc96cf9acba4559",
+      "previousCommitIdentifier": "2ba3ed9d437c8af360299c32fda84a91",
+      "createdAtTimestamp": 1795315462501,
+      "data": {
+        "outputs": [
+          {
+            "outputIdentifier": "refundOutput",
+            "transactionIndex": 0,
+            "valueSatoshis": "<bigint: 2000n>",
+            "lockingBytecode": "<uint8array: 76a91477cfada5dd4742d66de8a0a87a160fbf4e76f33f88ac>"
+          }
+        ]
+      },
+      "expiresAtTimestamp": 1795333462501,
+      "signature": "66c65e4bf49a9ba4be72f2897b8b88aa1aaad438651f26d6ae83cf07e5b4f6ee458d9017cca872127df7b43acd2caf04f74bc651b4dc36e7cfb40167f008ebac",
+      "entityIdentifier": "xpub6FQWVPmyzruGq9AXGJVrUrq9FFKaFYMHi8CwryKs65LsFGbx9NfebokVdtKX88rzKTrXM3hcks7mi9Mgs1kXNnom3m4vkGqV39TrVsHRfNy"
+    },
+    {
+      "commitIdentifier": "c30473e1c4bcd38b0a581cca5936580e",
+      "previousCommitIdentifier": "204df2a83a457364fcc96cf9acba4559",
+      "createdAtTimestamp": 1795315485071,
+      "data": {
+        "inputs": [
+          {
+            "outpointTransactionHash": "<uint8array: dc592c37e087ccbe32844d8625e57c3a55ee314b1161af44ad9f9b48221942e4>",
+            "outpointIndex": 0
+          }
+        ]
+      },
+      "expiresAtTimestamp": 1795333485071,
+      "signature": "9c9bff3a2096970fa99bfa32dcd922fe2fb2a967dc650876a7893d446c73a759a9af6279355520d371dee8ff64766ea43e17d5c14603121889c3aaa67911e6c9",
+      "entityIdentifier": "xpub6FQWVPmyzruGq9AXGJVrUrq9FFKaFYMHi8CwryKs65LsFGbx9NfebokVdtKX88rzKTrXM3hcks7mi9Mgs1kXNnom3m4vkGqV39TrVsHRfNy"
+    },
+    {
+      "commitIdentifier": "465d62c6a406ef6b798b03b80a664b98",
+      "previousCommitIdentifier": "c30473e1c4bcd38b0a581cca5936580e",
+      "createdAtTimestamp": 1795315504128,
+      "data": {
+        "outputs": [
+          {
+            "valueSatoshis": "<bigint: 6740n>",
+            "lockingBytecode": "<uint8array: 76a91407da88e2f7288a08d204ba02e8bc0a8eef75b07488ac>"
+          }
+        ]
+      },
+      "expiresAtTimestamp": 1795333504128,
+      "signature": "e7ed1dd96ffef3cd587b1af86377b996198bf18b04c6d4d59507addcbe0192b67e00f95db1c7545fe1c886ed8a710d784f97b69ccb8b0ea5d0e6b8516c4b9b2e",
+      "entityIdentifier": "xpub6FQWVPmyzruGq9AXGJVrUrq9FFKaFYMHi8CwryKs65LsFGbx9NfebokVdtKX88rzKTrXM3hcks7mi9Mgs1kXNnom3m4vkGqV39TrVsHRfNy"
+    },
+    {
+      "commitIdentifier": "76c7437d122e4a9cc561c0340973a538",
+      "previousCommitIdentifier": "465d62c6a406ef6b798b03b80a664b98",
+      "createdAtTimestamp": 1795315532527,
+      "data": {
+        "inputs": [
+          {
+            "mergesWith": {
+              "commitIdentifier": "c30473e1c4bcd38b0a581cca5936580e",
+              "itemIndex": 0
+            },
+            "unlockingBytecode": "<uint8array: 41f5eb93890e561acfc14ed717cde5e1284890b9519eb6b6f31ea14ccf751046c234cbeeeea9dbbbb33c39aee3a903236ceba9ecf982087c36a84422b67a03ac60412103fcf38e11cb55a1dacde98aa07757853a01352eb1b38b11785a022312753757af>"
+          }
+        ]
+      },
+      "expiresAtTimestamp": 1795333532527,
+      "signature": "902a8857985e8c4d25fb8e46c63f4094976f8573f844a669c8d483bbc248255a5dc070c26ec7ea2e7bba337d271ee46f219a9bce058b05932e2654ef2845ac71",
+      "entityIdentifier": "xpub6FQWVPmyzruGq9AXGJVrUrq9FFKaFYMHi8CwryKs65LsFGbx9NfebokVdtKX88rzKTrXM3hcks7mi9Mgs1kXNnom3m4vkGqV39TrVsHRfNy"
+    }
+  ],
+  "result": {
+    "transactions": {
+      "refundTransaction": {
+        "transactionHash": "b4db6f2345c6dcd2299947d09337eeb5cb7310b1c3b7c59c1d2e6611890afdbb",
+        "createdAtTimestamp": 1795315545546,
+        "createdByEntityIdentifier": "xpub6FQWVPmyzruGq9AXGJVrUrq9FFKaFYMHi8CwryKs65LsFGbx9NfebokVdtKX88rzKTrXM3hcks7mi9Mgs1kXNnom3m4vkGqV39TrVsHRfNy",
+        "createdBySignature": "a1d3286e37eebca48476b90dee75456924fd76c0af4b29595a429df1a78f547ea7b38d237c59afc4ff05b6a09c3f41b7b5f503a07dbe6dfef8a2a57ff8d1718f",
+        "broadcastedAtTimestamp": 1795315548472,
+        "broadcastedByEntityIdentifier": "xpub6FQWVPmyzruGq9AXGJVrUrq9FFKaFYMHi8CwryKs65LsFGbx9NfebokVdtKX88rzKTrXM3hcks7mi9Mgs1kXNnom3m4vkGqV39TrVsHRfNy",
+        "broadcastedBySignature": "e5b1565ee6930934c8086481657333bedf814f6f216eecc578a66cd4363ded483bc7966182d25c862dbff940fe359567ec346987769be046608c047061ef64fe"
+      }
+    }
+  }
+}

@@ -67,6 +67,8 @@ Verified on November 21, 2026 with one Cashonize wallet. Both transactions are i
 
 An earlier Chipnet test used two separate wallets for the guest and the booth. See [VALIDATION.md](VALIDATION.md).
 
+**Also on XO.** The same covenant is packaged as an [XO template](xo/). Deposit, refund and recover have all run on mainnet through XO invitations. The transactions and signed invitations are in [`xo/`](xo/README.md).
+
 ## Architecture
 
 ```mermaid
@@ -235,7 +237,7 @@ CupBack is entered in the **BCH BLAZE 2026 Mainnet track**.
 |---|---|---|
 | Anyone can make a useful BCH **mainnet** transaction with the app | Tap **Try it**: pay a 0.00001 BCH cup deposit, then refund it. Both are mainnet transactions. | [App](https://cupback.vercel.app/app.html#solo) · [deposit tx](https://blockchair.com/bitcoin-cash/transaction/0067f9705f54cc2dbc9821d39d48380000e081f8f9db55dccdefa7601eefa28b) · [refund tx](https://blockchair.com/bitcoin-cash/transaction/b1e866ad97b2ccd4c496b4735e577f93692a5105e8d0963702a63441e5f9aa85) (block 978,345) |
 | Live, usable demo at a link | Hosted on Vercel, no sign-up | https://cupback.vercel.app |
-| **WizardConnect** or XO integration | WizardConnect (`@wizardconnect/core`, `@wizardconnect/dapp`), tested with Cashonize | [`chain.js`](chain.js) |
+| **WizardConnect** or XO integration | Both. WizardConnect (`@wizardconnect/core`, `@wizardconnect/dapp`), tested with Cashonize. An XO template with all three actions run on mainnet | [`chain.js`](chain.js) · [`xo/`](xo/README.md) |
 | Top-of-page banner: presentation link | Banner on the home page links the deck | [Presentation (Widget Factory template)](https://cupback.vercel.app/cupback-presentation.pdf) |
 | Top-of-page banner: source code link | Banner links this repository | https://github.com/thesithunyein/cupback |
 | Top-of-page banner: unique CashTokens address for EMBER2026 votes | Token-aware address, used only for CupBack | `bitcoincash:zzfpcwe2655yg8p5w3u0mmxu46ar8hgmpc5le4uzm6` |

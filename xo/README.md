@@ -32,23 +32,42 @@ Unlocking scripts follow CashScript's function selector:
 | `boothLockingScript` | locking_script | Booth wallet allowed to approve refunds |
 | `organizerLockingScript` | locking_script | Second wallet allowed to approve refunds (use the booth's if none) |
 
-## Reproduce the invitations
+## Live on BCH mainnet
 
-1. Open the XO debug tool at https://blaze.xo.cash and create a **chipnet** account.
-2. Set the default receive policy to **Wallet (P2PKH)** and fund the receive address with test BCH (tbch.googol.cash or chipnet.bch.ninja).
-3. **Import Template**, then paste [`cupback.template.json`](cupback.template.json).
-4. **Create Invitation**, then **CupBack**, then **Pay cup deposit**. Fill the variables (see [`invitations/`](invitations/) for the exact values used), add inputs, sign and broadcast.
-5. On the deposit output, start the **Refund at booth** follow-up. Join as **Return booth**, add one coin from the booth address as input 1, sign and broadcast.
-6. Inspect each invitation in the tool's **Inspect** view.
+Every action of the template has been run through invitations in the XO debug tool, on **mainnet**, with real BCH. All signed invitations are exported in [`invitations/`](invitations/).
 
-The exported invitations and transaction IDs from our run are in [`invitations/`](invitations/).
+| # | Action | Invitation | Transaction |
+|---|---|---|---|
+| 1 | `deposit` (template v1) | [`1-deposit-v1.json`](invitations/1-deposit-v1.json) | [`7b347d2e…52fb9fc2a`](https://blockchair.com/bitcoin-cash/transaction/7b347d2e6939ba964399d1e2f3da261263c66e389da367a56c120ac52fb9fc2a) |
+| 2 | `refund`, spends #1 | [`2-refund.json`](invitations/2-refund.json) | [`b4db6f23…1890afdbb`](https://blockchair.com/bitcoin-cash/transaction/b4db6f2345c6dcd2299947d09337eeb5cb7310b1c3b7c59c1d2e6611890afdbb) |
+| 3 | `deposit` | [`3-deposit-v2.json`](invitations/3-deposit-v2.json) | [`0c1ab002…175aad4cf`](https://blockchair.com/bitcoin-cash/transaction/0c1ab002e30d2266dbe5b3e42c1424b2eccb469963d198255ae502c175aad4cf) |
+| 4 | `recover`, spends #3 | [`4-recover.json`](invitations/4-recover.json) | [`61e253b6…a85367e17`](https://blockchair.com/bitcoin-cash/transaction/61e253b6d4665bcf42f6f227c0d63db4328e35f553d7ff771a075a3a85367e17) |
 
-## Verified: XO compiles the same contract as CashScript
+- Template ID (current, v2): `dd178bd48f3c3a12b536e0cc96ef0690e157873385d174ad1eac7c07194bf0c0`
+- Deposit #1 was made with v1 (`5e8bb27e…67d5b4e`). v1 did not ask the guest for the deposit variables in `refund` and `recover`, so XO could not rebuild the unlocking script for those follow-ups. v2 adds those requirements and changes nothing else; the covenant bytecode is identical, which is why the v2 `refund` could spend the v1 deposit.
+- In this run one wallet plays guest, booth and organizer, so all three locking scripts are the same P2PKH (`76a91477cfada5dd4742d66de8a0a87a160fbf4e76f33f88ac`). In a real event they are three different wallets.
 
-With the deposit variables used in our test, the XO debug tool compiled the deposit locking bytecode to
+### Values used
 
-```
-aa202386372fc9563e4f98d8dba74c3a0bee36a7f99617d409b29831ee48f1796cfb87
-```
+| Variable | Run 1–2 | Run 3–4 |
+|---|---|---|
+| `depositSatoshis` | 2000 | 2000 |
+| `receiptId` | `5b52dbfca8285f307580614f40a99de8` | `5117cfcc7a1a7034cfe9741f9d5c9ba3` |
+| `recoveryTime` | 1795296213 | 1795308381 (already past, so `recover` is spendable at once) |
+| covenant locking bytecode | `aa20394c…3714f52987` | `aa200dd0…56ef17b887` |
 
-Building the redeem script independently, the way CashScript does (push `receiptId`, `recoveryTime`, the three locking scripts, then the `CupDeposit` bytecode) and hashing it with HASH256 gives the identical P2SH32 locking bytecode. The XO template and the CupBack app produce the same on-chain contract.
+## Reproduce
+
+1. Open https://blaze.xo.cash and create an account (mainnet, or chipnet for test coins).
+2. **Settings → Defaults**: set Receive, Change and Address to **Wallet (P2PKH)**. Fund the receive address with a few thousand satoshis.
+3. **Import Template** and paste [`cupback.template.json`](cupback.template.json).
+4. **Create Invitation → CupBack → Pay cup deposit**. Use **Paste JSON** for the six variables, **Set up output** for the deposit, **Add input** from the wallet, **Add change**, **Sign**, then **Create and broadcast**.
+5. Refund: start a `refund` invitation (**Join Invitation** with `{"invitationIdentifier":"<random 32 hex>","templateIdentifier":"dd178bd4…","actionIdentifier":"refund","createdAtTimestamp":<ms>,"commits":[]}`). Join as **Guest**, paste the same variables, join as **Return booth**. **Set up input** → paste the covenant locking bytecode → **Fetch UTXOs** → pick the deposit. **Set up output**, then **Add input** with one coin from the booth (or organizer) address, **Add change**, **Sign**, broadcast.
+6. Recover: same as step 5 with `"actionIdentifier":"recover"`, Guest only, and input 1 must be a coin from the **guest** address (the covenant checks it). The transaction locktime is `recoveryTime`.
+7. To inspect, **Join Invitation** with any file from [`invitations/`](invitations/), or open the transactions above in **Inspect**.
+
+## Verified: XO builds the same contract as CashScript
+
+- `cupDepositContract` in the template is byte-for-byte the `bytecode` of [`../contract.json`](../contract.json) (cashc 0.14.0).
+- Taking the redeem script out of the mainnet unlocking bytecode and hashing it with HASH256 gives exactly the covenant locking bytecode of both deposits (`aa20394c…`, `aa200dd0…`).
+- Both spending paths passed consensus on mainnet: `refund` (booth approval, full amount forced to the guest) and `recover` (CLTV after `recoveryTime`).

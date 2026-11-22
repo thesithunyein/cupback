@@ -15,7 +15,7 @@ export const cupbackTemplate: XOTemplate = {
     "name": "CupBack",
     "description": "Reusable-cup deposits: pay at one booth, get refunded in full at any authorized booth. Implements the CupDeposit covenant used by cupback.vercel.app.",
     "icon": "cup",
-    "version": "1",
+    "version": "2",
     "supported": [
         "BCH_2025_05",
         "BCH_2026_05"
@@ -91,7 +91,16 @@ export const cupbackTemplate: XOTemplate = {
                     "name": "Ask for refund",
                     "description": "Show the cup and this refund request at any booth.",
                     "icon": "guest",
-                    "requirements": {}
+                    "requirements": {
+                        "variables": [
+                            "depositSatoshis",
+                            "receiptId",
+                            "recoveryTime",
+                            "guestLockingScript",
+                            "boothLockingScript",
+                            "organizerLockingScript"
+                        ]
+                    }
                 },
                 "booth": {
                     "name": "Approve refund",
@@ -126,7 +135,16 @@ export const cupbackTemplate: XOTemplate = {
             "icon": "refund",
             "roles": {
                 "guest": {
-                    "requirements": {}
+                    "requirements": {
+                        "variables": [
+                            "depositSatoshis",
+                            "receiptId",
+                            "recoveryTime",
+                            "guestLockingScript",
+                            "boothLockingScript",
+                            "organizerLockingScript"
+                        ]
+                    }
                 }
             },
             "requirements": {
