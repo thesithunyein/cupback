@@ -22,11 +22,13 @@
 *{box-sizing:border-box}
 body{margin:0;font:16px/1.5 "Inter",system-ui,sans-serif;color:var(--ink);background:#1b1d22}
 a{color:var(--green)}
-.banner{background:var(--green);color:#fff;font-size:.9rem}
-.banner .in{width:min(100% - 2rem,1000px);margin:auto;padding:.6rem 0;display:flex;flex-wrap:wrap;gap:.35rem 1.1rem;align-items:center}
-.banner a{color:#fff}
-.banner code{background:#ffffff1f;padding:.1rem .4rem;border-radius:.35rem;word-break:break-all;font-size:.82rem}
-.banner button{font:inherit;font-size:.8rem;font-weight:700;border:0;border-radius:.4rem;padding:.2rem .55rem;background:#fff;color:var(--green);cursor:pointer}
+.banner{background:#0f1512;color:#e9efe9;font-size:.86rem;border-bottom:3px solid var(--yellow)}
+.banner .in{width:min(100% - 1.25rem,760px);margin:auto;padding:.5rem 0;display:flex;flex-wrap:wrap;gap:.4rem .8rem;align-items:center;justify-content:space-between}
+.banner .tag{font-weight:800;letter-spacing:.02em}.banner .tag span{color:var(--yellow)}
+.banner .vote{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem;width:100%}
+.banner code{background:#ffffff14;border:1px solid #ffffff26;padding:.15rem .45rem;border-radius:.35rem;font-size:.74rem;color:#fff;word-break:break-all}
+.banner button{font:inherit;font-size:.78rem;font-weight:800;border:0;border-radius:.35rem;padding:.25rem .6rem;background:var(--yellow);color:var(--ink);cursor:pointer;min-height:28px}
+.banner nav a{color:#cfe2c3;text-decoration:none;font-weight:600}.banner nav a:hover{text-decoration:underline}
 .wrap{width:min(100% - 1.25rem,760px);margin:1.4rem auto}
 .title{border:4px solid var(--ink);background:var(--yellow);padding:.55rem .9rem;margin-bottom:.8rem;box-shadow:5px 5px 0 #000}
 .title h1{font-family:Bangers,Impact,sans-serif;font-weight:400;letter-spacing:.04em;font-size:clamp(2.6rem,9vw,4.6rem);line-height:.9;margin:0;text-shadow:3px 3px 0 #fff}
@@ -57,10 +59,10 @@ footer a{color:#cfe2c3}
 <body>
 <div class="banner" role="region" aria-label="BCH BLAZE 2026 media entry">
   <div class="in">
-    <span><strong>BCH BLAZE 2026 · Media Track</strong> · made during BLAZE, Nov 2026</span>
-    <span>Vote with EMBER2026: <code id="addr">bitcoincash:zzfpcwe2655yg8p5w3u0mmxu46ar8hgmpc5le4uzm6</code> <button type="button" id="copy">Copy</button></span>
-    <span><a href="https://cupback.vercel.app">App</a> · <a href="https://github.com/thesithunyein/cupback">Source</a> · <a href="https://cupback.vercel.app/cupback-presentation.pdf">Presentation</a></span>
-  </div>
+    <div class="tag"><span>BCH BLAZE 2026</span> · Media Track · made during BLAZE</div>
+    <nav aria-label="Project links"><a href="https://cupback.vercel.app">App</a> · <a href="https://github.com/thesithunyein/cupback">Source</a> · <a href="https://cupback.vercel.app/cupback-presentation.pdf">Deck</a></nav>
+
+    <div class="vote">Vote EMBER2026: <code id="addr" title="bitcoincash:zzfpcwe2655yg8p5w3u0mmxu46ar8hgmpc5le4uzm6" data-full="bitcoincash:zzfpcwe2655yg8p5w3u0mmxu46ar8hgmpc5le4uzm6">bitcoincash:zzfpcwe2655yg8p5w3u0mmxu46ar8hgmpc5le4uzm6</code><button type="button" id="copy">Copy address</button></div>  </div>
 </div>
 
 <main class="wrap">
@@ -113,7 +115,7 @@ footer a{color:#cfe2c3}
   · <a href="https://cupback.vercel.app">cupback.vercel.app</a> · <a href="https://github.com/thesithunyein/cupback/tree/main/public/comic">comic source</a> · <a href="https://x.com/thesithunyein">@thesithunyein</a>
 </footer>
 <script>
-document.getElementById('copy').addEventListener('click',async e=>{try{await navigator.clipboard.writeText(document.getElementById('addr').textContent);e.target.textContent='Copied'}catch{e.target.textContent='Select it'}setTimeout(()=>e.target.textContent='Copy',1500)});
+document.getElementById('copy').addEventListener('click',async e=>{try{await navigator.clipboard.writeText(document.getElementById('addr').dataset.full);e.target.textContent='Copied'}catch{e.target.textContent='Select it'}setTimeout(()=>e.target.textContent='Copy address',1500)});
 </script>
 </body>
 </html>
