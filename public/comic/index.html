@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The $3 Cup · a CupBack comic</title>
-<meta name="description" content="A six-panel comic about the reusable-cup deposit nobody gets back, and how Bitcoin Cash fixes it. Made for BCH BLAZE 2026.">
+<meta name="description" content="A one-page comic about the reusable-cup deposit nobody gets back, and how Bitcoin Cash fixes it. Made for BCH BLAZE 2026.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="The $3 Cup · a CupBack comic">
-<meta property="og:description" content="You paid a deposit for the cup. Good luck getting it back. A six-panel comic about fixing that with Bitcoin Cash.">
+<meta property="og:description" content="You paid a deposit for the cup. Good luck getting it back. A one-page comic about fixing that with Bitcoin Cash.">
 <meta property="og:url" content="https://cupback.vercel.app/comic/">
 <meta property="og:image" content="https://cupback.vercel.app/comic/og.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -15,54 +15,43 @@
 <meta name="twitter:description" content="You paid a deposit for the cup. Good luck getting it back.">
 <meta name="twitter:image" content="https://cupback.vercel.app/comic/og.png">
 <link rel="icon" href="mark.svg">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
 <style>
-:root{--green:#174731;--mid:#2b7849;--leaf:#5fae5a;--pale:#edf4e7;--ink:#14271c;--muted:#476053;--line:#d9e4d9;--paper:#fff;--bg:#f5f8f3;--warm:#f3b23f;--red:#c9503e;--sky:#1f2b4d}
+:root{--ink:#0f1512;--green:#174731;--pale:#edf4e7;--yellow:#ffd84a;--red:#e2442f}
 *{box-sizing:border-box}
-body{margin:0;font:16px/1.5 "Inter",system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+body{margin:0;font:16px/1.5 "Inter",system-ui,sans-serif;color:var(--ink);background:#1b1d22}
 a{color:var(--green)}
 .banner{background:var(--green);color:#fff;font-size:.9rem}
-.banner .in{width:min(100% - 2rem,980px);margin:auto;padding:.6rem 0;display:flex;flex-wrap:wrap;gap:.35rem 1.1rem;align-items:center}
+.banner .in{width:min(100% - 2rem,1000px);margin:auto;padding:.6rem 0;display:flex;flex-wrap:wrap;gap:.35rem 1.1rem;align-items:center}
 .banner a{color:#fff}
 .banner code{background:#ffffff1f;padding:.1rem .4rem;border-radius:.35rem;word-break:break-all;font-size:.82rem}
 .banner button{font:inherit;font-size:.8rem;font-weight:700;border:0;border-radius:.4rem;padding:.2rem .55rem;background:#fff;color:var(--green);cursor:pointer}
-header,main,footer{width:min(100% - 2rem,980px);margin:auto}
-header{padding:2.2rem 0 1rem;text-align:center}
-.kicker{font-size:.8rem;font-weight:750;letter-spacing:.12em;color:var(--mid);text-transform:uppercase}
-h1{font-size:clamp(2.4rem,7vw,4.4rem);letter-spacing:-.06em;line-height:1;margin:.4rem 0 .6rem}
-header p{color:var(--muted);max-width:34rem;margin:0 auto}
-.strip{display:grid;grid-template-columns:repeat(2,1fr);gap:1.1rem;margin:1.8rem 0}
-figure{margin:0;background:var(--paper);border:3px solid var(--ink);border-radius:.9rem;overflow:hidden;box-shadow:6px 6px 0 var(--ink)}
-figure svg{display:block;width:100%;height:auto;border-bottom:3px solid var(--ink)}
-figcaption{padding:.8rem 1rem 1rem;font-size:1.02rem}
-figcaption b{display:block;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);margin-bottom:.15rem}
-.end{text-align:center;background:var(--paper);border:3px solid var(--ink);border-radius:.9rem;box-shadow:6px 6px 0 var(--ink);padding:2rem 1.2rem;margin:2rem 0}
-.end h2{font-size:clamp(1.6rem,4.5vw,2.6rem);letter-spacing:-.04em;line-height:1.1;margin:0 0 .6rem}
-.end p{color:var(--muted);max-width:34rem;margin:0 auto 1.2rem}
-.btn{display:inline-block;min-height:44px;padding:.7rem 1.1rem;border-radius:.7rem;font-weight:700;text-decoration:none;background:var(--green);color:#fff;margin:.25rem}
-.btn.alt{background:var(--pale);color:var(--green)}
-.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:0 0 2rem}
-.facts div{background:var(--pale);border-radius:.8rem;padding:1rem}
-.facts strong{display:block;font-size:1.05rem;color:var(--green)}
-footer{color:var(--muted);font-size:.9rem;padding:1.5rem 0 2.5rem;border-top:1px solid var(--line)}
-.strip svg :is(path,circle,rect,ellipse):not([stroke]):not(.bg):not(.tex){stroke:#14271c;stroke-width:2.5px;stroke-linejoin:round;stroke-linecap:round;paint-order:stroke}
-.strip svg text{paint-order:stroke}
-body{background:#f6f0e4}
-figure{border-radius:1rem;box-shadow:7px 7px 0 #14271c}
-figcaption{background:#fffdf8;font-size:1.03rem}
-.end{background:#fffdf8}.facts div{background:#eaf1df;border:2px solid #14271c}
-
-h1,.end h2{font-family:Bangers,Impact,system-ui;letter-spacing:.03em;font-weight:400}
-h1{font-size:clamp(3.2rem,9vw,5.6rem);color:#14271c;text-shadow:4px 4px 0 #f3b23f}
-.end h2{font-size:clamp(2rem,5.5vw,3.2rem);line-height:1.05}
-.strip{gap:1.4rem}
-figure{border:4px solid #14271c;border-radius:.35rem;box-shadow:8px 8px 0 #14271c}
-figure svg{border-bottom:4px solid #14271c}
-figcaption{font-family:"Comic Neue","Comic Sans MS",system-ui;font-weight:700;text-transform:uppercase;font-size:.98rem;letter-spacing:.01em;line-height:1.35;background:#fff7d6}
-figcaption b{font-family:Bangers,Impact,system-ui;font-weight:400;font-size:1.15rem;letter-spacing:.06em;color:#c9503e}
-.sfx{font-family:Bangers,Impact,system-ui;letter-spacing:1px}
-.bubble{font-family:"Comic Neue","Comic Sans MS",system-ui;font-weight:700}
-@media(max-width:700px){.strip{grid-template-columns:1fr}.facts{grid-template-columns:1fr}}
+.wrap{width:min(100% - 1.25rem,760px);margin:1.4rem auto}
+.title{border:4px solid var(--ink);background:var(--yellow);padding:.55rem .9rem;margin-bottom:.8rem;box-shadow:5px 5px 0 #000}
+.title h1{font-family:Bangers,Impact,sans-serif;font-weight:400;letter-spacing:.04em;font-size:clamp(2.6rem,9vw,4.6rem);line-height:.9;margin:0;text-shadow:3px 3px 0 #fff}
+.title p{margin:.25rem 0 0;font-family:"Comic Neue","Comic Sans MS",sans-serif;font-weight:700;text-transform:uppercase;font-size:clamp(.78rem,2.2vw,.98rem)}
+.page{position:relative;overflow:hidden;container-type:inline-size;background:#fff;box-shadow:0 18px 60px #0009;margin:0}
+.page img{display:block;width:100%;height:auto}
+.cap,.bub,.sfx{position:absolute}
+.cap{background:var(--yellow);border:2.5px solid var(--ink);font-family:"Comic Neue","Comic Sans MS",sans-serif;font-weight:700;text-transform:uppercase;line-height:1.12;padding:.3em .5em;font-size:2.3cqw;box-shadow:2px 2px 0 var(--ink)}
+.bub{background:#fff;border:2.5px solid var(--ink);border-radius:50%/46%;font-family:"Comic Neue","Comic Sans MS",sans-serif;font-weight:700;text-transform:uppercase;text-align:center;line-height:1.1;padding:.75em .95em;font-size:2.3cqw}
+.bub::after{content:"";position:absolute;width:1em;height:1em;background:#fff;border-right:2.5px solid var(--ink);border-bottom:2.5px solid var(--ink);bottom:-.55em;transform:rotate(45deg)}
+.bub.l::after{left:24%}.bub.r::after{right:22%}
+.sfx{font-family:Bangers,Impact,sans-serif;font-weight:400;letter-spacing:.04em;line-height:.9;color:var(--yellow);-webkit-text-stroke:.45cqw var(--ink);paint-order:stroke fill;text-shadow:.6cqw .6cqw 0 var(--ink);pointer-events:none;white-space:nowrap}
+.sfx.red{color:var(--red)}.sfx.green{color:#86f07f}
+.end{display:grid;grid-template-columns:1.25fr 1fr;gap:.8rem;margin-top:.9rem}
+.end>div{border:4px solid var(--ink);padding:1.05rem 1.15rem}
+.end .hero{background:var(--green);color:#fff}
+.end h2{font-family:Bangers,Impact,sans-serif;font-weight:400;letter-spacing:.04em;font-size:clamp(1.9rem,5vw,2.7rem);line-height:.95;margin:0 0 .5rem}
+.end .hero p{margin:0 0 1rem;color:#dce9df}
+.btn{display:inline-block;min-height:44px;padding:.65rem 1rem;border:3px solid var(--ink);font-weight:800;text-decoration:none;background:var(--yellow);color:var(--ink);margin:.2rem .3rem .2rem 0;box-shadow:3px 3px 0 var(--ink)}
+.btn.alt{background:#fff}
+.facts{background:var(--pale);display:grid;gap:.55rem;align-content:center}
+.facts strong{color:var(--green)}
+footer{width:min(100% - 1.25rem,760px);margin:0 auto 2.5rem;color:#b9c3bd;font-size:.86rem}
+footer a{color:#cfe2c3}
+@media(max-width:600px){.end{grid-template-columns:1fr}.cap,.bub{font-size:2.6cqw}}
 </style>
 </head>
 <body>
@@ -74,161 +63,54 @@ figcaption b{font-family:Bangers,Impact,system-ui;font-weight:400;font-size:1.15
   </div>
 </div>
 
-<header>
-  <div class="kicker">A CupBack comic</div>
-  <h1>The $3 Cup</h1>
-  <p>Reusable cups are great for the planet. Getting your deposit back is another story.</p>
-</header>
+<main class="wrap">
+  <div class="title">
+    <h1>The $3 Cup</h1>
+    <p>A CupBack comic · reusable cups are great for the planet. Getting your deposit back is another story.</p>
+  </div>
 
-<main>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><pattern id="dots" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.4" fill="#14271c"/></pattern></defs></svg>
+  <figure class="page">
+    <img src="page.jpg" width="687" height="1024" alt="Six-panel comic. 1: at a night festival bar, Mia gets a reusable cup and a red plastic token. 2: at midnight, a long queue waits at the only refund stall, its shutter closed. 3: Mia, shocked, turns out her empty pockets. 4: one year later, Mia scans a CupBack QR code with her phone. 5: at a different return booth, staff scan her phone as she drops the cup in the bin. 6: Mia smiles at her phone showing a green check mark as coins of light burst around her.">
 
-<section class="strip" aria-label="Comic, six panels">
+    <!-- 1 -->
+    <div class="cap" style="left:2.2%;top:1.6%">8 PM. The festival.</div>
+    <div class="bub r" style="left:31%;top:6.2%;width:22%">$3 deposit. Keep the token!</div>
+    <!-- 2 -->
+    <div class="cap" style="left:53%;top:1.6%;max-width:22%">Midnight. One refund stall.</div>
+    <div class="sfx red" style="left:63%;top:26%;font-size:6.8cqw;transform:rotate(-7deg)">CLOSED.</div>
+    <!-- 3 -->
+    <div class="sfx" style="left:3%;top:35%;font-size:12cqw;transform:rotate(-10deg)">GONE!</div>
+    <div class="cap" style="left:2.2%;top:63.4%;max-width:30%">No token. No refund. $3 gone.</div>
+    <!-- 4 -->
+    <div class="cap" style="left:57%;top:36.2%;max-width:30%">One year later. The festival runs on CupBack.</div>
+    <div class="sfx green" style="left:58%;top:57%;font-size:7cqw;transform:rotate(-8deg)">BEEP!</div>
+    <!-- 5 -->
+    <div class="bub r" style="left:20%;top:68.6%;width:24%">Any booth works. Scanning...</div>
+    <div class="cap" style="left:2.2%;top:94.6%;max-width:36%">Midnight. A different booth.</div>
+    <!-- 6 -->
+    <div class="sfx" style="left:76%;top:68.5%;font-size:7.5cqw;transform:rotate(9deg)">PING!</div>
+    <div class="bub r" style="left:52%;top:70.5%;width:19%">Wait... that's it?!</div>
+    <div class="cap" style="left:53%;top:93.2%;max-width:44%">Full deposit back. 3 seconds. Paid in Bitcoin Cash.</div>
+  </figure>
 
-<!-- 1 -->
-<figure>
-<svg viewBox="0 0 400 260" role="img" aria-label="Mia at a festival bar gets a drink in a reusable cup and a plastic token">
-  <rect class="bg" width="400" height="260" fill="#1f2b4d"/>
-  <g fill="#f3b23f"><circle cx="40" cy="30" r="5"/><circle cx="95" cy="22" r="5" fill="#5fae5a"/><circle cx="150" cy="32" r="5" fill="#c9503e"/><circle cx="205" cy="22" r="5"/><circle cx="260" cy="32" r="5" fill="#5fae5a"/><circle cx="315" cy="22" r="5" fill="#c9503e"/><circle cx="370" cy="30" r="5"/></g>
-  <path d="M0 28 Q100 45 200 26 T400 28" fill="none" stroke="#ffffff55" stroke-width="2"/>
-  <rect x="210" y="120" width="190" height="140" fill="#6b4a2f"/><rect x="210" y="112" width="190" height="14" fill="#8a6440"/>
-  <text x="305" y="160" text-anchor="middle" font-size="18" font-weight="800" fill="#f3b23f" font-family="system-ui">BAR</text>
-  <rect x="255" y="175" width="100" height="26" rx="6" fill="#fff"/><text x="305" y="193" text-anchor="middle" font-size="13" font-weight="700" fill="#14271c" font-family="system-ui">cup deposit $3</text>
-  <!-- Mia -->
-  <circle cx="130" cy="120" r="30" fill="#c98e63"/><path d="M100 115 Q130 70 160 115 Q160 95 130 88 Q100 95 100 115Z" fill="#2a1a12"/>
-  <circle cx="120" cy="120" r="3" fill="#14271c"/><circle cx="140" cy="120" r="3" fill="#14271c"/><path d="M120 134 Q130 142 140 134" stroke="#14271c" stroke-width="3" fill="none" stroke-linecap="round"/>
-  <path d="M90 260 Q90 165 130 160 Q170 165 170 260Z" fill="#5fae5a"/>
-  <!-- cup -->
-  <path d="M182 150 L208 150 L204 190 L186 190Z" fill="#edf4e7" stroke="#14271c" stroke-width="3"/><path d="M190 165 q5 -8 10 0 q-5 8 -10 0Z" fill="#5fae5a"/>
-  <line x1="168" y1="190" x2="186" y2="178" stroke="#5fae5a" stroke-width="12" stroke-linecap="round"/>
-  <!-- token -->
-  <circle cx="60" cy="200" r="16" fill="#c9503e" stroke="#14271c" stroke-width="3"/><text x="60" y="205" text-anchor="middle" font-size="12" font-weight="800" fill="#fff" font-family="system-ui">TKN</text>
-  <rect x="14" y="70" width="140" height="34" rx="10" fill="#fff"/><path d="M90 104 L100 116 L102 104Z" fill="#fff"/>
-  <text x="84" y="92" text-anchor="middle" font-size="13" font-weight="700" fill="#14271c" font-family="system-ui" class="bubble" textLength="118" lengthAdjust="spacingAndGlyphs">KEEP THE TOKEN!</text>
-<rect x="8" y="8" width="180" height="26" fill="#f3b23f" stroke="#14271c" stroke-width="3"/><text x="16" y="26" font-size="14" fill="#14271c" class="sfx" font-family="Bangers,Impact,system-ui" textLength="164" lengthAdjust="spacingAndGlyphs">8 PM. THE FESTIVAL.</text><rect class="tex" width="400" height="260" fill="url(#dots)" opacity=".13"/></svg>
-<figcaption><b>8 PM · the festival</b>Mia buys a drink. The reusable cup costs a $3 deposit. She gets a little plastic token to get it back later.</figcaption>
-</figure>
-
-<!-- 2 -->
-<figure>
-<svg viewBox="0 0 400 260" role="img" aria-label="At midnight a long queue waits at the only refund stall, which is closed">
-  <rect class="bg" width="400" height="260" fill="#151d36"/>
-  <circle cx="350" cy="45" r="22" fill="#f4efd2"/><circle cx="360" cy="40" r="20" fill="#151d36" stroke="none"/>
-  <rect x="250" y="90" width="140" height="170" fill="#3a3f55"/><rect x="250" y="82" width="140" height="14" fill="#4b5170"/>
-  <rect x="262" y="110" width="116" height="60" rx="6" fill="#c9503e"/>
-  <text x="320" y="134" text-anchor="middle" font-size="11.5" font-weight="800" fill="#fff" font-family="system-ui">REFUNDS: STALL 4</text>
-  <text x="320" y="156" text-anchor="middle" font-size="18" font-weight="900" fill="#fff" font-family="system-ui">CLOSED</text>
-  <g fill="#2a3150">
-    <circle cx="225" cy="150" r="16"/><path d="M205 260 Q205 175 225 170 Q245 175 245 260Z"/>
-    <circle cx="185" cy="150" r="16"/><path d="M165 260 Q165 175 185 170 Q205 175 205 260Z"/>
-    <circle cx="145" cy="150" r="16"/><path d="M125 260 Q125 175 145 170 Q165 175 165 260Z"/>
-    <circle cx="105" cy="150" r="16"/><path d="M85 260 Q85 175 105 170 Q125 175 125 260Z"/>
-  </g>
-  <circle cx="50" cy="145" r="22" fill="#c98e63"/><path d="M28 141 Q50 108 72 141 Q72 126 50 121 Q28 126 28 141Z" fill="#2a1a12"/>
-  <circle cx="43" cy="146" r="2.5" fill="#14271c"/><circle cx="57" cy="146" r="2.5" fill="#14271c"/><path d="M43 158 Q50 153 57 158" stroke="#14271c" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-  <path d="M22 260 Q22 175 50 170 Q78 175 78 260Z" fill="#5fae5a"/>
-  <text x="140" y="118" text-anchor="middle" font-size="26" font-weight="900" fill="#f3b23f" font-family="system-ui">. . .</text>
-<rect x="8" y="8" width="120" height="26" fill="#f3b23f" stroke="#14271c" stroke-width="3"/><text x="16" y="26" font-size="14" fill="#14271c" class="sfx" font-family="Bangers,Impact,system-ui" textLength="104" lengthAdjust="spacingAndGlyphs">MIDNIGHT...</text><text x="140" y="95" text-anchor="middle" font-size="30" fill="#f3b23f" stroke="#14271c" stroke-width="2.5" paint-order="stroke" class="sfx" font-family="Bangers,Impact,system-ui" transform="rotate(-6 140 95)">SIGH...</text><rect class="tex" width="400" height="260" fill="url(#dots)" opacity=".13"/></svg>
-<figcaption><b>Midnight · the queue</b>Only one stall does refunds. The queue is forty people long, and the stall just closed.</figcaption>
-</figure>
-
-<!-- 3 -->
-<figure>
-<svg viewBox="0 0 400 260" role="img" aria-label="Mia checks her empty pockets; the token and the three dollars are gone">
-  <rect class="bg" width="400" height="260" fill="#fbe9e4"/>
-  <circle cx="200" cy="95" r="40" fill="#c98e63"/><path d="M160 90 Q200 30 240 90 Q240 64 200 55 Q160 64 160 90Z" fill="#2a1a12"/>
-  <path d="M185 92 l8 6 M193 92 l-8 6 M207 92 l8 6 M215 92 l-8 6" stroke="#14271c" stroke-width="3" stroke-linecap="round"/>
-  <ellipse cx="200" cy="116" rx="9" ry="7" fill="#14271c"/>
-  <path d="M150 260 Q150 145 200 140 Q250 145 250 260Z" fill="#5fae5a"/>
-  <path d="M130 200 L150 175 L160 215 Z" fill="#fff" stroke="#14271c" stroke-width="3"/>
-  <path d="M270 200 L250 175 L240 215 Z" fill="#fff" stroke="#14271c" stroke-width="3"/>
-  <text x="70" y="70" font-size="40" font-weight="900" fill="#c9503e" font-family="system-ui">?!</text>
-  <g transform="translate(320 70) rotate(18)"><circle r="22" fill="#c9503e" stroke="#14271c" stroke-width="3" opacity=".35"/><line x1="-30" y1="-30" x2="30" y2="30" stroke="#14271c" stroke-width="5"/></g>
-  <text x="320" y="165" text-anchor="middle" font-size="30" font-weight="900" fill="#c9503e" font-family="system-ui">−$3</text>
-<rect x="8" y="8" width="160" height="26" fill="#f3b23f" stroke="#14271c" stroke-width="3"/><text x="16" y="26" font-size="14" fill="#14271c" class="sfx" font-family="Bangers,Impact,system-ui" textLength="144" lengthAdjust="spacingAndGlyphs">12:30 AM. UH-OH.</text><polygon points="373.0,75.0 353.5,84.3 363.8,103.2 342.6,99.3 339.8,120.7 325.0,105.0 310.2,120.7 307.4,99.3 286.2,103.2 296.5,84.3 277.0,75.0 296.5,65.7 286.2,46.8 307.4,50.7 310.2,29.3 325.0,45.0 339.8,29.3 342.6,50.7 363.8,46.8 353.5,65.7" fill="#f3b23f" stroke="#14271c" stroke-width="3" stroke-linejoin="round"/><text x="325" y="86" text-anchor="middle" font-size="30" fill="#c9503e" stroke="#14271c" stroke-width="2.5" paint-order="stroke" class="sfx" font-family="Bangers,Impact,system-ui" transform="rotate(-8 325 86)" textLength="62" lengthAdjust="spacingAndGlyphs">GONE!</text><rect class="tex" width="400" height="260" fill="url(#dots)" opacity=".13"/></svg>
-<figcaption><b>12:30 AM · the loss</b>The token fell out somewhere near the main stage. No token, no refund. The $3 is gone. Now multiply that by every guest, every night.</figcaption>
-</figure>
-
-<!-- 4 -->
-<figure>
-<svg viewBox="0 0 400 260" role="img" aria-label="Next year Mia scans a QR code at the bar and pays the deposit from her phone wallet">
-  <rect class="bg" width="400" height="260" fill="#ecf3e2"/>
-  <rect x="8" y="8" width="170" height="26" fill="#f3b23f" stroke="#14271c" stroke-width="3"/><text x="16" y="26" font-size="14" fill="#14271c" class="sfx" font-family="Bangers,Impact,system-ui" textLength="154" lengthAdjust="spacingAndGlyphs">ONE YEAR LATER...</text>
-  <rect x="230" y="60" width="130" height="150" rx="10" fill="#fff" stroke="#14271c" stroke-width="3"/>
-  <g fill="#14271c"><rect x="250" y="80" width="28" height="28"/><rect x="312" y="80" width="28" height="28"/><rect x="250" y="142" width="28" height="28"/><rect x="290" y="95" width="10" height="10"/><rect x="300" y="120" width="12" height="12"/><rect x="285" y="150" width="10" height="10"/><rect x="315" y="145" width="20" height="10"/><rect x="315" y="160" width="10" height="12"/></g>
-  <rect x="256" y="86" width="16" height="16" fill="#fff"/><rect x="318" y="86" width="16" height="16" fill="#fff"/><rect x="256" y="148" width="16" height="16" fill="#fff"/>
-  <text x="295" y="197" text-anchor="middle" font-size="10" font-weight="800" fill="#174731" font-family="system-ui">CupBack · scan to pay</text>
-  <circle cx="110" cy="105" r="32" fill="#c98e63"/><path d="M78 100 Q110 52 142 100 Q142 78 110 70 Q78 78 78 100Z" fill="#2a1a12"/>
-  <circle cx="100" cy="106" r="3" fill="#14271c"/><circle cx="120" cy="106" r="3" fill="#14271c"/><path d="M100 120 Q110 128 120 120" stroke="#14271c" stroke-width="3" fill="none" stroke-linecap="round"/>
-  <path d="M70 260 Q70 150 110 145 Q150 150 150 260Z" fill="#5fae5a"/>
-  <line x1="148" y1="185" x2="178" y2="160" stroke="#5fae5a" stroke-width="12" stroke-linecap="round"/>
-  <rect x="172" y="120" width="40" height="70" rx="7" fill="#14271c"/><rect x="176" y="126" width="32" height="56" rx="4" fill="#fff"/>
-  <path d="M184 152 l6 6 l12 -14" stroke="#2b7849" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M212 140 Q222 140 228 130" stroke="#2b7849" stroke-width="3" stroke-dasharray="4 4" fill="none"/>
-<rect class="tex" width="400" height="260" fill="url(#dots)" opacity=".13"/></svg>
-<figcaption><b>Next year · pay</b>This time the festival uses CupBack. Mia scans the QR code and pays the deposit in Bitcoin Cash from her phone. Her receipt lives in her wallet, not in her pocket.</figcaption>
-</figure>
-
-<!-- 5 -->
-<figure>
-<svg viewBox="0 0 400 260" role="img" aria-label="At a different booth, staff scan Mia's receipt as she hands back the cup">
-  <rect class="bg" width="400" height="260" fill="#ecf3e2"/>
-  <rect class="bg" x="0" y="170" width="400" height="90" fill="#cfe2c3"/>
-  <rect x="230" y="105" width="170" height="155" fill="#174731"/>
-  <text x="315" y="135" text-anchor="middle" font-size="15" font-weight="800" fill="#fff" font-family="system-ui">RETURN BOOTH 9</text>
-  <circle cx="315" cy="170" r="24" fill="#8d5a3b"/><circle cx="307" cy="168" r="2.5" fill="#14271c"/><circle cx="323" cy="168" r="2.5" fill="#14271c"/><path d="M307 179 Q315 185 323 179" stroke="#14271c" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-  <rect x="290" y="190" width="50" height="70" rx="10" fill="#f3b23f"/>
-  <rect x="250" y="190" width="30" height="46" rx="5" fill="#14271c"/><rect x="254" y="195" width="22" height="34" rx="3" fill="#9fd29a"/>
-  <circle cx="100" cy="105" r="30" fill="#c98e63"/><path d="M70 100 Q100 55 130 100 Q130 80 100 72 Q70 80 70 100Z" fill="#2a1a12"/>
-  <circle cx="92" cy="106" r="3" fill="#14271c"/><circle cx="110" cy="106" r="3" fill="#14271c"/><path d="M92 118 Q101 125 110 118" stroke="#14271c" stroke-width="3" fill="none" stroke-linecap="round"/>
-  <path d="M60 260 Q60 145 100 140 Q140 145 140 260Z" fill="#5fae5a"/>
-  <line x1="138" y1="180" x2="185" y2="168" stroke="#5fae5a" stroke-width="12" stroke-linecap="round"/>
-  <rect x="180" y="140" width="30" height="50" rx="5" fill="#14271c"/><rect x="184" y="145" width="22" height="38" rx="3" fill="#fff"/>
-  <g fill="#14271c"><rect x="187" y="149" width="7" height="7"/><rect x="196" y="149" width="7" height="7"/><rect x="187" y="160" width="7" height="7"/><rect x="198" y="164" width="4" height="4"/></g>
-  <path d="M212 160 L248 205" stroke="#c9503e" stroke-width="3" stroke-dasharray="5 4"/>
-  <path d="M150 215 L176 215 L172 245 L154 245Z" fill="#edf4e7" stroke="#14271c" stroke-width="3"/><path d="M159 228 q4 -7 8 0 q-4 7 -8 0Z" fill="#5fae5a"/>
-  <rect x="14" y="20" width="176" height="34" rx="10" fill="#fff"/><path d="M90 54 L98 66 L102 54Z" fill="#fff"/>
-  <text x="102" y="42" text-anchor="middle" font-size="13" font-weight="700" fill="#14271c" font-family="system-ui" class="bubble" textLength="152" lengthAdjust="spacingAndGlyphs">DIFFERENT BOOTH. FINE?</text>
-<polygon points="243.0,105.0 231.0,110.8 236.4,123.0 223.5,119.7 219.9,132.6 212.0,121.7 201.0,129.2 202.0,115.9 188.7,114.6 198.0,105.0 188.7,95.4 202.0,94.1 201.0,80.8 212.0,88.3 219.9,77.4 223.5,90.3 236.4,87.0 231.0,99.2" fill="#fff" stroke="#14271c" stroke-width="3" stroke-linejoin="round"/><text x="215" y="113" text-anchor="middle" font-size="20" fill="#c9503e" stroke="#14271c" stroke-width="2" paint-order="stroke" class="sfx" font-family="Bangers,Impact,system-ui" transform="rotate(-10 215 113)" textLength="40" lengthAdjust="spacingAndGlyphs">BEEP!</text><rect class="tex" width="400" height="260" fill="url(#dots)" opacity=".13"/></svg>
-<figcaption><b>Midnight · return</b>Mia drops the cup at a different booth on the other side of the field. Any booth the organizer allows can approve it. Staff scan her receipt.</figcaption>
-</figure>
-
-<!-- 6 -->
-<figure>
-<svg viewBox="0 0 400 260" role="img" aria-label="Mia's phone shows the full deposit refunded in seconds">
-  <rect class="bg" width="400" height="260" fill="#174731"/>
-  <g stroke="#5fae5a" stroke-width="4" stroke-linecap="round" opacity=".6"><line x1="200" y1="20" x2="200" y2="40"/><line x1="120" y1="40" x2="135" y2="55"/><line x1="280" y1="40" x2="265" y2="55"/><line x1="90" y1="110" x2="110" y2="110"/><line x1="310" y1="110" x2="290" y2="110"/></g>
-  <rect x="140" y="55" width="120" height="190" rx="16" fill="#14271c"/><rect x="148" y="66" width="104" height="168" rx="10" fill="#fff"/>
-  <circle cx="200" cy="118" r="26" fill="#2b7849"/><path d="M187 118 l9 9 l18 -20" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  <text x="200" y="168" text-anchor="middle" font-size="17" font-weight="900" fill="#174731" font-family="system-ui">Refunded</text>
-  <text x="200" y="190" text-anchor="middle" font-size="10" font-weight="700" fill="#476053" font-family="system-ui">full deposit · 3 sec</text>
-  <text x="200" y="215" text-anchor="middle" font-size="11" font-weight="700" fill="#2b7849" font-family="system-ui">Bitcoin Cash</text>
-  <text x="60" y="200" text-anchor="middle" font-size="34" font-weight="900" fill="#f3b23f" font-family="system-ui">+$3</text>
-  <path d="M310 175 L336 175 L332 205 L314 205Z" fill="#edf4e7" stroke="#fff" stroke-width="3"/><path d="M319 188 q4 -7 8 0 q-4 7 -8 0Z" fill="#5fae5a"/>
-  <text x="323" y="232" text-anchor="middle" font-size="12" font-weight="700" fill="#cfe2c3" font-family="system-ui">cup back</text>
-<g stroke="#9fd29a" stroke-width="3" stroke-linecap="round"><line x1="20" y1="60" x2="70" y2="80"/><line x1="15" y1="120" x2="70" y2="125"/><line x1="380" y1="60" x2="330" y2="80"/><line x1="385" y1="130" x2="330" y2="132"/></g><polygon points="370.0,62.0 352.8,69.4 362.4,85.5 344.1,81.4 342.4,100.0 330.0,86.0 317.6,100.0 315.9,81.4 297.6,85.5 307.2,69.4 290.0,62.0 307.2,54.6 297.6,38.5 315.9,42.6 317.6,24.0 330.0,38.0 342.4,24.0 344.1,42.6 362.4,38.5 352.8,54.6" fill="#f3b23f" stroke="#14271c" stroke-width="3" stroke-linejoin="round"/><text x="330" y="73" text-anchor="middle" font-size="30" fill="#c9503e" stroke="#14271c" stroke-width="2.5" paint-order="stroke" class="sfx" font-family="Bangers,Impact,system-ui" transform="rotate(8 330 73)" textLength="54" lengthAdjust="spacingAndGlyphs">PING!</text><rect class="tex" width="400" height="260" fill="url(#dots)" opacity=".13"/></svg>
-<figcaption><b>3 seconds later · refunded</b>Ping. The full deposit is back in Mia's wallet. No cash, no token, no queue. The contract can only pay her, so nobody can keep her money.</figcaption>
-</figure>
-
-</section>
-
-<section class="end" aria-labelledby="end-title">
-  <h2 id="end-title">Pay at one booth.<br>Get refunded at any booth.</h2>
-  <p>CupBack is real and live on Bitcoin Cash mainnet. Each deposit sits in its own CashScript contract that can only pay the full amount back to the guest.</p>
-  <a class="btn" href="https://cupback.vercel.app/app.html#solo">Try it in 1 minute</a>
-  <a class="btn alt" href="https://cupback.vercel.app">How CupBack works</a>
-</section>
-
-<section class="facts" aria-label="Why Bitcoin Cash">
-  <div><strong>Fees under a cent</strong>so a $3 deposit makes sense.</div>
-  <div><strong>Refund in seconds</strong>so the booth line keeps moving.</div>
-  <div><strong>No custodian</strong>the contract forces 100% back to the guest.</div>
-</section>
+  <section class="end" aria-labelledby="end-title">
+    <div class="hero">
+      <h2 id="end-title">Pay at one booth.<br>Get refunded at any booth.</h2>
+      <p>CupBack is live on Bitcoin Cash mainnet. Every deposit sits in its own contract that can only pay the full amount back to the guest.</p>
+      <a class="btn" href="https://cupback.vercel.app/app.html#solo">Try it in 1 minute</a>
+      <a class="btn alt" href="https://cupback.vercel.app">How it works</a>
+    </div>
+    <div class="facts">
+      <div><strong>Fees under a cent</strong>, so a $3 deposit makes sense.</div>
+      <div><strong>Refund in seconds</strong>, so the booth line keeps moving.</div>
+      <div><strong>No custodian.</strong> The contract forces 100% back to the guest.</div>
+    </div>
+  </section>
 </main>
 
 <footer>
-  Original comic for BCH BLAZE 2026 (Media Track), drawn as code during the hackathon, Nov 2026. Story and characters are original.
-  · <a href="https://cupback.vercel.app">cupback.vercel.app</a> · <a href="https://github.com/thesithunyein/cupback/tree/main/public/comic">comic source</a> · by <a href="https://x.com/thesithunyein">Sithu Nyein</a>
+  Original comic for BCH BLAZE 2026 (Media Track), made during the hackathon, Nov 2026. Story, script and lettering by Sithu Nyein; panel art AI-assisted, then edited and lettered.
+  · <a href="https://cupback.vercel.app">cupback.vercel.app</a> · <a href="https://github.com/thesithunyein/cupback/tree/main/public/comic">comic source</a> · <a href="https://x.com/thesithunyein">@thesithunyein</a>
 </footer>
 <script>
 document.getElementById('copy').addEventListener('click',async e=>{try{await navigator.clipboard.writeText(document.getElementById('addr').textContent);e.target.textContent='Copied'}catch{e.target.textContent='Select it'}setTimeout(()=>e.target.textContent='Copy',1500)});
